@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NeoDoc</title>
+    
+  <%= stylesheet_link_tag 'http://cdn.sencha.com/ext/gpl/4.2.0/resources/ext-theme-neptune/ext-theme-neptune-all.css'       %>
+  <%= javascript_include_tag 'http://cdn.sencha.com/ext/gpl/4.2.0/ext-all-debug.js','http://cdn.sencha.com/ext/gpl/4.2.0/ext-theme-neptune.js', 'app.js'
+     %>
+
+  <%= csrf_meta_tag %>
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>
