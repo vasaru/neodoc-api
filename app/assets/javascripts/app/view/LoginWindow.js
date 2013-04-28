@@ -61,6 +61,7 @@ Ext.define('NeoDoc.view.LoginWindow', {
                         {
                             xtype: 'toolbar',
                             dock: 'bottom',
+                            formBind: false,
                             ui: 'footer',
                             items: [
                                 {
@@ -70,6 +71,7 @@ Ext.define('NeoDoc.view.LoginWindow', {
                                 {
                                     xtype: 'button',
                                     action: 'login',
+                                    formBind: true,
                                     text: 'Login'
                                 }
                             ]

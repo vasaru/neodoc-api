@@ -16,6 +16,10 @@
 Ext.define('NeoDoc.controller.Location', {
     extend: 'Ext.app.Controller',
 
+    stores: [
+        'navTreeStore'
+    ],
+
     refs: [
         {
             ref: 'newLocationWindow',
@@ -24,6 +28,10 @@ Ext.define('NeoDoc.controller.Location', {
         {
             ref: 'locationTreeTab',
             selector: 'locationtreetab'
+        },
+        {
+            ref: 'locationTreePanel',
+            selector: 'locationtreepanel'
         }
     ],
 
@@ -41,9 +49,37 @@ Ext.define('NeoDoc.controller.Location', {
             form = win.items.items[0].getForm();
 
         var nameField = form.findField('name');
-        console.log('email:',emailField);
+        console.log('name:',nameField);
+        if (form.isValid()) {    
+            win.setLoading('Submitting...');
+            form.submit({
+                url: '/api/locations',
+                headers: {'Accept':'application/vnd.neodocapi.v1' },
+                method: 'POST',
+                success: function(result, action) {
+                    Ext.Msg.alert('Created location successfully!');
+                    win.setLoading(false);
+                    win.destroy();
+                    // TODO: Reload tree store
+                },
+                failure: function(result, action) {
+                    Ext.Msg.alert('Failed to create location!\n\n'+result);
+                    win.setLoading(false);
+                }
+            });
+        }
 
 
+
+    },
+
+    onLoggedin: function(userrecord) {
+        console.log("In location onLoggedin");
+        var loctreetab = this.getLocationTreePanel(),
+            store=this.getStore('navTreeStore');
+        loctreetab.store=store;
+        store.load();
+        //this.getStore('navTreeStore').load();
 
     },
 
@@ -54,6 +90,13 @@ Ext.define('NeoDoc.controller.Location', {
             },
             "newlocationwindow button[action=locationcreate]": {
                 click: this.onCreateLocation
+            }
+        });
+
+        application.on({
+            loggedin: {
+                fn: this.onLoggedin,
+                scope: this
             }
         });
     }

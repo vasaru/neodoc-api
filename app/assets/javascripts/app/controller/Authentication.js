@@ -33,6 +33,7 @@ Ext.define('NeoDoc.controller.Authentication', {
 
     init: function(application) {
         var me = this;
+
         var currentUserBase = localStorage.getItem('neodocUser');
         console.log('CurrentUserBase:',currentUserBase);
         console.log('Verifying session');
@@ -74,6 +75,10 @@ Ext.define('NeoDoc.controller.Authentication', {
             me.application.fireEvent('loggedin', me.currentUser);
         }
 
+        // TODO: Comment this out when enabling loggin
+
+        //me.application.fireEvent('loggedin', null);
+
         this.control({
             "loginwindow button[action=login]": {
                 click: this.onLoginClick
@@ -83,14 +88,15 @@ Ext.define('NeoDoc.controller.Authentication', {
             }
         });
 
+
+
+
         application.on({
             loggedin: {
-                fn: this.onLoggedIn,
+                fn: this.onLoggedin,
                 scope: this
             }
         });
-
-
     },
 
     authenticateUser: function(data, fieldset) {
@@ -129,6 +135,7 @@ Ext.define('NeoDoc.controller.Authentication', {
                 localStorage.setItem('neodocUser', Ext.encode( currentUserObject ));
                 me.currentUser = currentUserObject;
                 win.hide();
+                // me.getStore('navTreeStore').load();
                 me.application.fireEvent('loggedin', me.currentUser);
             },
             failure: function(result, request ) {
@@ -199,6 +206,12 @@ Ext.define('NeoDoc.controller.Authentication', {
                 Ext.Msg.alert("Logout Error", "Can't Logout");
             }
         });
+    },
+
+    onLoggedin: function(userrecord) {
+        console.log("in authentication loggedin");
+
+
     }
 
 });

@@ -6,8 +6,7 @@ NeodocApi::Application.routes.draw do
   namespace :api, :defaults => {:format => 'json'} do
       scope :module => :v1, :constraints => ApiConstraints.new(:version => 1, :defaults => true) do
         resources :locations
-
-          match 'navtree' => 'locations#navtree', :as => :navtree
+        resources :trees
         resources :networks
         resources :ipnumbers
         devise_for :users
@@ -19,7 +18,8 @@ NeodocApi::Application.routes.draw do
   #    end
   end
     
-    
+  resources :locations 
+
   root :to => 'home#index'
 
 

@@ -37,7 +37,8 @@ Ext.define('NeoDoc.view.MyViewport', {
                     tabPosition: 'left',
                     items: [
                         {
-                            xtype: 'locationtreetab'
+                            xtype: 'locationtreetab',
+                            bodyBorder: true
                         },
                         {
                             xtype: 'panel',
@@ -106,6 +107,7 @@ Ext.define('NeoDoc.view.MyViewport', {
                 {
                     xtype: 'tabpanel',
                     region: 'center',
+                    headerPosition: 'right',
                     tabPosition: 'bottom'
                 }
             ]

@@ -21,6 +21,7 @@ Ext.define('NeoDoc.view.locationTreetab', {
     layout: {
         type: 'fit'
     },
+    header: false,
     title: 'Location',
 
     initComponent: function() {
@@ -30,6 +31,8 @@ Ext.define('NeoDoc.view.locationTreetab', {
             items: [
                 {
                     xtype: 'treepanel',
+                    id: 'locationTreePanel',
+                    itemId: 'locationTreePanel',
                     width: 150,
                     header: false,
                     rootVisible: false,

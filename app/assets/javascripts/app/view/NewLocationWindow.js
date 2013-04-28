@@ -23,6 +23,7 @@ Ext.define('NeoDoc.view.NewLocationWindow', {
         type: 'fit'
     },
     title: 'New Location',
+    modal: true,
 
     initComponent: function() {
         var me = this;
@@ -67,8 +68,8 @@ Ext.define('NeoDoc.view.NewLocationWindow', {
                         },
                         {
                             xtype: 'toolbar',
-                            dock: 'bottom',
                             flex: 1,
+                            dock: 'bottom',
                             formBind: true,
                             items: [
                                 {

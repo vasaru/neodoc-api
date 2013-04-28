@@ -4,29 +4,19 @@ module Api
 
 			respond_to	:json
 
-			def index
-				respond_with Location.all
-			end
-
-		      def show
-		        respond_with Location.find(params[:id])
-		      end
 
 		      def create
-		        respond_with Location.create(params[:location])
+		      	Rails.logger.debug params.inspect
+		      	location = Location.new("name"=>params[:name],"country"=>params[:country],"address"=>params[:address],"description"=>params[:description],"longitude"=>params[:longitude],"latitude"=>params[:latitude])
+		        if location.save
+			          render :json => {:success => :true, :location => [location] }
+			        else
+			          render :json => {:success => :false, :message => "Failure" }
+			        end
+   
 		      end
 
-		      def update
-		        respond_with Location.update(params[:id], params[:location])
-		      end
 
-		      def destroy
-		        respond_with Location.destroy(params[:id])
-		      end
-
-		      def navtree
-		      	respond_with Location.get_tree()
-		      end
 		end
 	end
 end
