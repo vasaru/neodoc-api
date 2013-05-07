@@ -34,12 +34,15 @@ Ext.application({
     ],
     views: [
         'MyViewport',
-        'LoginWindow'
+        'LoginWindow',
+        'TreeTabPanel',
+        'MainTabPanel'
     ],
     autoCreateViewport: true,
     controllers: [
         'Authentication',
-        'Location'
+        'Location',
+        'Network'
     ],
     name: 'NeoDoc',
     appFolder: '/assets/app',

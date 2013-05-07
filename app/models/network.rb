@@ -19,8 +19,8 @@ class Network < Neo4j::Rails::Model
   has_n :locations
   has_n :documents
 
-  # after_create :create_ips, :add_location
-  after_create :create_ips
+  after_create :create_ips, :add_location
+  #after_create :create_ips
 
 
   public
@@ -60,13 +60,11 @@ class Network < Neo4j::Rails::Model
     
   end
 
-  private
-
-
-
   def create_ips
+    Rails.logger.warn "In Create IPs"
     # if(createip="on") 
       tmp = network+'/'+netmask;
+      gw=IPAddress(gateway+"/"+netmask);
       ipaddr = IPAddress(tmp)
       ipaddr.each_host do |addr|
         STDERR.puts("addr: #{addr.to_string}")
@@ -75,8 +73,12 @@ class Network < Neo4j::Rails::Model
         temp = Ipnumber.new
         temp.ipv4 = addr.to_string
         temp.netmask = addr.netmask
-        temp.status = "Available"
-
+        if(addr == gw)
+          Rails.logger.warn "Created GW"
+          temp.status = "Gateway"
+        else
+          temp.status = "Available"
+        end
         temp.valid?
         temp.save
 
@@ -110,19 +112,24 @@ class Network < Neo4j::Rails::Model
 
   def add_location
     if !pid.nil?
-      STDERR.puts("Location_id: #{pid}")
+      STDERR.puts("Location_id: #{pid}, self=")
 
       temp = Neo4j::Node.load(pid)
-      Neo4j::Transaction.run {
-        temprel = Neo4j::Relationship.new(:location,self,temp)
-        temprel[:rel_name]='Location'
-        temprel[:rel_dir]='in'
-        STDERR.puts("relationship added: #{temprel.props.inspect}")
-        temprel2 = Neo4j::Relationship.new(:network,temp,self)
-        temprel2[:rel_name]='Network'
-        temprel2[:rel_dir]='out'
-        STDERR.puts("relationship added: #{temprel2.props.inspect}")
-      }
+      # self.locations << temp
+      temp.networks << self
+      temp.save
+      #self.save
+
+#      Neo4j::Transaction.run {
+#        temprel = Neo4j::Relationship.new(:location,self,temp)
+#        temprel[:rel_name]='Location'
+#        temprel[:rel_dir]='in'
+#        STDERR.puts("relationship added: #{temprel.props.inspect}")
+#        temprel2 = Neo4j::Relationship.new(:network,temp,self)
+#        temprel2[:rel_name]='Network'
+#        temprel2[:rel_dir]='out'
+#        STDERR.puts("relationship added: #{temprel2.props.inspect}")
+#      }
 
     end
   end

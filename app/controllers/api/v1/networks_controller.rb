@@ -13,7 +13,13 @@ module Api
 		      end
 
 		      def create
-		        respond_with Network.create(params[:Network])
+		      	Rails.logger.warn "In Create network"
+		      	@network = Network.new("network_name"=>params[:network_name],"network"=>params[:network],"createip"=>params[:createip],"pid"=>params[:pid],"vlanid"=>params[:vlanid],"netmask"=>params[:netmask],"gateway"=>params[:gateway],"description"=>params[:description])
+		      	if @network.save
+		      		render :json => {:success => true, :network => [@network] }
+		      	else
+		      		render :json => {:success => false, :message => [@network.errors], :status=>:unprocessable_entity}
+		      	end
 		      end
 
 		      def update

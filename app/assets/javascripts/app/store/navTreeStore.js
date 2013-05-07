@@ -27,7 +27,7 @@ Ext.define('NeoDoc.store.navTreeStore', {
             autoLoad: false,
             model: 'NeoDoc.model.locationTreeModel',
             storeId: 'navTreeStore',
-            defaultRootId: 'location_root',
+            defaultRootId: 'src',
             proxy: {
                 type: 'ajax',
                 url: '/api/trees',

@@ -212,6 +212,12 @@ Ext.define('NeoDoc.controller.Authentication', {
         console.log("in authentication loggedin");
 
 
+    },
+
+    onRefreshClick: function(tool, e, eOpts) {
+        var store = Ext.StoreMgr.get('navTreeStore');
+        store.load();
+
     }
 
 });

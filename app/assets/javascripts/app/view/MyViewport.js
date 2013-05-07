@@ -17,7 +17,8 @@ Ext.define('NeoDoc.view.MyViewport', {
     extend: 'Ext.container.Viewport',
 
     requires: [
-        'NeoDoc.view.locationTreetab'
+        'NeoDoc.view.TreeTabPanel',
+        'NeoDoc.view.MainTabPanel'
     ],
 
     layout: {
@@ -30,65 +31,9 @@ Ext.define('NeoDoc.view.MyViewport', {
         Ext.applyIf(me, {
             items: [
                 {
-                    xtype: 'tabpanel',
-                    region: 'west',
-                    width: 218,
-                    activeTab: 0,
-                    tabPosition: 'left',
-                    items: [
-                        {
-                            xtype: 'locationtreetab',
-                            bodyBorder: true
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: {
-                                type: 'fit'
-                            },
-                            title: 'Networks',
-                            tabConfig: {
-                                xtype: 'tab',
-                                id: 'networkTreeTab',
-                                itemId: 'networkTreeTab'
-                            },
-                            items: [
-                                {
-                                    xtype: 'treepanel',
-                                    title: 'My Tree Panel',
-                                    viewConfig: {
-
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: {
-                                type: 'fit'
-                            },
-                            title: 'Devices',
-                            tabConfig: {
-                                xtype: 'tab',
-                                id: 'deviceTreeTab',
-                                itemId: 'deviceTreeTab'
-                            },
-                            items: [
-                                {
-                                    xtype: 'treepanel',
-                                    title: 'My Tree Panel',
-                                    viewConfig: {
-
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
                     xtype: 'panel',
                     region: 'north',
                     height: 36,
-                    html: '&nbsp;<h2>Neodoc</h2>',
                     title: 'NeoDoc',
                     tools: [
                         {
@@ -96,6 +41,12 @@ Ext.define('NeoDoc.view.MyViewport', {
                             action: 'logout',
                             tooltip: 'Logout',
                             type: 'close'
+                        },
+                        {
+                            xtype: 'tool',
+                            action: 'refreshTree',
+                            tooltip: 'Reload tree',
+                            type: 'refresh'
                         }
                     ]
                 },
@@ -105,10 +56,12 @@ Ext.define('NeoDoc.view.MyViewport', {
                     height: 37
                 },
                 {
-                    xtype: 'tabpanel',
-                    region: 'center',
-                    headerPosition: 'right',
-                    tabPosition: 'bottom'
+                    xtype: 'treetabpanel',
+                    region: 'west'
+                },
+                {
+                    xtype: 'maintabpanel',
+                    region: 'center'
                 }
             ]
         });

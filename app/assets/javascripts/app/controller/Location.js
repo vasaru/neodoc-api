@@ -32,12 +32,16 @@ Ext.define('NeoDoc.controller.Location', {
         {
             ref: 'locationTreePanel',
             selector: 'locationtreepanel'
+        },
+        {
+            ref: 'treeTabPanel',
+            selector: 'treetabpanel'
         }
     ],
 
     onLocationNewBtn: function(button, e, eOpts) {
         console.log("In onLocationNewBtn");
-        var win = Ext.create('NeoDoc.view.NewLocationWindow', {});
+        var win = Ext.create('NeoDoc.view.location.CreateWindow', {});
         win.show();
 
     },
@@ -58,6 +62,8 @@ Ext.define('NeoDoc.controller.Location', {
                 method: 'POST',
                 success: function(result, action) {
                     Ext.Msg.alert('Created location successfully!');
+                    var store = Ext.StoreMgr.get('navTreeStore');
+                    store.load();
                     win.setLoading(false);
                     win.destroy();
                     // TODO: Reload tree store
@@ -73,12 +79,71 @@ Ext.define('NeoDoc.controller.Location', {
 
     },
 
+    onTreepanelSelect: function(rowmodel, record, index, eOpts) {
+        console.log("In TreePanelSelect");
+    },
+
+    onTreepanelItemContextMenu: function(dataview, record, item, index, e, eOpts) {
+        var x,y,show=false;
+        var menu1;
+
+        console.log("IN context menu");
+        console.log("Clicked Item is of class: "+record.get('cls'));
+
+
+
+        switch (record.get('cls')) {
+            case 'Location':
+            //     menu1=this.getLocationMenu();
+
+            show = true;
+            menu1= new Ext.menu.Menu({
+                itemid: 'locationMenu',
+                items: [
+                {
+                    xtype: 'menuitem',
+                    text: 'New Network...',
+                    itemid: 'locationMenuNewNetwork',
+                    handler: function() {
+                        var win = Ext.create('NeoDoc.view.network.CreateWindow', {});
+                        var pid = win.down('#networkParentId');
+                        pid.setValue(record.get('id'));
+                        win.show();
+                    }
+                },
+                {
+                    xtype: 'menuitem',
+                    text: 'New Document...',
+                    action: 'onCreateDocument',
+                    itemid: 'documentMenuNewNetwork',
+                    disabled: true
+                }            
+                ]
+            });
+        }
+        if (show) {
+            x = e.browserEvent.clientX;
+            y = e.browserEvent.clientY;
+            console.log("X="+x);
+            console.log("Y="+y);
+            //menu1.showAt([x,y]);
+            menu1.showAt(e.getXY());
+            e.stopEvent();
+        }
+
+    },
+
     onLoggedin: function(userrecord) {
         console.log("In location onLoggedin");
-        var loctreetab = this.getLocationTreePanel(),
-            store=this.getStore('navTreeStore');
-        loctreetab.store=store;
-        store.load();
+        var treepanel = this.getTreeTabPanel(),
+            loctreetab = Ext.create('NeoDoc.view.location.Treetab', {});
+
+        var tab = treepanel.add(loctreetab);
+        tab.setActiveTab(tab);
+
+
+        //loctreetab.store=store;
+        //store.load();
         //this.getStore('navTreeStore').load();
 
     },
@@ -90,6 +155,10 @@ Ext.define('NeoDoc.controller.Location', {
             },
             "newlocationwindow button[action=locationcreate]": {
                 click: this.onCreateLocation
+            },
+            "treepanel": {
+                select: this.onTreepanelSelect,
+                itemcontextmenu: this.onTreepanelItemContextMenu
             }
         });
 
