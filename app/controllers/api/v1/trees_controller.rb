@@ -24,6 +24,7 @@ module Api
 					    h["iconCls"]="location-icon"
 					    h["id"]=Integer("#{node.neo_id}")
 					    h["cls"]="#{node.class}"
+					    h["parentID"]="NaN"
 					    h["leaf"]=is_leaf(node)
 					    a << h
 					end 
@@ -45,6 +46,7 @@ module Api
 						    h["text"] = "#{node.network_name}"
 						    h["iconCls"]="network-icon"
 						    h["id"]=Integer("#{node.neo_id}")
+						 	h["parentID"]=Integer("#{start.neo_id}")
 						    h["cls"]="#{node.class}"
 						    h["leaf"]=is_leaf(node)
 						    netarr << h
@@ -55,6 +57,7 @@ module Api
 						    h["text"] = "#{node.ipv4}"
 						    h["iconCls"]="ipnumber-icon"
 						    h["id"]=Integer("#{node.neo_id}")
+						    h["parentID"]=Integer("#{start.neo_id}")
 						    h["cls"]="#{node.class}"
 						    h["leaf"]=true
 						    iparr << h
@@ -63,6 +66,7 @@ module Api
 						    h["text"] = "#{node.document_title}"
 						    h["iconCls"]="document-icon"
 						    h["id"]=Integer("#{node.neo_id}")
+						    h["parentID"]=Integer("#{start.neo_id}")
 						    h["cls"]="#{node.class}"
 						    h["leaf"]=true
 						    docarr << h
@@ -73,6 +77,7 @@ module Api
 					    c["text"] = "Networks"
 					    c["iconCls"]="network-folder"
 					    c["neo_id"]=Integer("#{start.neo_id}")
+					    c["parentID"]=Integer("#{start.neo_id}")
 					    c["cls"]="NetworkFolder"
 					    c["expanded"]=false
 					    c["children"]=netarr
@@ -84,6 +89,7 @@ module Api
 					    c["text"] = "Ipnumbers"
 					    c["iconCls"]="ipnumber-folder"
 					    c["neo_id"]=Integer("#{start.neo_id}")
+					    c["parentID"]=Integer("#{start.neo_id}")
 					    c["cls"]="IpnumberFolder"
 					    c["expanded"]=false
 					    c["children"]=iparr
@@ -122,7 +128,7 @@ module Api
 					Rails.logger.warn "Calling generate tree"
 					tree = generate_tree(root,start)
 				end
-				Rails.logger.warn "Returning tree: #{tree}"
+				Rails.logger.warn "Returning tree"
 				render :json => tree
 			end
 
