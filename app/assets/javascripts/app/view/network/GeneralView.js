@@ -20,6 +20,7 @@ Ext.define('NeoDoc.view.network.GeneralView', {
     height: 250,
     id: 'networkgeneralview',
     itemId: 'networkgeneralview',
+    padding: 10,
     width: 400,
     itemSelector: 'div',
 
@@ -27,18 +28,18 @@ Ext.define('NeoDoc.view.network.GeneralView', {
         var me = this;
 
         Ext.applyIf(me, {
-            tpl: [
+            itemTpl: [
                 '<h1>General Information</h1>',
                 '<p>',
                 '',
-                '<i>{network_name}, VLAN ID {vlanid}</i>',
+                '    <b>Network Name:</b> {network_name}<br>',
+                '    <b>Network:</b> {netmask}<br>',
+                '    <b>Gateway:</b> {gateway}<br>',
+                '   	<b>VLAN ID:</b> {vlanid}<br>',
+                '    ',
                 '<p>',
-                '    {description}',
-                '</p>'
-            ],
-            itemTpl: [
-                '<i>{network_name}, VLAN ID {vlanid}</i>',
-                '<p>',
+                '    <b>Description</b><p>',
+                '        ',
                 '    {description}',
                 '</p>'
             ]
