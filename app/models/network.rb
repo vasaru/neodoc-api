@@ -5,6 +5,10 @@ class Network < Neo4j::Rails::Model
   property :gateway, :type => String
   property :netmask, :type => String
   property :description, :type => String
+  property :updated_at, :type => DateTime
+  property :created_at, :type => DateTime
+  property :updated_by, :type => String
+  property :created_by, :type => String
   property :createip
 
   property :created_at, :type => DateTime
@@ -24,6 +28,7 @@ class Network < Neo4j::Rails::Model
 
 
   public
+
   def get_location
     location = self.outgoing(:location).depth(1).first()
     return location
@@ -73,6 +78,8 @@ class Network < Neo4j::Rails::Model
         temp = Ipnumber.new
         temp.ipv4 = addr.to_string
         temp.netmask = addr.netmask
+        temp.updated_by = updated_by
+        temp.created_by = created_by
         if(addr == gw)
           Rails.logger.warn "Created GW"
           temp.status = "Gateway"

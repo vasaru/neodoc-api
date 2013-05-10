@@ -11,3 +11,26 @@
  *= require_self
  *= require_tree .
  */
+/*
+.network-icon {
+   background-image: url(/images/icons/Network.png) !important;
+            }
+.network-folder {
+    background-image: url(/images/icons/Network.png) !important;
+}
+
+.document-icon {
+   background-image: url(/images/icons/layout.png) !important;
+            }
+.document-folder {
+    background-image: url(/images/icons/folder_page.png) !important;
+}
+
+.location-icon {
+   background-image: url(/images/icons/building.png) !important;
+            }
+.location-folder {
+    background-image: url(/images/icons/building.png) !important;
+}
+
+*/

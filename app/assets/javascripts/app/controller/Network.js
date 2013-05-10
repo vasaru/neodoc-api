@@ -20,6 +20,14 @@ Ext.define('NeoDoc.controller.Network', {
         {
             ref: 'networkCreateWindow',
             selector: 'networkcreatewindow'
+        },
+        {
+            ref: 'networkMainTab',
+            selector: 'networkmaintabpanel'
+        },
+        {
+            ref: 'MainTabPanel',
+            selector: 'maintabpanel'
         }
     ],
 
@@ -55,7 +63,104 @@ Ext.define('NeoDoc.controller.Network', {
     },
 
     onNewnetworktab: function(record) {
+        var me = this,
+            maintab = me.getMainTabPanel(),
+
+            // store = me.getStore('IpnumberStore');
+            ipstore = Ext.create('NeoDoc.store.IpnumberStore');
+        ipstore.storeid = 'Network-IpStore-'+record.id;
+
+        netstore = Ext.create('NeoDoc.store.NetworkInfoStore');
+        netstore.storeid = 'Network-IpInfoStore-'+record.id;
+
+
         console.log("In onNewnetworkTab");
+        console.log('panelId=NetworkTab-'+record.id);
+
+        var tab = maintab.getChildByElement('NetworkTab-'+record.id);
+
+        if(!tab) {
+            var networktab = Ext.create('NeoDoc.view.network.MainTabPanel', {
+                title: 'Network - '+record.text,
+                id: 'NetworkTab-'+record.id,
+                itemId: 'NetworkTab-'+record.id,
+                cls: 'Network',
+                closable: true
+            });
+
+            netstore.getProxy().extraParams.whattoget='generalinfo';
+            netstore.getProxy().extraParams.networkid=record.id;
+
+            netstore.load();
+
+            var generaltab = Ext.create('NeoDoc.view.network.GeneralPanel', {
+                title: 'General',
+                id: 'NetworkTab-GeneralPanel'+record.id,
+                itemId: 'NetworkTab-GeneralPanel'+record.id,
+                cls: 'Network',
+                closable: false
+            });
+            var generalview = Ext.create('NeoDoc.view.network.GeneralView', {
+                title: 'General',
+                id: 'NetworkTab-GeneralView'+record.id,
+                itemId: 'NetworkTab-GeneralView'+record.id,
+                cls: 'Network',
+                store: netstore,
+                closable: false
+            });
+
+            generaltab.add(generalview);
+
+            var iptab = Ext.create('NeoDoc.view.network.IpNumberPanel', {
+                title: 'IpNumbers',
+                id: 'NetworkTab-Ipnumber'+record.id,
+                itemId: 'NetworkTab-Ipnumber'+record.id,
+                cls: 'Network',
+                closable: false
+            });
+
+            var ipgrid = Ext.create('NeoDoc.view.network.IpNumberGrid', {
+                title: 'IpNumberGrid',
+                id: 'NetworkTab-IpnumberGrid'+record.id,
+                itemId: 'NetworkTab-IpnumberGrid'+record.id,
+                cls: 'Network',
+                store: ipstore,
+                closable: false,
+                dockedItems: [
+                {
+                    xtype: 'pagingtoolbar',
+                    dock: 'bottom',
+                    displayInfo: true,
+                    store: ipstore
+                }
+                ]
+            });
+
+            //        var ipgridpage = Ext.getCmp('network.ippager');
+
+
+
+
+            ipstore.getProxy().extraParams.whattoget='getiplist';
+            ipstore.getProxy().extraParams.networkid=record.id;
+
+
+            //        ipgridpage.bindStore(ipstore);
+            //        ipgrid.reconfigure(ipstore);
+
+            ipstore.loadPage(1);
+            iptab.add(ipgrid);
+            networktab.add(generaltab);
+            networktab.add(iptab);
+
+            maintab.add(networktab);
+
+            maintab.setActiveTab(networktab);
+        } else {
+            maintab.setActiveTab(tab);
+        }
+
+
 
     },
 

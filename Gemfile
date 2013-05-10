@@ -47,3 +47,5 @@ gem "ipaddress"
 #gem "devise-neo4j"
 #gem 'devise-neo4j', :git => 'git://github.com/andreasronge/devise-neo4j.git'
 gem 'devise-neo4j', :git => 'git://github.com/cfitz/devise-neo4j.git', :branch => 'devise2'
+#gem 'neo4j-will_paginate', :git => 'git://github.com/andreasronge/neo4j-will_paginate.git'
+#gem 'will_paginate'

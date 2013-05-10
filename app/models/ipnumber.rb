@@ -4,7 +4,11 @@ class Ipnumber < Neo4j::Rails::Model
   property :netmask, :type => String
   property :status, :type => String
   property :description, :type => String
-
+  property :updated_at, :type => DateTime
+  property :created_at, :type => DateTime
+  property :updated_by, :type => String
+  property :created_by, :type => String
+  
   has_n :network
 
   has_n :device

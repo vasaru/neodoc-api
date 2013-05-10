@@ -26,10 +26,15 @@ Ext.application({
 	<% end %>
 	
     models: [
-        'locationTreeModel'
+        'locationTreeModel',
+        'network.IpModel',
+        'network.InfoModel'
     ],
     stores: [
-        'countryStore'
+        'countryStore',
+        'IpnumberStore',
+        'IpStatusStore',
+        'NetworkInfoStore'
 //        'navTreeStore'
     ],
     views: [
