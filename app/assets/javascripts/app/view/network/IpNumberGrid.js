@@ -107,9 +107,10 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
         var menu1;
 
         console.log("In Grid Context Menu");
-        console.log("With record.id="+record.id);
+        console.log("With record.data.id="+record.data.id);
+        console.log("With record.data.status="+record.data.status);
 
-        switch(record.status) {
+        switch(record.data.status) {
             case 'Available':
             show = true;
             menu1= new Ext.menu.Menu({
@@ -120,7 +121,7 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
                     text: 'Add Device...',
                     itemid: 'networkMenuNewDevice',
                     handler: function() {
-                        var win = Ext.create('NeoDoc.view.network.CreateWindow', {});
+                        var win = Ext.create('NeoDoc.view.device.newDeviceWindow', {});
                         var pid = win.down('#deviceParentId');
                         pid.setValue(record.id);
                         win.show();
@@ -146,7 +147,7 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
                     text: 'Add Device...',
                     itemid: 'networkMenuNewDevice',
                     handler: function() {
-                        var win = Ext.create('NeoDoc.view.network.CreateWindow', {});
+                        var win = Ext.create('NeoDoc.view.device.newDeviceWindow', {});
                         var pid = win.down('#deviceParentId');
                         pid.setValue(record.id);
                         win.show();

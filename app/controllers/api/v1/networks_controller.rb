@@ -23,8 +23,8 @@ module Api
     				node.outgoing(:ipnumbers).sort_by(&:neo_id).each do |ip| 
     					createuser = Neo4j::Node.load(ip.created_by).username
     					updateuser = Neo4j::Node.load(ip.updated_by).username
-    					count += 1
-    					if count >= start && count <= start+limit
+
+    					if count >= start && count < start+limit
 #	    					Rails.logger.warn "Count #{count}, start = #{start}, limit #{limit}"
 	    					h = Hash.new
 	    					ipaddr = IPAddress(ip.ipv4)
@@ -53,6 +53,7 @@ module Api
 						    end
 						    iparr << h
 						end
+    					count += 1
 						# Rails.logger.warn "Created network child #{iparr.to_json}"
     				end
 					if (iparr.count>0)

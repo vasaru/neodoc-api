@@ -111,6 +111,26 @@ Ext.define('NeoDoc.controller.Network', {
 
             generaltab.add(generalview);
 
+            generaltab.add(Ext.create('Ext.panel.Panel', {
+                title: 'Comments',
+                id: 'NetworkTab-GeneralTestPanel'+record.id,
+                itemId: 'NetworkTab-GeneralTestPanel'+record.id,
+                cls: 'Network',
+                padding: 10,
+                width: 400,
+                height: 200
+            }));
+            generaltab.add(Ext.create('Ext.panel.Panel', {
+                title: 'Documents',
+                id: 'NetworkTab-GeneralDocumentPanel'+record.id,
+                itemId: 'NetworkTab-GeneralDocumentPanel'+record.id,
+                cls: 'Network',
+                padding: 10,
+                width: 400,
+                height: 200
+            }));
+
+
             var iptab = Ext.create('NeoDoc.view.network.IpNumberPanel', {
                 title: 'IpNumbers',
                 id: 'NetworkTab-Ipnumber'+record.id,
