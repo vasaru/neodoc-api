@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '>= 3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 
-gem 'jruby-openssl'
+gem 'jruby-openssl', '0.7.7'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -42,6 +42,7 @@ group :development, :test do
 end
 
 gem "neo4j", ">= 2.2.3"
+#gem "neo4j-admin", :git => 'https://github.com/andreasronge/neo4j-admin.git'
 
 gem "ipaddress"
 #gem "devise-neo4j"

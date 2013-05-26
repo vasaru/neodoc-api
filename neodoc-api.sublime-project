@@ -1,0 +1,10 @@
+{
+	"url": "http://192.168.1.2:3000",
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "W:\\neodoc-api"
+		}
+	]
+}

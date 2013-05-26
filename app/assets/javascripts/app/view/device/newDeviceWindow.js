@@ -17,13 +17,15 @@ Ext.define('NeoDoc.view.device.newDeviceWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.devicecreatewindow',
 
-    height: 435,
+    height: 502,
     itemId: 'newDeviceWindow',
-    width: 689,
+    width: 749,
     layout: {
         type: 'card'
     },
     title: 'My Window',
+    maximizable: true,
+    modal: true,
 
     initComponent: function() {
         var me = this;
@@ -206,13 +208,46 @@ Ext.define('NeoDoc.view.device.newDeviceWindow', {
         var store;
 
         if(form.isValid()) {
-            console.log("Next btn clicked, "+i);
+            console.log("Next btn clicked, activeitem="+i);
             console.log("Prev btn = "+prev.itemId);
             console.log("this.itemID="+this.itemId);
             var selId = this.down('#deviceType').getValue();
             console.log("DeviceType Selected="+selId);
 
-            store = this.down('#deviceType').getStore();
+            var next = parseInt(i,10)+1;
+
+            switch(selId) {
+                case "VM":
+                if(next==2) {
+                    if(!this.getComponent('newDevice-'+next)) {
+                        //                var vmdetailpanel=this.getLayout("newDevice-"+next);
+                        var vmform = Ext.create('NeoDoc.view.device.newVMForm', {
+                            itemId: 'newDevice-'+next,
+                            cls: 'Device'
+                        });
+                    } else {
+                        var vmform = this.getComponent('newDevice-'+next);
+                    }
+                    // vmdetailform.removeAll();                
+                    //                vmdetailpanel.add(vmform);
+                    prev.setDisabled(false);
+                    console.log("Setting activeItem to newDevice-"+next);
+                    this.layout.setActiveItem(vmform);
+                }
+                if(next === 3) {
+                    var sum = this.down('#newDeviceSummary');
+                    sum.html = dataEntry.get('name');
+                    button.setDisabled(true);
+
+                } else {
+                    button.setDisabled(false);
+                }
+
+
+            };
+
+
+            /*    store = this.down('#deviceType').getStore();
             var intId = store.find('id',selId);
             var dataEntry = store.getAt(intId);
 
@@ -246,7 +281,7 @@ Ext.define('NeoDoc.view.device.newDeviceWindow', {
                 } else {
                     button.setDisabled(false);
                 }
-            }      
+            }      */
         }
     }
 

@@ -9,6 +9,8 @@ NeodocApi::Application.routes.draw do
         resources :trees
         resources :networks
         resources :ipnumbers
+        resources :operatingsystems
+        resources :versions
         devise_for :users
         match 'users/verify' => 'sessions#verify' , :as => :verify
 

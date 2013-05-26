@@ -48,7 +48,7 @@ module Api
 						    h["id"]=Integer("#{node.neo_id}")
 						 	h["parentID"]=Integer("#{start.neo_id}")
 						    h["cls"]="#{node.class}"
-						    h["leaf"]=is_leaf(node)
+						    h["leaf"]=true
 						    netarr << h
     						Rails.logger.warn "Created network child #{netarr.to_json}"
 

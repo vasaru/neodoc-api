@@ -18,13 +18,11 @@ Ext.define('NeoDoc.view.device.newVMForm', {
     alias: 'widget.devicenewvmform',
 
     height: 504,
+    id: 'deviceNewVMForm',
+    itemId: 'deviceNewVMForm',
     padding: '',
     width: 719,
-    layout: {
-        type: 'auto'
-    },
     bodyPadding: 10,
-    title: 'New VM',
 
     initComponent: function() {
         var me = this;
@@ -32,30 +30,158 @@ Ext.define('NeoDoc.view.device.newVMForm', {
         Ext.applyIf(me, {
             items: [
                 {
-                    xtype: 'textfield',
-                    anchor: '100%',
-                    fieldLabel: 'Label'
+                    xtype: 'fieldset',
+                    height: 50,
+                    layout: {
+                        type: 'hbox'
+                    },
+                    title: 'Operating System',
+                    items: [
+                        {
+                            xtype: 'combobox',
+                            formBind: true,
+                            width: 336,
+                            fieldLabel: 'OS:',
+                            name: 'operatingsystem',
+                            size: 40,
+                            editable: false,
+                            displayField: 'name',
+                            store: 'OperatingSystemStore',
+                            valueField: 'id'
+                        },
+                        {
+                            xtype: 'combobox',
+                            padding: '0 0 0 10',
+                            fieldLabel: 'Version',
+                            labelWidth: 50,
+                            name: 'version',
+                            editable: false,
+                            store: 'VersionStore'
+                        }
+                    ]
                 },
                 {
-                    xtype: 'textfield',
-                    fieldLabel: 'Label'
+                    xtype: 'fieldset',
+                    height: 143,
+                    padding: 5,
+                    layout: {
+                        columns: 2,
+                        type: 'table'
+                    },
+                    title: 'Devices',
+                    items: [
+                        {
+                            xtype: 'numberfield',
+                            fieldLabel: 'Memory',
+                            name: 'memory',
+                            value: 1
+                        },
+                        {
+                            xtype: 'combobox',
+                            padding: '0 0 0 5',
+                            name: 'memmetric',
+                            value: [
+                                'GB',
+                                'GB'
+                            ],
+                            size: 5,
+                            editable: false,
+                            queryMode: 'local',
+                            store: [
+                                [
+                                    'MB',
+                                    'MB'
+                                ],
+                                [
+                                    'GB',
+                                    'GB'
+                                ],
+                                [
+                                    'TB',
+                                    'TB'
+                                ]
+                            ],
+                            valueField: 'name'
+                        },
+                        {
+                            xtype: 'numberfield',
+                            fieldLabel: 'Processors',
+                            name: 'cpu',
+                            value: 1,
+                            maxValue: 8,
+                            minValue: 1
+                        },
+                        {
+                            xtype: 'numberfield',
+                            padding: '0 0 0 5',
+                            fieldLabel: 'Cores',
+                            name: 'cores',
+                            value: 1,
+                            decimalPrecision: 0,
+                            maxValue: 8,
+                            minValue: 1
+                        },
+                        {
+                            xtype: 'numberfield',
+                            fieldLabel: 'Hard Disk 1',
+                            name: 'hdd',
+                            value: 32,
+                            minValue: 0
+                        },
+                        {
+                            xtype: 'combobox',
+                            padding: '0 0 0 5',
+                            name: 'hddmetric',
+                            value: [
+                                'GB',
+                                'GB'
+                            ],
+                            size: 5,
+                            editable: false,
+                            queryMode: 'local',
+                            store: [
+                                [
+                                    'MB',
+                                    'MB'
+                                ],
+                                [
+                                    'GB',
+                                    'GB'
+                                ],
+                                [
+                                    'TB',
+                                    'TB'
+                                ]
+                            ],
+                            valueField: 'name'
+                        },
+                        {
+                            xtype: 'combobox',
+                            disabled: true,
+                            padding: '0 0 0 5',
+                            fieldLabel: 'Network',
+                            name: 'network'
+                        },
+                        {
+                            xtype: 'combobox',
+                            disabled: true,
+                            fieldLabel: 'IP Address',
+                            name: 'ipaddress'
+                        }
+                    ]
                 },
                 {
-                    xtype: 'propertygrid',
-                    formBind: true,
-                    title: 'VM Properties',
-                    source: {
-                        HyperVisor: 'VMware',
-                        CPU: 1,
-                        'Memory (GB)': 0.5,
-                        'Number of NICs': 1,
-                        'Number of HDD': 1,
-                        'HDD Controller': 'Paravirtualized'
-                    }
-                },
-                {
-                    xtype: 'combobox',
-                    fieldLabel: 'Label'
+                    xtype: 'fieldset',
+                    title: 'Description',
+                    items: [
+                        {
+                            xtype: 'htmleditor',
+                            anchor: '100%',
+                            formBind: true,
+                            height: 150,
+                            name: 'description'
+                        }
+                    ]
                 }
             ]
         });

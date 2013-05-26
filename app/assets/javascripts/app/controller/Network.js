@@ -176,6 +176,7 @@ Ext.define('NeoDoc.controller.Network', {
             maintab.add(networktab);
 
             maintab.setActiveTab(networktab);
+            networktab.setActiveTab(generaltab);
         } else {
             maintab.setActiveTab(tab);
         }
