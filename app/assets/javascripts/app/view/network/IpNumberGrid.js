@@ -121,9 +121,9 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
                     text: 'Add Device...',
                     itemid: 'networkMenuNewDevice',
                     handler: function() {
-                        var win = Ext.create('NeoDoc.view.device.newDeviceWindow', {});
+                        var win = Ext.create('NeoDoc.view.device.CreateWindow', {});
                         var pid = win.down('#deviceParentId');
-                        pid.setValue(record.id);
+                        pid.setValue(record.data.id);
                         win.show();
                     }
                 },
@@ -147,7 +147,7 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
                     text: 'Add Device...',
                     itemid: 'networkMenuNewDevice',
                     handler: function() {
-                        var win = Ext.create('NeoDoc.view.device.newDeviceWindow', {});
+                        var win = Ext.create('NeoDoc.view.device.CreateWindow', {});
                         var pid = win.down('#deviceParentId');
                         pid.setValue(record.id);
                         win.show();

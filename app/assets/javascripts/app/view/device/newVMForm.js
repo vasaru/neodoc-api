@@ -39,7 +39,8 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                     items: [
                         {
                             xtype: 'combobox',
-                            formBind: true,
+                            formBind: false,
+                            id: 'device.vm.os',
                             width: 336,
                             fieldLabel: 'OS:',
                             name: 'operatingsystem',
@@ -47,15 +48,25 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                             editable: false,
                             displayField: 'name',
                             store: 'OperatingSystemStore',
-                            valueField: 'id'
+                            valueField: 'id',
+                            listeners: {
+                                select: {
+                                    fn: me.onosSelect,
+                                    scope: me
+                                }
+                            }
                         },
                         {
                             xtype: 'combobox',
+                            disabled: true,
+                            id: 'device.vm.osversion',
+                            itemId: 'devicevmosversion',
                             padding: '0 0 0 10',
                             fieldLabel: 'Version',
                             labelWidth: 50,
                             name: 'version',
                             editable: false,
+                            displayField: 'name',
                             store: 'VersionStore'
                         }
                     ]
@@ -72,12 +83,14 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                     items: [
                         {
                             xtype: 'numberfield',
+                            id: 'device.vm.memory',
                             fieldLabel: 'Memory',
                             name: 'memory',
                             value: 1
                         },
                         {
                             xtype: 'combobox',
+                            id: 'device.vm.memmetric',
                             padding: '0 0 0 5',
                             name: 'memmetric',
                             value: [
@@ -105,6 +118,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                         },
                         {
                             xtype: 'numberfield',
+                            id: 'device.vm.cpu',
                             fieldLabel: 'Processors',
                             name: 'cpu',
                             value: 1,
@@ -113,6 +127,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                         },
                         {
                             xtype: 'numberfield',
+                            id: 'device.vm.cores',
                             padding: '0 0 0 5',
                             fieldLabel: 'Cores',
                             name: 'cores',
@@ -123,6 +138,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                         },
                         {
                             xtype: 'numberfield',
+                            id: 'device.vm.hdd1',
                             fieldLabel: 'Hard Disk 1',
                             name: 'hdd',
                             value: 32,
@@ -130,6 +146,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                         },
                         {
                             xtype: 'combobox',
+                            id: 'device.vm.hdd1metric',
                             padding: '0 0 0 5',
                             name: 'hddmetric',
                             value: [
@@ -158,6 +175,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                         {
                             xtype: 'combobox',
                             disabled: true,
+                            id: 'device.vm.network',
                             padding: '0 0 0 5',
                             fieldLabel: 'Network',
                             name: 'network'
@@ -165,6 +183,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                         {
                             xtype: 'combobox',
                             disabled: true,
+                            id: 'device.vm.ipaddress',
                             fieldLabel: 'IP Address',
                             name: 'ipaddress'
                         }
@@ -179,6 +198,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                             anchor: '100%',
                             formBind: true,
                             height: 150,
+                            id: 'device.vm.description',
                             name: 'description'
                         }
                     ]
@@ -187,6 +207,34 @@ Ext.define('NeoDoc.view.device.newVMForm', {
         });
 
         me.callParent(arguments);
+    },
+
+    onosSelect: function(combo, records, eOpts) {
+        //var win = this.getDeviceCreateWindow();
+
+        console.log("In onosSelect");
+        console.log(records);
+
+        /* var osverstore = Ext.create('NeoDoc.store.VersionStore');
+        osverstore.storeid = 'OsVerStore-'+combo.getValue();
+        */
+
+
+        var versselect = this.down('#devicevmosversion'),
+            osverstore = versselect.getStore();
+
+        osverstore.getProxy().extraParams.whattoget='osversioninfo';
+        osverstore.getProxy().extraParams.osid=combo.getValue();
+
+        osverstore.load();
+        versselect.setValue(osverstore.getAt(0).data.name)
+
+        // versselect.store = osverstore;
+
+        versselect.setDisabled(false);
+
+
+
     }
 
 });

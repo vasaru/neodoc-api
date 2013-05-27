@@ -4,12 +4,20 @@
 		"selected_items":
 		[
 			[
-				"ge",
-				"getItem"
+				"neo",
+				"neo_id"
 			],
 			[
-				"neo",
-				"neodocUser"
+				"osv",
+				"osv"
+			],
+			[
+				"lo",
+				"logi	logger.info"
+			],
+			[
+				"ge",
+				"getItem"
 			],
 			[
 				"defaul",
@@ -23,27 +31,126 @@
 			"file": "app/assets/javascripts/app.html",
 			"settings":
 			{
-				"buffer_size": 464,
+				"buffer_size": 522,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "Package Control Messages\n========================\n\nAdvancedNewFile:\n---------------\n\n  Thank you for installing the AdvancedNewFile plugin.\n  \n  For more information please visit https://github.com/skuroda/Sublime-AdvancedNewFile.\n  \n  Note you may need to restart Sublime Text 2 after installing this plugin.\n  \n  If you have any questions, comments, or run into issues, please let me know! Hope you enjoy the plugin.\n  \n  Thank you!\n",
+			"file": "app/assets/javascripts/app.js.erb",
 			"settings":
 			{
-				"buffer_size": 435,
-				"line_ending": "Windows",
-				"name": "Package Control Messages",
-				"scratch": true
+				"buffer_size": 2161,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "neodoc-api.sublime-project",
+			"settings":
+			{
+				"buffer_size": 233,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/routes.rb",
+			"settings":
+			{
+				"buffer_size": 2492,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/api/v1/devices_controller.rb",
+			"settings":
+			{
+				"buffer_size": 1923,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/controllers/api/v1/osvers_controller.rb",
+			"settings":
+			{
+				"buffer_size": 1613,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/controllers/api/v1/operatingsystems_controller.rb",
+			"settings":
+			{
+				"buffer_size": 1186,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/models/device.rb",
+			"settings":
+			{
+				"buffer_size": 468,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/models/osver.rb",
+			"settings":
+			{
+				"buffer_size": 525,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/models/operatingsystem.rb",
+			"settings":
+			{
+				"buffer_size": 359,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/api/v1/networks_controller.rb",
+			"settings":
+			{
+				"buffer_size": 3896,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "var me = this,\n    maintab = me.getMainTabPanel(),\n\n    // store = me.getStore('IpnumberStore');\n    ipstore = Ext.create('NeoDoc.store.IpnumberStore');\nipstore.storeid = 'Network-IpStore-'+record.id;\n\nnetstore = Ext.create('NeoDoc.store.NetworkInfoStore');\nnetstore.storeid = 'Network-IpInfoStore-'+record.id;\n\n\nconsole.log(\"In onNewnetworkTab\");\nconsole.log('panelId=NetworkTab-'+record.id);\n\nvar tab = maintab.getChildByElement('NetworkTab-'+record.id);\n\nif(!tab) {\n    var networktab = Ext.create('NeoDoc.view.network.MainTabPanel', {\n        title: 'Network - '+record.text,\n        id: 'NetworkTab-'+record.id,\n        itemId: 'NetworkTab-'+record.id,\n        cls: 'Network',\n        closable: true\n    });\n\n    netstore.getProxy().extraParams.whattoget='generalinfo';\n    netstore.getProxy().extraParams.networkid=record.id;\n\n    netstore.load();\n\n    var generaltab = Ext.create('NeoDoc.view.network.GeneralPanel', {\n        title: 'General',\n        id: 'NetworkTab-GeneralPanel'+record.id,\n        itemId: 'NetworkTab-GeneralPanel'+record.id,\n        cls: 'Network',\n        closable: false\n    });\n    var generalview = Ext.create('NeoDoc.view.network.GeneralView', {\n        title: 'General',\n        id: 'NetworkTab-GeneralView'+record.id,\n        itemId: 'NetworkTab-GeneralView'+record.id,\n        cls: 'Network',\n        store: netstore,\n        closable: false\n    });\n\n    generaltab.add(generalview);\n\n    generaltab.add(Ext.create('Ext.panel.Panel', {\n        title: 'Comments',\n        id: 'NetworkTab-GeneralTestPanel'+record.id,\n        itemId: 'NetworkTab-GeneralTestPanel'+record.id,\n        cls: 'Network',\n        padding: 10,\n        width: 400,\n        height: 200\n    }));\n    generaltab.add(Ext.create('Ext.panel.Panel', {\n        title: 'Documents',\n        id: 'NetworkTab-GeneralDocumentPanel'+record.id,\n        itemId: 'NetworkTab-GeneralDocumentPanel'+record.id,\n        cls: 'Network',\n        padding: 10,\n        width: 400,\n        height: 200\n    }));\n\n\n    var iptab = Ext.create('NeoDoc.view.network.IpNumberPanel', {\n        title: 'IpNumbers',\n        id: 'NetworkTab-Ipnumber'+record.id,\n        itemId: 'NetworkTab-Ipnumber'+record.id,\n        cls: 'Network',\n        closable: false\n    });\n\n    var ipgrid = Ext.create('NeoDoc.view.network.IpNumberGrid', {\n        title: 'IpNumberGrid',\n        id: 'NetworkTab-IpnumberGrid'+record.id,\n        itemId: 'NetworkTab-IpnumberGrid'+record.id,\n        cls: 'Network',\n        store: ipstore,\n        closable: false,\n        dockedItems: [\n        {\n            xtype: 'pagingtoolbar',\n            dock: 'bottom',\n            displayInfo: true,\n            store: ipstore\n        }\n        ]\n    });\n\n    //        var ipgridpage = Ext.getCmp('network.ippager');\n\n\n\n\n    ipstore.getProxy().extraParams.whattoget='getiplist';\n    ipstore.getProxy().extraParams.networkid=record.id;\n\n\n    //        ipgridpage.bindStore(ipstore);\n    //        ipgrid.reconfigure(ipstore);\n\n    ipstore.loadPage(1);\n    iptab.add(ipgrid);\n    networktab.add(generaltab);\n    networktab.add(iptab);\n\n    maintab.add(networktab);\n\n    maintab.setActiveTab(networktab);\n    networktab.setActiveTab(generaltab);\n} else {\n    maintab.setActiveTab(tab);\n}\n\n\n",
+			"settings":
+			{
+				"buffer_size": 3229,
+				"line_ending": "Unix",
+				"name": "var me = this,"
 			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 180.0,
 		"selected_items":
 		[
+			[
+				"com",
+				"Toggle Comment"
+			],
+			[
+				"ind",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"synt jav",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"comm",
+				"Toggle Comment"
+			],
+			[
+				"rails",
+				"Set Syntax: Ruby on Rails"
+			],
 			[
 				"ins",
 				"Package Control: Install Package"
@@ -77,7 +184,7 @@
 				"Preferences: Package Control Settings – User"
 			]
 		],
-		"width": 416.0
+		"width": 530.0
 	},
 	"console":
 	{
@@ -97,6 +204,8 @@
 	},
 	"file_history":
 	[
+		"/home/henrik/Source/sencha/neodoc2/NeoDoc2/app/controller/Device.js",
+		"/home/henrik/Source/neodoc-api/neodoc-api.sublime-project",
 		"/d/Users/henrik/AppData/Roaming/Sublime Text 3/Packages/User/Ruby on Rails.sublime-settings",
 		"/W/neodoc-api/app/models/user.rb",
 		"/W/neodoc-api/app/views/locations/index.html.erb",
@@ -132,6 +241,15 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"osv",
+			"Osversion",
+			"osversion",
+			"Osversion",
+			"update",
+			"patch",
+			"major",
+			"os",
+			"Operatingsystem",
 			"role",
 			"Network",
 			"Location",
@@ -156,24 +274,24 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 5,
 			"sheets":
 			[
 				{
 					"buffer": 0,
 					"file": "app/assets/javascripts/app.html",
-					"semi_transient": true,
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 464,
+						"buffer_size": 522,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								464,
-								464
+								522,
+								522
 							]
 						],
 						"settings":
@@ -188,24 +306,316 @@
 				},
 				{
 					"buffer": 1,
+					"file": "app/assets/javascripts/app.js.erb",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 435,
+						"buffer_size": 2161,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								435,
-								435
+								1394,
+								1394
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"word_wrap": true
+							"syntax": "Packages/Rails/JavaScript (Rails).tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 261.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "neodoc-api.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 233,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								220,
+								220
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "config/routes.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2492,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								438,
+								438
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/controllers/api/v1/devices_controller.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1923,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								94,
+								94
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/Ruby on Rails.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/controllers/api/v1/osvers_controller.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1613,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								928,
+								928
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "app/controllers/api/v1/operatingsystems_controller.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 7,
+					"file": "app/models/device.rb",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 468,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								468,
+								468
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/models/osver.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 525,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								404,
+								404
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "app/models/operatingsystem.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 359,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								327,
+								327
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "app/controllers/api/v1/networks_controller.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3896,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								380,
+								380
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3229,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3229,
+								3229
+							]
+						],
+						"settings":
+						{
+							"auto_name": "var me = this,",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -218,7 +628,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 34.0
 	},
 	"input":
 	{
@@ -233,11 +643,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.4725,
 			1.0
 		],
 		"rows":
@@ -259,8 +676,28 @@
 		"selected_items":
 		[
 			[
+				"oper",
+				"neodoc-api/app/models/operatingsystem.rb"
+			],
+			[
+				"opercont",
+				"neodoc-api/app/controllers/api/v1/operatingsystems_controller.rb"
+			],
+			[
+				"versio",
+				"neodoc-api/app/models/version.rb"
+			],
+			[
+				"opercon",
+				"neodoc-api/app/controllers/api/v1/operatingsystems_controller.rb"
+			],
+			[
 				"route",
-				"config\\routes.rb"
+				"neodoc-api/config/routes.rb"
+			],
+			[
+				"app",
+				"app/assets/javascripts/app.js.erb"
 			],
 			[
 				"wrap",
@@ -295,7 +732,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 212.0,
 	"status_bar_visible": true,
 	"template_settings":

@@ -133,8 +133,7 @@ Ext.define('NeoDoc.view.network.CreateWindow', {
                                 {
                                     xtype: 'button',
                                     formBind: false,
-                                    text: 'Reset',
-                                    type: 'reset'
+                                    text: 'Reset'
                                 },
                                 {
                                     xtype: 'tbspacer',
@@ -153,8 +152,7 @@ Ext.define('NeoDoc.view.network.CreateWindow', {
                                     action: 'newnetwork',
                                     formBind: true,
                                     itemId: 'networkCreateBtn',
-                                    text: 'Create...',
-                                    type: 'submit'
+                                    text: 'Create...'
                                 }
                             ]
                         }

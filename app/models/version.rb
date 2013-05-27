@@ -1,4 +1,4 @@
-class Version < Neo4j::Rails::Model
+class Osversion < Neo4j::Rails::Model
   property :name, :type => String
   property :major, :type => String
   property :minor, :type => String
@@ -10,5 +10,6 @@ class Version < Neo4j::Rails::Model
   property :isourl, :type => String
   property :downloadurl, :type => String
   property :description, :type => String
+  property :status, :type => String
 
 end

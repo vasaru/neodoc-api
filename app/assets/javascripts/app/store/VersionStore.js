@@ -24,11 +24,12 @@ Ext.define('NeoDoc.store.VersionStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
+            autoLoad: false,
             model: 'NeoDoc.model.device.operatingsystemmodel',
             storeId: 'MyJsonStore4',
             proxy: {
                 type: 'ajax',
-                url: '/api/versions',
+                url: '/api/osvers',
                 headers: {
                     Accept: 'application/vnd.neodocapi.v1'
                 },

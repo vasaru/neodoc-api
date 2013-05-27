@@ -72,8 +72,7 @@ Ext.define('NeoDoc.view.LoginWindow', {
                                     xtype: 'button',
                                     action: 'login',
                                     formBind: true,
-                                    text: 'Login',
-                                    type: 'submit'
+                                    text: 'Login'
                                 }
                             ]
                         }

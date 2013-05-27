@@ -11,6 +11,9 @@
 /db/*.sqlite3
 /db/neo4j-*
 
+# Ignore sublime project files
+/*.sublime*
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp

@@ -14,5 +14,53 @@
  */
 
 Ext.define('NeoDoc.controller.Device', {
-    extend: 'Ext.app.Controller'
+    extend: 'Ext.app.Controller',
+
+    refs: [
+        {
+            ref: 'deviceCreateWindow',
+            selector: 'devicecreatewindow'
+        }
+    ],
+
+    onCreateDevice: function(button, e, eOpts) {
+        console.log("In onCreateDevice");
+        var me = this,
+            win = this.getDeviceCreateWindow(),
+            form1 = win.down('#newDevice-1').getForm(),
+            form2 = win.down('#newDevice-2').getForm();
+        if (form1.isValid() && form2.isValid()) {    
+            win.setLoading('Submitting...');
+            Ext.Ajax.request({
+                url: '/api/devices',
+                params: Ext.encode({
+                    formData1: form1.getValues(),
+                    formData2: form2.getValues()
+                }),
+                headers: {'Accept':'application/vnd.neodocapi.v1' },
+                method: 'POST',
+                success: function(result, action) {
+                    Ext.Msg.alert('Created device successfully!');
+                    var store = Ext.StoreMgr.get('navTreeStore');
+                    store.load();
+                    win.setLoading(false);
+                    win.destroy();
+                    // TODO: Reload tree store
+                },
+                failure: function(result, action) {
+                    Ext.Msg.alert('Failed to create device!\n\n'+result);
+                    win.setLoading(false);
+                }
+            });
+        }
+    },
+
+    init: function(application) {
+        this.control({
+            "devicecreatewindow button[action=newdevice]": {
+                click: this.onCreateDevice
+            }
+        });
+    }
+
 });

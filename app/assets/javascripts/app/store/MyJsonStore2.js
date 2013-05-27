@@ -20,6 +20,7 @@ Ext.define('NeoDoc.store.MyJsonStore2', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
+            autoLoad: false,
             storeId: 'deviceTypeStore',
             proxy: {
                 type: 'ajax',
