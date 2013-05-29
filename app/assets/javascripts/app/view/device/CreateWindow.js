@@ -137,6 +137,13 @@ Ext.define('NeoDoc.view.device.CreateWindow', {
                                 {
                                     xtype: 'hiddenfield',
                                     anchor: '100%',
+                                    itemId: 'deviceCallerId',
+                                    fieldLabel: 'Label',
+                                    name: 'callerid'
+                                },
+                                {
+                                    xtype: 'hiddenfield',
+                                    anchor: '100%',
                                     itemId: 'csrf_token',
                                     fieldLabel: 'Label',
                                     name: 'authenticity_token'

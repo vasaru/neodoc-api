@@ -67,7 +67,8 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                             name: 'version',
                             editable: false,
                             displayField: 'name',
-                            store: 'VersionStore'
+                            store: 'VersionStore',
+                            valueField: 'id'
                         }
                     ]
                 },
@@ -226,7 +227,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
         osverstore.getProxy().extraParams.whattoget='osversioninfo';
         osverstore.getProxy().extraParams.osid=combo.getValue();
 
-        osverstore.load();
+        osverstore.reload();
         versselect.setValue(osverstore.getAt(0).data.name)
 
         // versselect.store = osverstore;

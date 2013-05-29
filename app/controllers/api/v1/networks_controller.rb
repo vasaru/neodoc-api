@@ -4,7 +4,11 @@ module Api
 
 			respond_to	:json
 			def get_device(node)
-				return nil				
+				if node.outgoing(:device).count > 0 
+					return node.outgoing(:device).first				
+				else
+					return nil
+				end
 			end
 			def index
 				a = Array.new
@@ -41,7 +45,7 @@ module Api
 							h["created_by"] ="#{createuser}"
 							dev = get_device(ip)
 							if dev != nil 
-								h["devicename"]="#{dev.hostname}"
+								h["devicename"]="#{dev.name}"
 								h["device_id"]="#{dev.neo_id}"
 								h["device_class"]="#{dev.class}"
 							else

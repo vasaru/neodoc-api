@@ -60,10 +60,13 @@
 			}
 		},
 		{
+			"contents": "module Api\n	module V1\n		class DevicesController < ApplicationController\n\n			respond_to	:json\n\n\n			def index\n				params.each do |key,value|\n					Rails.logger.warn \"Param #{key}: #{value}\"\n				end\n				a = Array.new\n				Device.all.each do |os|\n					h = Hash.new\n\n					h[\"name\"]=os.name\n					h[\"id\"]=Integer(os.neo_id)\n					h[\"cls\"]=\"Device\"\n					h[\"url\"]=os.url\n					h[\"vendor\"]=os.productinformation\n					h[\"status\"]=os.status\n					h[\"license\"]=os.license\n					h[\"description\"]=os.description\n					a << h\n\n				end\n				render :json => a\n				\n			end\n\n			def show\n				respond_with Device.find(params[:id])\n			end\n\n			def create\n				Rails.logger.warn \"In Create device params = #{params.class.name}\"\n				i = 0\n				params.each do |key,value|\n					i=i+1\n					Rails.logger.warn \"Param #{i} #{key}: #{value}\"\n				end\n\n				resource = User.find_by_authentication_token( params[:auth_token])\n				ps1 = params.first\n				Rails.logger.warn \"#{ps1.first}\"\n				params1 = ActiveSupport::JSON.decode(ps1.first)[\"formData1\"];\n				params2 = ActiveSupport::JSON.decode(ps1.first)[\"formData2\"];\n\n				Rails.logger.warn \"params1 = #{params1}\"\n				Rails.logger.warn \"params2 = #{params2}\"\n\n				os = Operatingsystem.find(params2[\"operatingsystem\"])\n\n				Rails.logger.warn \"os: #{os.props.inspect}\"\n\n				pid = Neo4j::Node.load(params1[\"pid\"]);\n\n				Rails.logger.warn \"pid: #{pid.props.inspect}\"\n\n\n				@device = Device.new(\"name\"=>params[:name],\"model\"=>params[:deviceType],\"description\"=>params[:description],\"updated_by\"=>resource.neo_id,\"created_by\"=>resource.neo_id)\n#				if @device.save\n					render :json => {:success => true, :network => [@device] }\n#				else\n#					render :json => {:success => false, :message => [@Device.errors], :status=>:unprocessable_entity}\n#				end\n			end\n\n			def update\n				respond_with Device.update(params[:id], params[:Network])\n			end\n\n			def destroy\n				respond_with Device.destroy(params[:id])\n			end\n		end\n	end\nend",
 			"file": "app/controllers/api/v1/devices_controller.rb",
+			"file_size": 2000,
+			"file_write_time": 130140615103457346,
 			"settings":
 			{
-				"buffer_size": 1923,
+				"buffer_size": 1922,
 				"line_ending": "Windows"
 			}
 		},
@@ -71,7 +74,7 @@
 			"file": "app/controllers/api/v1/osvers_controller.rb",
 			"settings":
 			{
-				"buffer_size": 1613,
+				"buffer_size": 1615,
 				"line_ending": "Windows"
 			}
 		},
@@ -184,7 +187,7 @@
 				"Preferences: Package Control Settings – User"
 			]
 		],
-		"width": 530.0
+		"width": 575.0
 	},
 	"console":
 	{
@@ -204,6 +207,7 @@
 	},
 	"file_history":
 	[
+		"/home/henrik/Source/neodoc-api/README.md",
 		"/home/henrik/Source/sencha/neodoc2/NeoDoc2/app/controller/Device.js",
 		"/home/henrik/Source/neodoc-api/neodoc-api.sublime-project",
 		"/d/Users/henrik/AppData/Roaming/Sublime Text 3/Packages/User/Ruby on Rails.sublime-settings",
@@ -274,7 +278,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -317,8 +321,8 @@
 						"selection":
 						[
 							[
-								1394,
-								1394
+								816,
+								816
 							]
 						],
 						"settings":
@@ -395,15 +399,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1923,
+						"buffer_size": 1922,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								94,
-								94
+								766,
+								766
 							]
 						],
 						"settings":
@@ -412,7 +416,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 408.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -423,15 +427,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1613,
+						"buffer_size": 1615,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								928,
-								928
+								255,
+								255
 							]
 						],
 						"settings":
@@ -654,7 +658,7 @@
 		"cols":
 		[
 			0.0,
-			0.4725,
+			0.8025,
 			1.0
 		],
 		"rows":
@@ -675,6 +679,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"read",
+				"neodoc-api/README.md"
+			],
 			[
 				"oper",
 				"neodoc-api/app/models/operatingsystem.rb"

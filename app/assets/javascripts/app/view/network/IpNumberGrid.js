@@ -113,6 +113,7 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
         switch(record.data.status) {
             case 'Available':
             show = true;
+            var callerId = this.id;
             menu1= new Ext.menu.Menu({
                 itemid: 'networkAvailableMenu',
                 items: [
@@ -123,7 +124,9 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
                     handler: function() {
                         var win = Ext.create('NeoDoc.view.device.CreateWindow', {});
                         var pid = win.down('#deviceParentId');
+                        var caller = win.down('#deviceCallerId');
                         pid.setValue(record.data.id);
+                        caller.setValue(callerId);
                         win.show();
                     }
                 },
@@ -149,7 +152,9 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
                     handler: function() {
                         var win = Ext.create('NeoDoc.view.device.CreateWindow', {});
                         var pid = win.down('#deviceParentId');
-                        pid.setValue(record.id);
+                        var caller = win.down('#deviceCallerId');
+                        pid.setValue(record.data.id);
+                        caller.setValue(this.id);
                         win.show();
                     }
                 },

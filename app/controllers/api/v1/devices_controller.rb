@@ -53,17 +53,40 @@ module Api
 
 				Rails.logger.warn "os: #{os.props.inspect}"
 
-				pid = Neo4j::Node.load(params1["pid"]);
+				osv = Neo4j::Node.load(params2["version"]);
+
+				Rails.logger.warn "osv: #{osv.props.inspect}"
+
+				pid = Neo4j::Node.load(Integer(params1["pid"]));
 
 				Rails.logger.warn "pid: #{pid.props.inspect}"
 
+				Rails.logger.warn "#{params1["name"]}"
 
-				@device = Device.new("name"=>params[:name],"model"=>params[:deviceType],"description"=>params[:description],"updated_by"=>resource.neo_id,"created_by"=>resource.neo_id)
-#				if @device.save
-					render :json => {:success => true, :network => [@network] }
-#				else
-#					render :json => {:success => false, :message => [@Device.errors], :status=>:unprocessable_entity}
-#				end
+				@device = Device.new("name"=>params1["name"],"model"=>params1["deviceType"],"description"=>params2["description"],"updated_by"=>resource.neo_id,"created_by"=>resource.neo_id)
+
+				Rails.logger.warn "After Device.new"
+
+
+				if @device.save
+					Rails.logger.warn "After device.save"
+
+					pid.device << @device
+					pid.status = params1["deviceType"]
+					pid.save
+
+					Rails.logger.warn "After pid.save"
+					@device.operatingsystem << os
+					@device.osversion << osv
+					@device.ipnumber << pid
+					@device.save
+
+
+
+					render :json => {:success => true, :network => [@device] }
+				else
+					render :json => {:success => false, :message => [@Device.errors], :status=>:unprocessable_entity}
+				end
 			end
 
 			def update
