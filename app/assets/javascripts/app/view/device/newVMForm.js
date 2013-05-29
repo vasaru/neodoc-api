@@ -141,7 +141,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                             xtype: 'numberfield',
                             id: 'device.vm.hdd1',
                             fieldLabel: 'Hard Disk 1',
-                            name: 'hdd',
+                            name: 'hdd1',
                             value: 32,
                             minValue: 0
                         },
@@ -149,7 +149,7 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                             xtype: 'combobox',
                             id: 'device.vm.hdd1metric',
                             padding: '0 0 0 5',
-                            name: 'hddmetric',
+                            name: 'hdd1metric',
                             value: [
                                 'GB',
                                 'GB'

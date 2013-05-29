@@ -61,31 +61,45 @@ module Api
 
 				Rails.logger.warn "pid: #{pid.props.inspect}"
 
-				Rails.logger.warn "#{params1["name"]}"
+				Rails.logger.warn "#{params1["deviceType"]}"
 
-				@device = Device.new("name"=>params1["name"],"model"=>params1["deviceType"],"description"=>params2["description"],"updated_by"=>resource.neo_id,"created_by"=>resource.neo_id)
+				@device = Device.new("name"=>params1["name"],"model"=>params1["device.model"],
+					"devicetype"=>params1["deviceType"],"serialnr"=>params1["device.serialnr"],
+					"description"=>params2["description"],"updated_by"=>resource.neo_id,
+					"created_by"=>resource.neo_id)
 
 				Rails.logger.warn "After Device.new"
 
 
 				if @device.save
 					Rails.logger.warn "After device.save"
-
 					pid.device << @device
 					pid.status = params1["deviceType"]
 					pid.save
+					Rails.logger.warn "After pid.save, creating parts \"#{params1["deviceType"]}\""
+					if ( params1["deviceType"]=="VM")
+						Rails.logger.warn "Adding parts"
+						part1 = Part.new(:name => "Memory",:type => "vMem", :amount => params2["memory"], :amountmetric => params2["memmetric"])
+						part1.save
+						part2 = Part.new(:name => "CPU",:type => "vCPU", :amount => params2["cpu"])
+						part2.save
+						part3 = Part.new(:name => "Cores",:type => "vCores", :amount => params2["cores"])
+						part3.save
+						part4 = Part.new(:name => "Harddisk 1",:type => "HDD", :amount => params2["hdd1"],:amountmetric => params2["hdd1metric"])
+						part4.save
+						@device.parts << part1 << part2 << part3 << part4
+					end
 
-					Rails.logger.warn "After pid.save"
 					@device.operatingsystem << os
 					@device.osversion << osv
 					@device.ipnumber << pid
 					@device.save
-
+					Rails.logger.warn "Added device id #{@device.neo_id}"
 
 
 					render :json => {:success => true, :network => [@device] }
 				else
-					render :json => {:success => false, :message => [@Device.errors], :status=>:unprocessable_entity}
+					render :json => {:success => false, :message => [@device.errors], :status=>:unprocessable_entity}
 				end
 			end
 

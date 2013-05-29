@@ -92,7 +92,7 @@ Ext.define('NeoDoc.view.device.CreateWindow', {
                         {
                             xtype: 'fieldset',
                             height: 195,
-                            title: 'My Fields',
+                            title: 'Basic Information',
                             items: [
                                 {
                                     xtype: 'textfield',
@@ -126,6 +126,30 @@ Ext.define('NeoDoc.view.device.CreateWindow', {
                                         ]
                                     ],
                                     valueField: 'name'
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    anchor: '100%',
+                                    fieldLabel: 'Manufacturer',
+                                    name: 'device.manufacturer'
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    anchor: '100%',
+                                    fieldLabel: 'Device Model',
+                                    name: 'device.model'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    anchor: '100%',
+                                    fieldLabel: 'Device Serial nr',
+                                    name: 'device.serialnr'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    anchor: '100%',
+                                    fieldLabel: 'Inventory Label',
+                                    name: 'device.label'
                                 },
                                 {
                                     xtype: 'hiddenfield',

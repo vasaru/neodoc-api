@@ -41,15 +41,12 @@ Ext.define('NeoDoc.controller.Device', {
                 method: 'POST',
                 success: function(result, action) {
                     Ext.Msg.alert('Created device successfully!');
+                    win.setLoading(false);
+                    win.destroy();
                     var grid = Ext.getCmp(JSON.parse(action.params).formData1.callerid);
                     grid.setLoading(true);
                     grid.getStore().reload();
-                    // grid.getStore().reload();
-                    // store.load();
-                    win.setLoading(false);
                     grid.setLoading(false);
-                    win.destroy();
-                    // TODO: Reload tree store
                 },
                 failure: function(result, action) {
                     Ext.Msg.alert('Failed to create device!\n\n'+result);
