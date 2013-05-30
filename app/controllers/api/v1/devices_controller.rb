@@ -75,6 +75,7 @@ module Api
 					Rails.logger.warn "After device.save"
 					pid.device << @device
 					pid.status = params1["deviceType"]
+					pid.updated_by = resource.neo_id
 					pid.save
 					Rails.logger.warn "After pid.save, creating parts \"#{params1["deviceType"]}\""
 					if ( params1["deviceType"]=="VM")
@@ -85,11 +86,17 @@ module Api
 						part2.save
 						part3 = Part.new(:name => "Cores",:type => "vCores", :amount => params2["cores"])
 						part3.save
-						part4 = Part.new(:name => "Harddisk 1",:type => "HDD", :amount => params2["hdd1"],:amountmetric => params2["hdd1metric"])
-						part4.save
-						@device.parts << part1 << part2 << part3 << part4
+						@device.parts << part1 << part2 << part3
+						i = 1
+						while !params2["hdd#{i}"].nil?
+							Rails.logger.warn "\tAdding hdd#{i}"
+							hdd = Part.new(:name => "Harddisk #{i}",:type => "HDD", :amount => params2["hdd#{i}"],:amountmetric => params2["hddmetric#{i}"])
+							hdd.save
+							@device.parts << hdd
+							i=i+1;
+							
+						end
 					end
-
 					@device.operatingsystem << os
 					@device.osversion << osv
 					@device.ipnumber << pid

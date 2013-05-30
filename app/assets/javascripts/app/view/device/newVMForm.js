@@ -74,8 +74,11 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                 },
                 {
                     xtype: 'fieldset',
-                    height: 143,
+                    height: 164,
+                    id: 'device.vm.parts',
                     padding: 5,
+                    autoScroll: true,
+                    resizable: true,
                     layout: {
                         columns: 2,
                         type: 'table'
@@ -147,9 +150,9 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                         },
                         {
                             xtype: 'combobox',
-                            id: 'device.vm.hdd1metric',
+                            id: 'device.vm.hddmetric1',
                             padding: '0 0 0 5',
-                            name: 'hdd1metric',
+                            name: 'hddmetric1',
                             value: [
                                 'GB',
                                 'GB'
@@ -172,23 +175,41 @@ Ext.define('NeoDoc.view.device.newVMForm', {
                                 ]
                             ],
                             valueField: 'name'
-                        },
-                        {
-                            xtype: 'combobox',
-                            disabled: true,
-                            id: 'device.vm.network',
-                            padding: '0 0 0 5',
-                            fieldLabel: 'Network',
-                            name: 'network'
-                        },
-                        {
-                            xtype: 'combobox',
-                            disabled: true,
-                            id: 'device.vm.ipaddress',
-                            fieldLabel: 'IP Address',
-                            name: 'ipaddress'
                         }
                     ]
+                },
+                {
+                    xtype: 'splitbutton',
+                    id: 'device.vm.addpartbtn',
+                    text: 'Add Field',
+                    menu: {
+                        xtype: 'menu',
+                        width: 120,
+                        items: [
+                            {
+                                xtype: 'menuitem',
+                                id: 'device.vm.addhddbtn',
+                                text: 'Add Harddisk',
+                                listeners: {
+                                    click: {
+                                        fn: me.onaddhddbtnClick,
+                                        scope: me
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'menuitem',
+                                id: 'device.vm.addnetbtn',
+                                text: 'Add Network',
+                                listeners: {
+                                    click: {
+                                        fn: me.onaddnetbtnClick,
+                                        scope: me
+                                    }
+                                }
+                            }
+                        ]
+                    }
                 },
                 {
                     xtype: 'fieldset',
@@ -235,6 +256,81 @@ Ext.define('NeoDoc.view.device.newVMForm', {
         versselect.setDisabled(false);
 
 
+
+    },
+
+    onaddhddbtnClick: function(item, e, eOpts) {
+        console.log('in onaddhddbtnClick');
+        var me = this,
+            form = this.getForm(),
+            parts = Ext.getCmp('device.vm.parts'),
+            i = 2;
+
+        var h = form.findField("hdd"+i)
+
+        while (h) {
+            console.log("Found hdd" + i);
+            i++;
+            h = form.findField("hdd"+i);
+            //h.destroy();
+        }
+
+        console.log("Found "+(i-1)+" hdd fields");
+
+        if (i<32) {
+
+            var hddfield = new Ext.form.NumberField(
+            {
+                xtype: 'numberfield',
+                id: 'device.vm.hdd'+i,
+                fieldLabel: 'Hard Disk '+i,
+                name: 'hdd'+i,
+                value: 32,
+                minValue: 0
+            });
+            var hddmetric = new Ext.form.ComboBox({
+                xtype: 'combobox',
+                id: 'device.vm.hddmetric'+i,
+                padding: '0 0 0 5',
+                name: 'hddmetric'+i,
+                value: [
+                'GB',
+                'GB'
+                ],
+                size: 5,
+                editable: false,
+                queryMode: 'local',
+                store: [
+                [
+                'MB',
+                'MB'
+                ],
+                [
+                'GB',
+                'GB'
+                ],
+                [
+                'TB',
+                'TB'
+                ]
+                ],
+                valueField: 'name'
+            });
+
+            parts.insert(hddfield)
+            parts.insert(hddmetric)
+
+
+
+        }
+
+
+
+
+
+    },
+
+    onaddnetbtnClick: function(item, e, eOpts) {
 
     }
 
