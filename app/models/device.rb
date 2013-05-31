@@ -7,6 +7,10 @@ class Device < Neo4j::Rails::Model
   property :version, :type => String
   property :description, :type => String
   property :license, :type => String
+  property :updated_at, :type => DateTime
+  property :created_at, :type => DateTime
+  property :updated_by, :type => String
+  property :created_by, :type => String
 
   has_n :ports
   has_n :company

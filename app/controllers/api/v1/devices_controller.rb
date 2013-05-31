@@ -3,26 +3,102 @@ module Api
 		class DevicesController < ApplicationController
 
 			respond_to	:json
+			def get_parts(dev)
+				
+			end
 
+			def get_ipnumbers(dev)
+				
+			end
+
+			def get_ports(dev)
+				
+			end
+
+			def get_company(dev)
+				
+			end
+
+			def get_os(dev)
+				os = dev.outgoing(:operatingsystem).first
+				if os.nil?
+					return Array.new
+				else
+					o = Hash.new
+					o["name"]=os.name
+					o["description"]=os.description
+					o["license"]=os.license
+					o["url"]=os.url
+					o["status"]=os.status											
+					return o
+				end
+			end
+
+			def get_osversion(dev)
+				osv = dev.outgoing(:osversion).first
+				if osv.nil?
+					return Array.new
+				else
+					return osv.to_array
+				end
+			end
 
 			def index
 				params.each do |key,value|
 					Rails.logger.warn "Param #{key}: #{value}"
 				end
 				a = Array.new
-				Device.all.each do |os|
-					h = Hash.new
+				if params[:action] == "index" && params[:whattoget]=="getlocationdevices" then
+					node = Neo4j::Node.load(params[:locationid])
+					Rails.logger.warn "Location #{node.name}"
 
-					h["name"]=os.name
-					h["id"]=Integer(os.neo_id)
-					h["cls"]="Device"
-					h["url"]=os.url
-					h["vendor"]=os.productinformation
-					h["status"]=os.status
-					h["license"]=os.license
-					h["description"]=os.description
-					a << h
+					start = Integer("#{params[:start]}")
+					limit = Integer("#{params[:limit]}")
+					count = 0
+#					node.both().depth(:all).filter{|path| path.end_node.rel?(:outgoing, :device).each{|n| n.outgoing(:device)}.each{ 
+					node.both().depth(:all).filter{|path| path.end_node.rel?(:outgoing, :device)}.each{|n| n.outgoing(:device).each{|dev|
+						Rails.logger.warn "In loop"
 
+						createuser = Neo4j::Node.load(dev.created_by).username
+						updateuser = Neo4j::Node.load(dev.updated_by).username
+						h = Hash.new
+						h["name"]=dev.name
+						Rails.logger.warn "In loop"
+						h["id"]=Integer(dev.neo_id)
+						Rails.logger.warn "In loop"
+						h["cls"]="Device"
+						Rails.logger.warn "In loop"
+						h["devicetype"]=dev.devicetype
+						Rails.logger.warn "In loop"
+						h["model"]="#{dev.model}"
+						Rails.logger.warn "In loop"
+						h["serialnr"]=dev.serialnr
+						Rails.logger.warn "In loop"
+						h["label"]=dev.label
+						Rails.logger.warn "In loop"
+						h["version"]=dev.version
+						Rails.logger.warn "In loop"
+						h["description"]=dev.description
+						Rails.logger.warn "In loop"
+						h["updated_at"] ="#{dev.updated_at}"
+						Rails.logger.warn "In loop"
+						h["updated_by"] ="#{updateuser}"
+						Rails.logger.warn "In loop"
+						h["created_at"] ="#{dev.created_at}"
+						Rails.logger.warn "In loop"
+						h["created_by"] ="#{createuser}"
+						Rails.logger.warn "In loop"
+#							h["parts"]=get_parts(dev)
+#							h["ipnumbers"]=get_ipnumbers(dev)
+#							h["ports"]=get_ports(dev)
+#							h["company"]=get_company(dev)
+						h["operatingsystem"]=get_os(dev)
+						Rails.logger.warn "In loop"
+#						h["osversion"]=get_osversion(dev)
+#						Rails.logger.warn "In loop"
+						a << h
+
+					}}
 				end
 				render :json => a
 				

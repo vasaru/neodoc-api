@@ -48,10 +48,12 @@ module Api
 								h["devicename"]="#{dev.name}"
 								h["device_id"]="#{dev.neo_id}"
 								h["device_class"]="#{dev.class}"
+								h["device_type"]="#{dev.devicetype}"
 							else
 								h["devicename"]=nil
 								h["device_id"]=nil
 								h["device_class"]=nil
+								h["device_type"]=nil
 							end
 							iparr << h
 						end
