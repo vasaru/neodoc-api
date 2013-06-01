@@ -36,7 +36,7 @@ module Api
 					netarr = Array.new
 					iparr = Array.new
 					docarr = Array.new
-
+					devarr = Array.new
 					start.both().depth(1).sort_by(&:neo_id).each do |node|
 						Rails.logger.warn "Found #{node.class}"
 						cl = "#{node.class}"
@@ -72,6 +72,18 @@ module Api
 						    docarr << h
 						end
 					end
+					start.both().depth(:all).filter{|path| path.end_node.rel?(:outgoing, :device)}.each{|n| n.outgoing(:device).sort_by(&:name).each{|node|
+						h = Hash.new
+					    h["text"] = "#{node.name} (#{node.devicetype})"
+					    h["iconCls"]="device-icon"
+					    h["id"]=Integer("#{node.neo_id}")
+					    h["parentID"]=Integer("#{start.neo_id}")
+					    h["cls"]="#{node.class}"
+					    h["leaf"]=true
+					    devarr << h
+					}}
+
+
 					if (netarr.count>0)
 						c=Hash.new
 					    c["text"] = "Networks"
@@ -84,6 +96,20 @@ module Api
 					    a << c
 						Rails.logger.warn "Netarray #{a.to_json}"
 					end
+					if (devarr.count>0)
+						c=Hash.new
+						@devarr = devarr.sort_by{|e| e[:text]}
+					    c["text"] = "Devices"
+					    c["iconCls"]="device-folder"
+					    c["neo_id"]=Integer("#{start.neo_id}")
+					    c["parentID"]=Integer("#{start.neo_id}")
+					    c["cls"]="DeviceFolder"
+					    c["expanded"]=false
+					    c["children"]=@devarr
+					    a << c
+						Rails.logger.warn "Devarray #{a.to_json}"
+					end
+
 					if (iparr.count>0)
 						c=Hash.new
 					    c["text"] = "Ipnumbers"

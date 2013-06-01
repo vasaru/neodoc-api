@@ -90,6 +90,15 @@ Ext.define('NeoDoc.controller.Location', {
             console.log('Adding network tab');
             me.application.fireEvent('newnetworktab', record.data);
             break;
+            case 'Device':
+            console.log('Adding device tab');
+            me.application.fireEvent('newdevicetab', record.data);
+            break;
+            case 'DeviceFolder':
+            console.log('Adding devicefolder tab');
+            me.application.fireEvent('newdevicefoldertab', record.data);
+            break;
+
         }
 
 

@@ -34,10 +34,12 @@ Ext.define('NeoDoc.controller.Authentication', {
     init: function(application) {
         var me = this;
 
+        console.log('In init');
         var currentUserBase = localStorage.getItem('neodocUser');
+        console.log(localStorage);
         console.log('CurrentUserBase:',currentUserBase);
-        console.log('Verifying session');
         if (localStorage.getItem('neodocUser')) {
+            console.log('Verifying session');
             Ext.Ajax.request({
                 url: '/api/users/verify',
                 headers: {'Accept':'application/vnd.neodocapi.v1'},

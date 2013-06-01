@@ -20,6 +20,14 @@ Ext.define('NeoDoc.controller.Device', {
         {
             ref: 'deviceCreateWindow',
             selector: 'devicecreatewindow'
+        },
+        {
+            ref: 'MainTabPanel',
+            selector: 'maintabpanel'
+        },
+        {
+            ref: 'deviceMainTab',
+            selector: 'devicemaintab'
         }
     ],
 
@@ -56,10 +64,90 @@ Ext.define('NeoDoc.controller.Device', {
         }
     },
 
+    onNewdevicetab: function(record) {
+        console.log('in onNewdevicetab');
+        console.log(record);
+
+        var me = this,
+            maintab = me.getMainTabPanel();
+
+
+
+
+    },
+
+    onNewdevicefoldertab: function(record) {
+        var me = this,
+            maintab = me.getMainTabPanel();
+
+        console.log('in onNewdevicefoldertab');
+        console.log(record);
+
+        var devstore = Ext.create('NeoDoc.store.DeviceFolderStore');
+        devstore.storeid = 'DeviceFolderStore-'+record.parentId;
+        devstore.defaultRootId = record.parentId;
+
+
+        console.log('panelId=DevFolderTab-'+record.parentId);
+
+        var tab = maintab.getChildByElement('DevFolderTab-'+record.parentId);
+
+        if(!tab) {
+            var devfoldertab = Ext.create('NeoDoc.view.network.MainTabPanel', {
+                title: 'Devices - '+record.text,
+                id: 'DevFolderTab-'+record.parentId,
+                itemId: 'DevFolderTab-'+record.parentId,
+                cls: 'DeviceFolder',
+                closable: true
+            });
+
+
+            var devfoldergrid = Ext.create('NeoDoc.view.device.FolderGrid', {
+                title: 'Device Folder Grid',
+                id: 'DevFolderTab-Grid'+record.parentId,
+                itemId: 'DevFolderTab-Grid'+record.parentId,
+                cls: 'DeviceFolder',
+                store: devstore,
+                closable: false
+            });
+
+
+            devstore.getProxy().extraParams.whattoget='getlocationdevices';
+            devstore.getProxy().extraParams.locationid=record.parentId;
+
+
+            //        ipgridpage.bindStore(ipstore);
+            //        ipgrid.reconfigure(ipstore);
+
+            devstore.loadPage(1);
+
+            devfoldertab.add(devfoldergrid);
+
+            maintab.add(devfoldertab);
+
+            maintab.setActiveTab(devfoldertab);
+
+        } else {
+            maintab.setActiveTab(tab);
+        }
+
+    },
+
     init: function(application) {
         this.control({
             "devicecreatewindow button[action=newdevice]": {
                 click: this.onCreateDevice
+            }
+        });
+
+        application.on({
+            newdevicetab: {
+                fn: this.onNewdevicetab,
+                scope: this
+            },
+            newdevicefoldertab: {
+                fn: this.onNewdevicefoldertab,
+                scope: this
             }
         });
     }

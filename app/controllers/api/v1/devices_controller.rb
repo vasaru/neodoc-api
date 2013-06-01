@@ -4,32 +4,89 @@ module Api
 
 			respond_to	:json
 			def get_parts(dev)
+				par = dev.outgoing(:parts).sort_by(&:type)
+				if par.nil?
+					return nil
+				else
+					a = Array.new
+					par.each {|p|
+						o = Hash.new
+						o["name"]=p.name
+						o["description"]=p.description
+						o["serialnr"]=p.serialnr
+						o["type"]=p.type
+						o["amount"]=p.amount
+						o["amountmetric"]=p.amountmetric
+						o["version"]=p.version
+						o["company"]=get_company(p)
+						o["ports"]=get_ports(p)
+						o["id"]=p.neo_id
+						a<<o
+					}
+					return a
+				end
 				
 			end
 
 			def get_ipnumbers(dev)
+				ipn = dev.outgoing(:ipnumber).sort_by(&:neo_id)
+				if ipn.nil?
+					return nil	
+				else
+					a = Array.new
+					ipn.each {|p|
+						o = Hash.new
+						ipaddr = IPAddress(p.ipv4)
+						o["ipv4"] = "#{ipaddr.address}"
+						o["netmask"]=p.netmask
+						o["ipv6"]=p.ipv6
+						o["description"]=p.description
+						o["status"]=p.status
+						o["id"]=p.neo_id
+						a<<o
+					}
+					return a
+				end
 				
 			end
 
 			def get_ports(dev)
+				port = dev.outgoing(:ports).sort_by(&:neo_id)
+				if port.nil?
+					return nil
+				end
 				
 			end
 
 			def get_company(dev)
+				company = dev.outgoing(:company).first
+				if company.nil?
+					return nil
+				else
+					o = Hash.new
+					o["name"]=company.name
+					o["description"]=company.description
+					o["license"]=company.license
+					o["url"]=company.url
+					o["status"]=company.status
+					o["id"]=company.neo_id
+					return o
+				end
 				
 			end
 
 			def get_os(dev)
 				os = dev.outgoing(:operatingsystem).first
 				if os.nil?
-					return Array.new
+					return nil
 				else
 					o = Hash.new
 					o["name"]=os.name
 					o["description"]=os.description
 					o["license"]=os.license
 					o["url"]=os.url
-					o["status"]=os.status											
+					o["status"]=os.status
+					o["id"]=os.neo_id
 					return o
 				end
 			end
@@ -37,9 +94,17 @@ module Api
 			def get_osversion(dev)
 				osv = dev.outgoing(:osversion).first
 				if osv.nil?
-					return Array.new
+					return nil
 				else
-					return osv.to_array
+					o = Hash.new
+					o["name"]=osv.name
+					o["description"]=osv.description
+					o["major"]=osv.major
+					o["status"]=osv.status
+					o["minor"]=osv.minor											
+					o["id"]=osv.neo_id
+
+					return o
 				end
 			end
 
@@ -48,6 +113,51 @@ module Api
 					Rails.logger.warn "Param #{key}: #{value}"
 				end
 				a = Array.new
+				t = Hash.new
+				if params[:node]
+					devh = Hash.new
+					node = Neo4j::Node.load(params[:node])
+					node.both().depth(:all).filter{|path| path.end_node.rel?(:outgoing, :device)}.each{|n| n.outgoing(:device).each{|dev|
+						createuser = Neo4j::Node.load(dev.created_by).username
+						updateuser = Neo4j::Node.load(dev.updated_by).username
+						h = Hash.new
+						h["name"]=dev.name
+						h["id"]=Integer(dev.neo_id)
+						h["cls"]="Device"
+						h["devicetype"]=dev.name
+						h["model"]="#{dev.model}"
+						h["serialnr"]=dev.serialnr
+						h["label"]=dev.label
+						h["version"]=dev.version
+						h["description"]=dev.description
+						h["updated_at"] ="#{dev.updated_at}"
+						h["updated_by"] ="#{updateuser}"
+						h["created_at"] ="#{dev.created_at}"
+						h["created_by"] ="#{createuser}"
+						h["parts"]=get_parts(dev)
+						h["ipnumbers"]=get_ipnumbers(dev)
+						h["ports"]=get_ports(dev)
+						h["company"]=get_company(dev)
+						h["operatingsystem"]=get_os(dev)
+						h["osversion"]=get_osversion(dev)
+						h["leaf"]=true
+						if devh[dev.devicetype] then
+							j = devh[dev.devicetype]
+							j["children"] << h
+						else
+							devh[dev.devicetype] = Hash.new
+							j = devh[dev.devicetype]
+							j["devicetype"]= dev.devicetype
+							j["leaf"]= false
+							j["children"] = Array.new 
+							j["children"] << h
+						end
+					}}
+					devh.each_key{|key| a << devh[key]}
+					
+					puts JSON.pretty_generate(a)
+					render :json => a 
+				end
 				if params[:action] == "index" && params[:whattoget]=="getlocationdevices" then
 					node = Neo4j::Node.load(params[:locationid])
 					Rails.logger.warn "Location #{node.name}"
@@ -55,52 +165,65 @@ module Api
 					start = Integer("#{params[:start]}")
 					limit = Integer("#{params[:limit]}")
 					count = 0
-#					node.both().depth(:all).filter{|path| path.end_node.rel?(:outgoing, :device).each{|n| n.outgoing(:device)}.each{ 
 					node.both().depth(:all).filter{|path| path.end_node.rel?(:outgoing, :device)}.each{|n| n.outgoing(:device).each{|dev|
-						Rails.logger.warn "In loop"
-
 						createuser = Neo4j::Node.load(dev.created_by).username
 						updateuser = Neo4j::Node.load(dev.updated_by).username
 						h = Hash.new
 						h["name"]=dev.name
-						Rails.logger.warn "In loop"
 						h["id"]=Integer(dev.neo_id)
-						Rails.logger.warn "In loop"
 						h["cls"]="Device"
-						Rails.logger.warn "In loop"
 						h["devicetype"]=dev.devicetype
-						Rails.logger.warn "In loop"
 						h["model"]="#{dev.model}"
-						Rails.logger.warn "In loop"
 						h["serialnr"]=dev.serialnr
-						Rails.logger.warn "In loop"
 						h["label"]=dev.label
-						Rails.logger.warn "In loop"
 						h["version"]=dev.version
-						Rails.logger.warn "In loop"
 						h["description"]=dev.description
-						Rails.logger.warn "In loop"
 						h["updated_at"] ="#{dev.updated_at}"
-						Rails.logger.warn "In loop"
 						h["updated_by"] ="#{updateuser}"
-						Rails.logger.warn "In loop"
 						h["created_at"] ="#{dev.created_at}"
-						Rails.logger.warn "In loop"
 						h["created_by"] ="#{createuser}"
-						Rails.logger.warn "In loop"
-#							h["parts"]=get_parts(dev)
-#							h["ipnumbers"]=get_ipnumbers(dev)
-#							h["ports"]=get_ports(dev)
-#							h["company"]=get_company(dev)
+						h["parts"]=get_parts(dev)
+						h["ipnumbers"]=get_ipnumbers(dev)
+						h["ports"]=get_ports(dev)
+						h["company"]=get_company(dev)
 						h["operatingsystem"]=get_os(dev)
-						Rails.logger.warn "In loop"
-#						h["osversion"]=get_osversion(dev)
-#						Rails.logger.warn "In loop"
+						h["osversion"]=get_osversion(dev)
 						a << h
 
 					}}
+					puts JSON.pretty_generate(a)
+					render :json => a
 				end
-				render :json => a
+				if params[:action] == "index" && params[:whattoget]=="getdevice" then
+					dev = Neo4j::Node.load(params[:deviceid])
+					Rails.logger.warn "Device #{dev.name}"
+
+					createuser = Neo4j::Node.load(dev.created_by).username
+					updateuser = Neo4j::Node.load(dev.updated_by).username
+					h = Hash.new
+					h["name"]=dev.name
+					h["id"]=Integer(dev.neo_id)
+					h["cls"]="Device"
+					h["devicetype"]=dev.devicetype
+					h["model"]="#{dev.model}"
+					h["serialnr"]=dev.serialnr
+					h["label"]=dev.label
+					h["version"]=dev.version
+					h["description"]=dev.description
+					h["updated_at"] ="#{dev.updated_at}"
+					h["updated_by"] ="#{updateuser}"
+					h["created_at"] ="#{dev.created_at}"
+					h["created_by"] ="#{createuser}"
+					h["parts"]=get_parts(dev)
+					h["ipnumbers"]=get_ipnumbers(dev)
+					h["ports"]=get_ports(dev)
+					h["company"]=get_company(dev)
+					h["operatingsystem"]=get_os(dev)
+					h["osversion"]=get_osversion(dev)
+					puts JSON.pretty_generate(a)
+					render :json => h
+				end
+
 				
 			end
 

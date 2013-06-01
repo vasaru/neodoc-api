@@ -23,6 +23,7 @@ class Device < Neo4j::Rails::Model
   has_n :parts
 
   index :name
+  index :devicetype
   
 
 end
