@@ -28,6 +28,14 @@ Ext.define('NeoDoc.model.locationTreeModel', {
         {
             name: 'cls',
             type: 'string'
+        },
+        {
+            name: 'parentId',
+            type: 'int'
+        },
+        {
+            name: 'parentName',
+            type: 'string'
         }
     ]
 });

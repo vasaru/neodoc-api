@@ -26,6 +26,7 @@ Ext.define('NeoDoc.store.IpnumberStore', {
         me.callParent([Ext.apply({
             model: 'NeoDoc.model.network.IpModel',
             storeId: 'networkIpStore',
+            groupField: 'status',
             pageSize: 255,
             proxy: {
                 type: 'ajax',

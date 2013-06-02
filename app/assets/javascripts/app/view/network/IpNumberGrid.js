@@ -25,6 +25,13 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
         var me = this;
 
         Ext.applyIf(me, {
+            features: [
+                {
+                    ftype: 'grouping',
+                    groupByText: 'status',
+                    startCollapsed: true
+                }
+            ],
             columns: [
                 {
                     xtype: 'gridcolumn',

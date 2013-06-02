@@ -166,8 +166,8 @@ module Api
 					limit = Integer("#{params[:limit]}")
 					count = 0
 					node.both().depth(:all).filter{|path| path.end_node.rel?(:outgoing, :device)}.each{|n| n.outgoing(:device).each{|dev|
-						createuser = Neo4j::Node.load(dev.created_by).username
-						updateuser = Neo4j::Node.load(dev.updated_by).username
+						createuser = Neo4j::Node.load(dev.created_by).email
+						updateuser = Neo4j::Node.load(dev.updated_by).email
 						h = Hash.new
 						h["name"]=dev.name
 						h["id"]=Integer(dev.neo_id)
@@ -198,8 +198,8 @@ module Api
 					dev = Neo4j::Node.load(params[:deviceid])
 					Rails.logger.warn "Device #{dev.name}"
 
-					createuser = Neo4j::Node.load(dev.created_by).username
-					updateuser = Neo4j::Node.load(dev.updated_by).username
+					createuser = Neo4j::Node.load(dev.created_by).email
+					updateuser = Neo4j::Node.load(dev.updated_by).email
 					h = Hash.new
 					h["name"]=dev.name
 					h["id"]=Integer(dev.neo_id)
@@ -240,6 +240,7 @@ module Api
 				end
 
 				resource = User.find_by_authentication_token( params[:auth_token])
+				Rails.logger.warn "Resource id = #{resource.neo_id}, email = #{resource.email}"
 				ps1 = params.first
 				Rails.logger.warn "#{ps1.first}"
 				params1 = ActiveSupport::JSON.decode(ps1.first)["formData1"];

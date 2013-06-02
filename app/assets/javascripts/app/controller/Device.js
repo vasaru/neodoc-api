@@ -94,7 +94,7 @@ Ext.define('NeoDoc.controller.Device', {
 
         if(!tab) {
             var devfoldertab = Ext.create('NeoDoc.view.network.MainTabPanel', {
-                title: 'Devices - '+record.text,
+                title: 'Devices - '+record.parentName,
                 id: 'DevFolderTab-'+record.parentId,
                 itemId: 'DevFolderTab-'+record.parentId,
                 cls: 'DeviceFolder',

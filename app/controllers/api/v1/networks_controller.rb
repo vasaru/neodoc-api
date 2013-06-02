@@ -23,8 +23,8 @@ module Api
 					limit = Integer("#{params[:limit]}")
 					count = 0
 					node.outgoing(:ipnumbers).sort_by(&:neo_id).each do |ip| 
-						createuser = Neo4j::Node.load(ip.created_by).username
-						updateuser = Neo4j::Node.load(ip.updated_by).username
+						createuser = Neo4j::Node.load(ip.created_by).email
+						updateuser = Neo4j::Node.load(ip.updated_by).email
 
 						if count >= start && count < start+limit
 #	    					Rails.logger.warn "Count #{count}, start = #{start}, limit #{limit}"
@@ -37,7 +37,7 @@ module Api
 							h["iconCls"]="ipnumber-icon"
 							h["id"]=Integer("#{ip.neo_id}")
 							h["cls"]="#{ip.class}"
-							h["status"] = "#{ip.status}"
+							h["status"] = "Available"
 							h["description"] ="#{ip.description}"
 							h["updated_at"] ="#{ip.updated_at}"
 							h["updated_by"] ="#{updateuser}"
@@ -49,6 +49,7 @@ module Api
 								h["device_id"]="#{dev.neo_id}"
 								h["device_class"]="#{dev.class}"
 								h["device_type"]="#{dev.devicetype}"
+								h["status"]="#{dev.devicetype}"
 							else
 								h["devicename"]=nil
 								h["device_id"]=nil
@@ -73,8 +74,8 @@ module Api
 					end
 				elsif params[:action]=="index" && params[:whattoget]=="generalinfo"
 					node = Neo4j::Node.load(params[:networkid])
-					createuser = Neo4j::Node.load(node.created_by).username
-					updateuser = Neo4j::Node.load(node.updated_by).username
+					createuser = Neo4j::Node.load(node.created_by).email
+					updateuser = Neo4j::Node.load(node.updated_by).email
 					h=Hash.new
 					h["network_name"] = "#{node.network_name}"
 					h["network"] = "#{node.network}"

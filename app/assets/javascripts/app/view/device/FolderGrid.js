@@ -29,11 +29,7 @@ Ext.define('NeoDoc.view.device.FolderGrid', {
             features: [
                 {
                     ftype: 'grouping',
-                    groupHeaderTpl: [
-                        '{devicetype}'
-                    ],
-                    hideGroupedHeader: true,
-                    startCollapsed: true
+                    groupByText: 'devicetype'
                 },
                 {
                     ftype: 'rowbody',
@@ -73,10 +69,51 @@ Ext.define('NeoDoc.view.device.FolderGrid', {
                         }
                     ]
                 }
+            ],
+            viewConfig: {
+                id: 'FolderGridView',
+                itemId: 'FolderGridView'
+            },
+            dockedItems: [
+                {
+                    xtype: 'pagingtoolbar',
+                    dock: 'bottom',
+                    width: 360,
+                    displayInfo: true,
+                    items: [
+                        {
+                            xtype: 'checkboxfield',
+                            boxLabel: 'Toggle Grouping',
+                            checked: true,
+                            listeners: {
+                                change: {
+                                    fn: me.onCheckboxfieldChange,
+                                    scope: me
+                                }
+                            }
+                        }
+                    ]
+                }
             ]
         });
 
         me.callParent(arguments);
+    },
+
+    onCheckboxfieldChange: function(field, newValue, oldValue, eOpts) {
+        console.log('in grouping feature toggle');
+        var view = this.getView(),
+            ft = view.getFeature(0);
+
+        console.log(ft);
+
+        if(ft.disabled) 
+        ft.enable();
+        else
+        ft.disable();
+
+
+
     }
 
 });

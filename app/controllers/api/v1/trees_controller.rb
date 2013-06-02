@@ -78,6 +78,7 @@ module Api
 					    h["iconCls"]="device-icon"
 					    h["id"]=Integer("#{node.neo_id}")
 					    h["parentID"]=Integer("#{start.neo_id}")
+					    h["parentName"]="#{start.name}"
 					    h["cls"]="#{node.class}"
 					    h["leaf"]=true
 					    devarr << h
@@ -90,6 +91,7 @@ module Api
 					    c["iconCls"]="network-folder"
 					    c["neo_id"]=Integer("#{start.neo_id}")
 					    c["parentID"]=Integer("#{start.neo_id}")
+					    c["parentName"]="#{start.name}"
 					    c["cls"]="NetworkFolder"
 					    c["expanded"]=false
 					    c["children"]=netarr
@@ -102,6 +104,7 @@ module Api
 					    c["text"] = "Devices"
 					    c["iconCls"]="device-folder"
 					    c["neo_id"]=Integer("#{start.neo_id}")
+					    c["parentName"]="#{start.name}"
 					    c["parentID"]=Integer("#{start.neo_id}")
 					    c["cls"]="DeviceFolder"
 					    c["expanded"]=false
@@ -116,6 +119,7 @@ module Api
 					    c["iconCls"]="ipnumber-folder"
 					    c["neo_id"]=Integer("#{start.neo_id}")
 					    c["parentID"]=Integer("#{start.neo_id}")
+					    c["parentName"]="#{start.name}"
 					    c["cls"]="IpnumberFolder"
 					    c["expanded"]=false
 					    c["children"]=iparr

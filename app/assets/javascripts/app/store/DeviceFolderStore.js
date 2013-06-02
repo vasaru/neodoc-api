@@ -26,6 +26,7 @@ Ext.define('NeoDoc.store.DeviceFolderStore', {
         me.callParent([Ext.apply({
             model: 'NeoDoc.model.device.foldergridmodel',
             storeId: 'DeviceFolderStoreId',
+            groupField: 'devicetype',
             pageSize: 255,
             proxy: {
                 type: 'ajax',
