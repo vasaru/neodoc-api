@@ -108,7 +108,36 @@ Ext.define('NeoDoc.controller.Device', {
                 itemId: 'DevFolderTab-Grid'+record.parentId,
                 cls: 'DeviceFolder',
                 store: devstore,
-                closable: false
+                closable: false,
+                dockedItems: [
+                {
+                    xtype: 'pagingtoolbar',
+                    dock: 'bottom',
+                    width: 360,
+                    displayInfo: true,
+                    store: devstore,
+                    items: [
+                    {
+                        xtype: 'checkboxfield',
+                        boxLabel: 'Toggle Grouping',
+                        checked: true,
+                        listeners: {
+                            change: function(field, newValue, oldValue, eOpts) {
+                                var view = this.ownerCt.ownerCt.getView(),
+                                    ft = view.getFeature(0);
+
+                                console.log(ft);
+
+                                if(ft.disabled) 
+                                ft.enable();
+                                else
+                                ft.disable(); 
+                            }
+                        }
+                    }
+                    ]
+                }
+                ]
             });
 
 
@@ -131,6 +160,20 @@ Ext.define('NeoDoc.controller.Device', {
             maintab.setActiveTab(tab);
         }
 
+
+    },
+
+    onDeviceFolderGridToggleGrouping: function(field, newValue, oldValue, eOpts) {
+        console.log('in grouping feature toggle');
+        var view = this.getView(),
+            ft = view.getFeature(0);
+
+        console.log(ft);
+
+        if(ft.disabled) 
+        ft.enable();
+        else
+        ft.disable();
     },
 
     init: function(application) {
