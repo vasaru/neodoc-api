@@ -18,6 +18,7 @@ Ext.define('NeoDoc.view.device.FolderGrid', {
     alias: 'widget.devicefoldergrid',
 
     height: 250,
+    id: 'DevFolderTab-Grid',
     width: 400,
     title: 'My Grid Panel',
     emptyText: 'No devices availble for this location',

@@ -28,6 +28,10 @@ Ext.define('NeoDoc.controller.Device', {
         {
             ref: 'deviceMainTab',
             selector: 'devicemaintab'
+        },
+        {
+            ref: 'devfoldertabgrid',
+            selector: 'DevFolderTab-Grid'
         }
     ],
 
@@ -62,6 +66,11 @@ Ext.define('NeoDoc.controller.Device', {
                 }
             });
         }
+    },
+
+    onGridpanelItemDblClick: function(dataview, record, item, index, e, eOpts) {
+        console.log("Double click");
+        console.log(record);
     },
 
     onNewdevicetab: function(record) {
@@ -104,7 +113,7 @@ Ext.define('NeoDoc.controller.Device', {
 
             var devfoldergrid = Ext.create('NeoDoc.view.device.FolderGrid', {
                 title: 'Device Folder Grid',
-                id: 'DevFolderTab-Grid'+record.parentId,
+                //        id: 'DevFolderTab-Grid'+record.parentId,
                 itemId: 'DevFolderTab-Grid'+record.parentId,
                 cls: 'DeviceFolder',
                 store: devstore,
@@ -180,6 +189,9 @@ Ext.define('NeoDoc.controller.Device', {
         this.control({
             "devicecreatewindow button[action=newdevice]": {
                 click: this.onCreateDevice
+            },
+            "devfoldertabgrid": {
+                itemdblclick: this.onGridpanelItemDblClick
             }
         });
 

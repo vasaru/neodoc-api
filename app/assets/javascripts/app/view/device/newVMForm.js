@@ -249,11 +249,16 @@ Ext.define('NeoDoc.view.device.newVMForm', {
         osverstore.getProxy().extraParams.osid=combo.getValue();
 
         osverstore.reload();
-        versselect.setValue(osverstore.getAt(0).data.name)
 
-        // versselect.store = osverstore;
+        osverstore.on('load', function(){
 
-        versselect.setDisabled(false);
+            versselect.setDisabled(false);
+            versselect.setValue(osverstore.first().data.id)
+
+            // versselect.store = osverstore;
+        });
+
+
 
 
 

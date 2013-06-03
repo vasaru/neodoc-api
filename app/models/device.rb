@@ -21,6 +21,8 @@ class Device < Neo4j::Rails::Model
   has_one :location
   has_n :devtype
   has_n :parts
+  has_one :devicecategory
+  has_n :customers
 
   index :name
   index :devicetype
