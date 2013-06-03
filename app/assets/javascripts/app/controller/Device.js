@@ -111,6 +111,20 @@ Ext.define('NeoDoc.controller.Device', {
             });
 
 
+            Ext.define('NeoDoc.view.device.override.FolderGrid', {    
+                override: 'NeoDoc.view.device.FolderGrid',
+                plugins: [{ 
+                    ptype: 'rowexpander',
+                    rowBodyTpl : new Ext.XTemplate(
+                    '<p><b>OS:</b>',
+                    '<tpl for="operatingsystem">{name}</tpl></p>'
+
+                    )
+
+                }]
+            }); 
+
+
             var devfoldergrid = Ext.create('NeoDoc.view.device.FolderGrid', {
                 title: 'Device Folder Grid',
                 //        id: 'DevFolderTab-Grid'+record.parentId,
@@ -148,6 +162,7 @@ Ext.define('NeoDoc.controller.Device', {
                 }
                 ]
             });
+
 
 
             devstore.getProxy().extraParams.whattoget='getlocationdevices';

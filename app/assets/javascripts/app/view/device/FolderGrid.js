@@ -20,6 +20,7 @@ Ext.define('NeoDoc.view.device.FolderGrid', {
     height: 250,
     id: 'DevFolderTab-Grid',
     width: 400,
+    collapsible: false,
     title: 'My Grid Panel',
     emptyText: 'No devices availble for this location',
 
@@ -37,6 +38,11 @@ Ext.define('NeoDoc.view.device.FolderGrid', {
                     getAdditionalData: function(data, idx, record, orig) {
                         console.log('In getAdditionalData');
                         console.log(record);
+                        return {
+                            rowBody: Ext.String.format(
+                            '<div>->OS:<span> {0}</span></div>',
+                            data.operatingsystem.name)
+                        };
 
                     }
                 }
