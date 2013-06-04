@@ -28,6 +28,27 @@ module Api
 				
 			end
 
+			def get_network(ip)
+				net = ip.outgoing(:network).first
+				if net.nil?
+					return nil	
+				else
+					o=Hash.new
+					o["network_name"]=net.network_name
+					o["vlanid"]=net.vlanid
+					o["id"]=net.neo_id
+					o["network"]=net.network
+					o["gateway"]=net.gateway
+					o["netmask"]=net.netmask
+					o["description"]=net.description
+					o["updated_at"]=net.updated_at
+					o["created_at"]=net.created_at
+					o["updated_by"]=net.updated_by
+					o["created_by"]=net.created_by
+					return o
+				end
+			end
+
 			def get_ipnumbers(dev)
 				ipn = dev.outgoing(:ipnumber).sort_by(&:neo_id)
 				if ipn.nil?
@@ -43,6 +64,7 @@ module Api
 						o["description"]=p.description
 						o["status"]=p.status
 						o["id"]=p.neo_id
+						o["network"]=get_network(p)
 						a<<o
 					}
 					return a

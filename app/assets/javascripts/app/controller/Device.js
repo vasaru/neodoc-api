@@ -71,6 +71,57 @@ Ext.define('NeoDoc.controller.Device', {
     onGridpanelItemDblClick: function(dataview, record, item, index, e, eOpts) {
         console.log("Double click");
         console.log(record);
+
+        var maintab = this.getMainTabPanel(),
+            activetab = maintab.activeTab;
+
+        var tab = activetab.getChildByElement('DeviceTab-'+record.data.id);
+
+        if(!tab) {
+            var generaltab = Ext.create('NeoDoc.view.device.GeneralPanel', {
+                title: 'Device - '+record.data.name,
+                id: 'DeviceTab-GeneralPanel'+record.data.id,
+                itemId: 'DeviceTab-GeneralPanel'+record.data.id,
+                cls: 'Device',
+                closable: false
+            });
+            var generalview = Ext.create('NeoDoc.view.device.GeneralView', {
+                title: 'Device - '+record.data.name,
+                id: 'DeviceTab-GeneralView'+record.data.id,
+                itemId: 'DeviceTab-GeneralView'+record.data.id,
+                cls: 'Device',
+                //        store: netstore,
+                closable: false
+            });
+
+            generaltab.add(generalview);
+
+            generaltab.add(Ext.create('Ext.panel.Panel', {
+                title: 'Comments',
+                id: 'DeviceTab-GeneralTestPanel'+record.data.id,
+                itemId: 'DeviceTab-GeneralTestPanel'+record.data.id,
+                cls: 'Device',
+                padding: 10,
+                width: 400,
+                height: 200
+            }));
+
+            generaltab.add(Ext.create('Ext.panel.Panel', {
+                title: 'Documents',
+                id: 'DeviceTab-GeneralDocumentPanel'+record.data.id,
+                itemId: 'DeviceTab-GeneralDocumentPanel'+record.data.id,
+                cls: 'Device',
+                padding: 10,
+                width: 400,
+                height: 200
+            }));
+            activetab.add(generaltab);
+
+
+            activetab.setActiveTab(generaltab);
+        } else {
+            maintab.setActiveTab(tab);
+        }
     },
 
     onNewdevicetab: function(record) {
@@ -93,7 +144,7 @@ Ext.define('NeoDoc.controller.Device', {
         console.log(record);
 
         var devstore = Ext.create('NeoDoc.store.DeviceFolderStore');
-        devstore.storeid = 'DeviceFolderStore-'+record.parentId;
+        devstore.storeId = 'DeviceFolderStore-'+record.parentId;
         devstore.defaultRootId = record.parentId;
 
 
@@ -116,8 +167,8 @@ Ext.define('NeoDoc.controller.Device', {
                 plugins: [{ 
                     ptype: 'rowexpander',
                     rowBodyTpl : new Ext.XTemplate(
-                    '<p><b>OS:</b>',
-                    '<tpl for="operatingsystem">{name}</tpl></p>'
+                    '<span><p><b>OS:</b><tpl for="operatingsystem">{name}</tpl> <tpl for="osversion">{name}</tpl></p></span>',
+                    '<span><b>IP Address:</b> <tpl for="ipnumbers">{ipv4}</tpl></span>'
 
                     )
 
@@ -126,9 +177,8 @@ Ext.define('NeoDoc.controller.Device', {
 
 
             var devfoldergrid = Ext.create('NeoDoc.view.device.FolderGrid', {
-                title: 'Device Folder Grid',
-                //        id: 'DevFolderTab-Grid'+record.parentId,
-                itemId: 'DevFolderTab-Grid'+record.parentId,
+                title: 'All Devices',
+                id: 'DevFolderTab-Grid'+record.parentId,
                 cls: 'DeviceFolder',
                 store: devstore,
                 closable: false,
@@ -138,27 +188,8 @@ Ext.define('NeoDoc.controller.Device', {
                     dock: 'bottom',
                     width: 360,
                     displayInfo: true,
-                    store: devstore,
-                    items: [
-                    {
-                        xtype: 'checkboxfield',
-                        boxLabel: 'Toggle Grouping',
-                        checked: true,
-                        listeners: {
-                            change: function(field, newValue, oldValue, eOpts) {
-                                var view = this.ownerCt.ownerCt.getView(),
-                                    ft = view.getFeature(0);
+                    store: devstore
 
-                                console.log(ft);
-
-                                if(ft.disabled) 
-                                ft.enable();
-                                else
-                                ft.disable(); 
-                            }
-                        }
-                    }
-                    ]
                 }
                 ]
             });
@@ -187,17 +218,12 @@ Ext.define('NeoDoc.controller.Device', {
 
     },
 
-    onDeviceFolderGridToggleGrouping: function(field, newValue, oldValue, eOpts) {
-        console.log('in grouping feature toggle');
-        var view = this.getView(),
-            ft = view.getFeature(0);
+    onItemDblClick: function(dataview, record, item, index, e, eOpts) {
+        console.log('In Item Dbl Click with record '+record);
 
-        console.log(ft);
+        var parent = this.getBubbleParent();
 
-        if(ft.disabled) 
-        ft.enable();
-        else
-        ft.disable();
+
     },
 
     init: function(application) {
@@ -205,7 +231,7 @@ Ext.define('NeoDoc.controller.Device', {
             "devicecreatewindow button[action=newdevice]": {
                 click: this.onCreateDevice
             },
-            "devfoldertabgrid": {
+            "#devfoldertabgrid": {
                 itemdblclick: this.onGridpanelItemDblClick
             }
         });

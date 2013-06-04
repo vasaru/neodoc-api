@@ -17,8 +17,10 @@ Ext.define('NeoDoc.view.LoginWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.loginwindow',
 
+    draggable: false,
     height: 195,
     width: 400,
+    resizable: false,
     layout: {
         type: 'fit'
     },
