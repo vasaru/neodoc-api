@@ -75,31 +75,53 @@ Ext.define('NeoDoc.controller.Device', {
         var maintab = this.getMainTabPanel(),
             activetab = maintab.activeTab;
 
-        var tab = activetab.getChildByElement('DeviceTab-'+record.data.id);
+        var tab = activetab.getChildByElement('DeviceTab-GeneralPanel-'+record.data.id);
 
         if(!tab) {
-            var generaltab = Ext.create('NeoDoc.view.device.GeneralPanel', {
+
+            var generaltab = Ext.create('Ext.panel.Panel', {
                 title: 'Device - '+record.data.name,
-                id: 'DeviceTab-GeneralPanel'+record.data.id,
-                itemId: 'DeviceTab-GeneralPanel'+record.data.id,
-                cls: 'Device',
-                closable: false
-            });
-            var generalview = Ext.create('NeoDoc.view.device.GeneralView', {
-                title: 'Device - '+record.data.name,
-                id: 'DeviceTab-GeneralView'+record.data.id,
-                itemId: 'DeviceTab-GeneralView'+record.data.id,
-                cls: 'Device',
-                //        store: netstore,
-                closable: false
+                id: 'DeviceTab-GeneralPanel-'+record.data.id,
+                itemId: 'DeviceTab-GeneralPanel-'+record.data.id,
+                cls: 'Device'
             });
 
-            generaltab.add(generalview);
+
+
+            var generalinfo = Ext.create('NeoDoc.view.device.GeneralPanel', {
+                title: 'General Info',
+                id: 'DeviceTab-GeneralInfoPanel-'+record.data.id,
+                itemId: 'DeviceTab-GeneralInfoPanel-'+record.data.id,
+                cls: 'Device',
+                padding: 10,
+                width: 500,
+                height: 300,
+                resizeable: true
+            });
+
+            generaltab.add(generalinfo);
+
+            if(record.data.ipnumbers) {
+
+                var networkpanel = Ext.create('NeoDoc.view.device.NetworkInfoPanel', {
+                    title: 'Network Info',
+                    id: 'DeviceTab-NetworkInfoPanel-'+record.data.id,
+                    itemId: 'DeviceTab-NetworkInfoPanel-'+record.data.id,
+                    cls: 'Device',
+                    padding: 10,
+                    resizeable: true
+                });
+
+                generaltab.add(networkpanel);
+
+            }    
+
+
 
             generaltab.add(Ext.create('Ext.panel.Panel', {
                 title: 'Comments',
-                id: 'DeviceTab-GeneralTestPanel'+record.data.id,
-                itemId: 'DeviceTab-GeneralTestPanel'+record.data.id,
+                id: 'DeviceTab-GeneralTestPanel-'+record.data.id,
+                itemId: 'DeviceTab-GeneralTestPanel-'+record.data.id,
                 cls: 'Device',
                 padding: 10,
                 width: 400,
@@ -107,14 +129,18 @@ Ext.define('NeoDoc.controller.Device', {
             }));
 
             generaltab.add(Ext.create('Ext.panel.Panel', {
-                title: 'Documents',
-                id: 'DeviceTab-GeneralDocumentPanel'+record.data.id,
-                itemId: 'DeviceTab-GeneralDocumentPanel'+record.data.id,
+                title: 'Related documents',
+                id: 'DeviceTab-GeneralDocumentPanel-'+record.data.id,
+                itemId: 'DeviceTab-GeneralDocumentPanel-'+record.data.id,
                 cls: 'Device',
                 padding: 10,
                 width: 400,
                 height: 200
             }));
+
+            generalinfo.data = record.data;
+            generalinfo.update(record.data);
+
             activetab.add(generaltab);
 
 
