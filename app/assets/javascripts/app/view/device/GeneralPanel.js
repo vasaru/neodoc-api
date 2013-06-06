@@ -24,9 +24,9 @@ Ext.define('NeoDoc.view.device.GeneralPanel', {
         var me = this;
 
         Ext.applyIf(me, {
-            tpl: Ext.create('Ext.XTemplate', 
+            tpl: [
                 '<div class="post-data">',
-                '    <span class="post-date">Last updated by {updated_by} at {updated_at:formatDate}</span>',
+                '    <span class="post-date">Last updated by {updated_by} at {updated_at}</span>',
                 '    <h3 class="post-title"><b>Device Name:</b> {name}</h3><br>',
                 '    <b>Type: </b> {devicetype}<br>',
                 '    <b>Serial number:</b> {serialnr}<br>',
@@ -34,17 +34,8 @@ Ext.define('NeoDoc.view.device.GeneralPanel', {
                 '    <b>Label:</b> {label}<br>',
                 '</div>',
                 '<p>',
-                '    <div class="post-body"><b>Description:</b><p>{description}</div>',
-                {
-                    formatDate: function(value) {
-                        if (!value) {
-                            return '';
-                        }
-                        return Ext.Date.format(value, 'M j, Y, g:i a');
-
-                    }
-                }
-            )
+                '    <div class="post-body"><b>Description:</b><p>{description}</div>'
+            ]
         });
 
         me.callParent(arguments);

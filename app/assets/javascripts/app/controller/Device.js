@@ -103,15 +103,29 @@ Ext.define('NeoDoc.controller.Device', {
 
             if(record.data.ipnumbers) {
 
+                var getLocalStore=function() {
+                    return Ext.create('Ext.data.Store', {
+                        model: 'NeoDoc.model.device.IpnumbersGrid',
+                        data: record.data.ipnumbers,
+                        idProperty: 'id',
+                        root: 'ipnumbers'
+                    });
+                };
+
                 var networkpanel = Ext.create('NeoDoc.view.device.NetworkInfoPanel', {
                     title: 'Network Info',
                     id: 'DeviceTab-NetworkInfoPanel-'+record.data.id,
                     itemId: 'DeviceTab-NetworkInfoPanel-'+record.data.id,
                     cls: 'Device',
                     padding: 10,
-                    resizeable: true
+                    resizeable: true,
+                    store: getLocalStore() 
                 });
 
+
+
+                /*       	networkpanel.data = record.data.ipnumbers;
+                networkpanel.update(record.data.ipnumbers); */
                 generaltab.add(networkpanel);
 
             }    

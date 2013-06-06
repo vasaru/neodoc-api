@@ -49,27 +49,13 @@ Ext.define('NeoDoc.view.device.NetworkInfoPanel', {
                             xtype: 'gridcolumn',
                             width: 166,
                             dataIndex: 'description',
-                            text: 'Description',
-                            editor: {
-                                xtype: 'textareafield',
-                                name: 'description'
-                            }
+                            text: 'Description'
                         },
                         {
                             xtype: 'gridcolumn',
                             dataIndex: 'status',
                             groupable: true,
-                            text: 'Status',
-                            editor: {
-                                xtype: 'combobox',
-                                name: 'statusfield',
-                                allowBlank: false,
-                                allowOnlyWhitespace: false,
-                                editable: false,
-                                queryMode: 'local',
-                                store: 'IpStatusStore',
-                                valueField: 'name'
-                            }
+                            text: 'Status'
                         },
                         {
                             xtype: 'gridcolumn',
