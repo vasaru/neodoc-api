@@ -107,8 +107,7 @@ Ext.define('NeoDoc.controller.Device', {
                     return Ext.create('Ext.data.Store', {
                         model: 'NeoDoc.model.device.IpnumbersGrid',
                         data: record.data.ipnumbers,
-                        idProperty: 'id',
-                        root: 'ipnumbers'
+                        idProperty: 'id'
                     });
                 };
 
@@ -118,11 +117,22 @@ Ext.define('NeoDoc.controller.Device', {
                     itemId: 'DeviceTab-NetworkInfoPanel-'+record.data.id,
                     cls: 'Device',
                     padding: 10,
-                    resizeable: true,
-                    store: getLocalStore() 
+                    resizeable: true
+                    //            store: getLocalStore() 
                 });
 
+                var grid = networkpanel.getComponent('DeviceNetworkIpTabGrid1');
+                grid.store = getLocalStore();
 
+                console.log(grid);  
+
+                var view = grid.getView();
+
+                console.log(view.store);
+
+                view.store=getLocalStore();
+
+                console.log(view.store);
 
                 /*       	networkpanel.data = record.data.ipnumbers;
                 networkpanel.update(record.data.ipnumbers); */
