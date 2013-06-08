@@ -56,7 +56,7 @@ Ext.define('NeoDoc.model.device.IpnumbersGrid', {
         }
     ],
 
-    hasMany: {
+    hasOne: {
         associationKey: 'network',
         model: 'NeoDoc.model.network.InfoModel'
     }

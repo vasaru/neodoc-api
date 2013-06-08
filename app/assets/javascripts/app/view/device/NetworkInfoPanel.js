@@ -16,77 +16,28 @@
 Ext.define('NeoDoc.view.device.NetworkInfoPanel', {
     extend: 'Ext.panel.Panel',
 
-    height: 375,
-    width: 629,
-    resizable: true,
-    layout: {
-        type: 'border'
-    },
+    id: 'devicenetworkgeneralinfo',
+    itemId: 'devicenetworkgeneralinfo',
+    title: 'My Panel',
 
     initComponent: function() {
         var me = this;
 
         Ext.applyIf(me, {
-            items: [
-                {
-                    xtype: 'gridpanel',
-                    region: 'north',
-                    height: 150,
-                    id: 'DeviceNetworkIpTabGrid1',
-                    itemId: 'DeviceNetworkIpTabGrid1',
-                    autoScroll: true,
-                    header: false,
-                    columns: [
-                        {
-                            xtype: 'gridcolumn',
-                            width: 126,
-                            defaultWidth: 140,
-                            sortable: false,
-                            dataIndex: 'ipv4',
-                            text: 'IP'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            width: 166,
-                            dataIndex: 'description',
-                            text: 'Description'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            dataIndex: 'status',
-                            groupable: true,
-                            text: 'Status'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            width: 134,
-                            dataIndex: 'network.network_name',
-                            text: 'Network'
-                        }
-                    ]
-                },
-                {
-                    xtype: 'panel',
-                    region: 'center',
-                    id: 'devicenetworkgeneralinfo',
-                    itemId: 'devicenetworkgeneralinfo',
-                    tpl: [
-                        '<h1>General Information</h1>',
-                        '<p>',
-                        '',
-                        '    <b>Network Name:</b> {network_name}<br>',
-                        '    <b>Network:</b> {netmask}<br>',
-                        '    <b>Gateway:</b> {gateway}<br>',
-                        '   	<b>VLAN ID:</b> {vlanid}<br>',
-                        '    ',
-                        '<p>',
-                        '    <b>Description</b><p>',
-                        '        ',
-                        '    {description}',
-                        '</p>'
-                    ],
-                    title: 'My Panel'
-                }
+            tpl: [
+                '<h1>{network_name} - General Information</h1>',
+                '<p>',
+                '',
+                '    <b>Network Name:</b> {network_name}<br>',
+                '    <b>Network:</b> {netmask}<br>',
+                '    <b>Gateway:</b> {gateway}<br>',
+                '   	<b>VLAN ID:</b> {vlanid}<br>',
+                '    ',
+                '<p>',
+                '    <b>Description</b><p>',
+                '        ',
+                '    {description}',
+                '</p>'
             ]
         });
 

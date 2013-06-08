@@ -75,15 +75,21 @@ Ext.define('NeoDoc.controller.Device', {
         var maintab = this.getMainTabPanel(),
             activetab = maintab.activeTab;
 
+
         var tab = activetab.getChildByElement('DeviceTab-GeneralPanel-'+record.data.id);
 
         if(!tab) {
+
+            maintab.setLoading(true);
 
             var generaltab = Ext.create('Ext.panel.Panel', {
                 title: 'Device - '+record.data.name,
                 id: 'DeviceTab-GeneralPanel-'+record.data.id,
                 itemId: 'DeviceTab-GeneralPanel-'+record.data.id,
-                cls: 'Device'
+                cls: 'Device',
+                layout: {
+                    type: 'accordion'
+                }
             });
 
 
@@ -93,35 +99,77 @@ Ext.define('NeoDoc.controller.Device', {
                 id: 'DeviceTab-GeneralInfoPanel-'+record.data.id,
                 itemId: 'DeviceTab-GeneralInfoPanel-'+record.data.id,
                 cls: 'Device',
-                padding: 10,
-                width: 500,
-                height: 300,
                 resizeable: true
             });
 
             generaltab.add(generalinfo);
 
             if(record.data.ipnumbers) {
+                var netstore = Ext.create('NeoDoc.store.DeviceNetworkInfoStore');
+                netstore.storeId = 'DeviceNetworkInfoStore-'+record.data.id;
 
-                var getLocalStore=function() {
-                    return Ext.create('Ext.data.Store', {
-                        model: 'NeoDoc.model.device.IpnumbersGrid',
-                        data: record.data.ipnumbers,
-                        idProperty: 'id'
-                    });
-                };
 
-                var networkpanel = Ext.create('NeoDoc.view.device.NetworkInfoPanel', {
-                    title: 'Network Info',
-                    id: 'DeviceTab-NetworkInfoPanel-'+record.data.id,
-                    itemId: 'DeviceTab-NetworkInfoPanel-'+record.data.id,
+                var ippanel = Ext.create('NeoDoc.view.device.IpNumberPanel', {
+                    title: 'IpNumbers',
+                    id: 'DeviceTab-Ipnumber'+record.data.id,
+                    itemId: 'DeviceTab-Ipnumber'+record.data.id,
                     cls: 'Device',
-                    padding: 10,
-                    resizeable: true
-                    //            store: getLocalStore() 
+                    closable: false,
+                    layout: {
+                        type: 'border'
+                    }
                 });
 
-                var grid = networkpanel.getComponent('DeviceNetworkIpTabGrid1');
+                var ipgrid = Ext.create('NeoDoc.view.device.IpNumberGrid', {
+                    title: 'IpNumberGrid',
+                    region: 'center',
+                    flex: 1,
+                    id: 'DeviceTab-IpnumberGrid'+record.data.id,
+                    itemId: 'DeviceTab-IpnumberGrid'+record.data.id,
+                    cls: 'Device',
+                    store: netstore,
+                    closable: false,
+                    dockedItems: [
+                    {
+                        xtype: 'pagingtoolbar',
+                        dock: 'bottom',
+                        displayInfo: true,
+                        store: netstore
+                    }
+                    ]
+                });        
+
+                var netinfopanel = Ext.create('NeoDoc.view.device.NetworkInfoPanel', {
+                    title: 'Network Info',
+                    region: 'south',
+                    flex: 2,
+                    id: 'DeviceTab-Info-'+record.data.id,
+                    itemId: 'DeviceTab-Info-'+record.data.id,
+                    cls: 'Device',
+                    closable: false
+                });
+
+                ippanel.add(ipgrid);
+                ippanel.add(netinfopanel);
+
+
+                netstore.getProxy().extraParams.whattoget='getdevicenetwork';
+                netstore.getProxy().extraParams.deviceid=record.data.id;
+
+                netstore.load({
+                    callback : function(records, operation, success) {
+                        /* perform operations on the records*/
+                        console.log(records); 
+                    }
+                });
+
+                console.log(netstore);
+
+                netinfopanel.data = record.data.ipnumbers[0].network;
+                netinfopanel.update(record.data.ipnumbers[0].network);
+
+
+                /*        var grid = networkpanel.getComponent('DeviceNetworkIpTabGrid1');
                 grid.store = getLocalStore();
 
                 console.log(grid);  
@@ -132,11 +180,11 @@ Ext.define('NeoDoc.controller.Device', {
 
                 view.store=getLocalStore();
 
-                console.log(view.store);
+                console.log(view.store); */
 
                 /*       	networkpanel.data = record.data.ipnumbers;
                 networkpanel.update(record.data.ipnumbers); */
-                generaltab.add(networkpanel);
+                generaltab.add(ippanel);
 
             }    
 
@@ -146,20 +194,16 @@ Ext.define('NeoDoc.controller.Device', {
                 title: 'Comments',
                 id: 'DeviceTab-GeneralTestPanel-'+record.data.id,
                 itemId: 'DeviceTab-GeneralTestPanel-'+record.data.id,
-                cls: 'Device',
-                padding: 10,
-                width: 400,
-                height: 200
+                cls: 'Device'
+
             }));
 
             generaltab.add(Ext.create('Ext.panel.Panel', {
                 title: 'Related documents',
                 id: 'DeviceTab-GeneralDocumentPanel-'+record.data.id,
                 itemId: 'DeviceTab-GeneralDocumentPanel-'+record.data.id,
-                cls: 'Device',
-                padding: 10,
-                width: 400,
-                height: 200
+                cls: 'Device'
+
             }));
 
             generalinfo.data = record.data;
@@ -169,6 +213,9 @@ Ext.define('NeoDoc.controller.Device', {
 
 
             activetab.setActiveTab(generaltab);
+            maintab.setLoading(false);
+
+            console.log('Displayed tab');
         } else {
             maintab.setActiveTab(tab);
         }

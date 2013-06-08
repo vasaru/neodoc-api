@@ -33,6 +33,7 @@ module Api
 				if net.nil?
 					return nil	
 				else
+					a=Array.new
 					o=Hash.new
 					o["network_name"]=net.network_name
 					o["vlanid"]=net.vlanid
@@ -45,6 +46,7 @@ module Api
 					o["created_at"]=net.created_at
 					o["updated_by"]=net.updated_by
 					o["created_by"]=net.created_by
+					a<<o
 					return o
 				end
 			end
@@ -61,9 +63,14 @@ module Api
 						o["ipv4"] = "#{ipaddr.address}"
 						o["netmask"]=p.netmask
 						o["ipv6"]=p.ipv6
+						o["id"]=p.neo_id
 						o["description"]=p.description
 						o["status"]=p.status
 						o["id"]=p.neo_id
+						o["updated_at"]=p.updated_at
+						o["created_at"]=p.created_at
+						o["updated_by"]=p.updated_by
+						o["created_by"]=p.created_by
 						o["network"]=get_network(p)
 						a<<o
 					}
@@ -216,6 +223,27 @@ module Api
 					puts JSON.pretty_generate(a)
 					render :json => a
 				end
+
+				if params[:action] == "index" && params[:whattoget]=="getdevicenetwork"
+					node = Neo4j::Node.load(params[:deviceid])
+					dev = Neo4j::Node.load(params[:deviceid])
+					Rails.logger.warn "Device #{dev.name}"
+
+					createuser = Neo4j::Node.load(dev.created_by).email
+					updateuser = Neo4j::Node.load(dev.updated_by).email
+					a = Array.new
+					t = Hash.new
+					a = get_ipnumbers(dev)
+
+
+					puts JSON.pretty_generate(a)
+					render :json => a
+
+
+
+				end				
+
+
 				if params[:action] == "index" && params[:whattoget]=="getdevice" then
 					dev = Neo4j::Node.load(params[:deviceid])
 					Rails.logger.warn "Device #{dev.name}"
