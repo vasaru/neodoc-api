@@ -89,6 +89,16 @@ Ext.define('NeoDoc.view.device.IpNumberGrid', {
                     xtype: 'gridcolumn',
                     dataIndex: 'updated_by',
                     text: 'Last Updated By'
+                },
+                {
+                    xtype: 'actioncolumn',
+                    sortable: false,
+                    items: [
+                        {
+                            altText: 'Delete IP',
+                            iconCls: 'delete-icon'
+                        }
+                    ]
                 }
             ]
         });

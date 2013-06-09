@@ -18,6 +18,7 @@ Ext.define('NeoDoc.view.device.NetworkInfoPanel', {
 
     id: 'devicenetworkgeneralinfo',
     itemId: 'devicenetworkgeneralinfo',
+    bodyPadding: 10,
     title: 'My Panel',
 
     initComponent: function() {
@@ -38,6 +39,19 @@ Ext.define('NeoDoc.view.device.NetworkInfoPanel', {
                 '        ',
                 '    {description}',
                 '</p>'
+            ],
+            dockedItems: [
+                {
+                    xtype: 'toolbar',
+                    dock: 'bottom',
+                    items: [
+                        {
+                            xtype: 'button',
+                            iconCls: 'network-icon',
+                            text: 'Display Network'
+                        }
+                    ]
+                }
             ]
         });
 

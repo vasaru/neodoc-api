@@ -88,7 +88,12 @@ Ext.define('NeoDoc.view.network.IpNumberGrid', {
                     dataIndex: 'action',
                     items: [
                         {
-
+                            altText: 'Add IP',
+                            iconCls: 'add-icon'
+                        },
+                        {
+                            altText: 'Delete IP',
+                            iconCls: 'delete-icon'
                         }
                     ]
                 }

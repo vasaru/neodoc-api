@@ -1,0 +1,41 @@
+
+.network-icon {
+   background-image: url(/images/icons/Network.png) !important;
+            } 
+.network-folder {
+    background-image: url(/images/icons/Network.png) !important;
+}
+
+.document-icon {
+   background-image: url(/images/icons/layout.png) !important;
+            }
+.document-folder {
+    background-image: url(/images/icons/folder_page.png) !important;
+}
+
+.location-icon {
+   background-image: url(/images/icons/vmware/building.png) !important;
+            }
+.location-folder {
+    background-image: url(/images/icons/vmware/building2.png) !important;
+}
+
+.delete-icon {
+    background-image: url(/images/icons/delete.png) !important;
+}
+.add-icon {
+    background-image: url(/images/icons/add.png) !important;
+}
+.device-icon {
+    background-image: url(/images/icons/vmware/rackserver.png) !important;
+}
+
+.vm-icon {
+	background-image: url(/images/icons/vmware/virtualmachine_detailed.png) !important;
+}
+
+.virtualmachine_detailed {
+	background-image: url(/images/icons/vmware/virtualmachine_detailed.png) !important;
+}
+
+
