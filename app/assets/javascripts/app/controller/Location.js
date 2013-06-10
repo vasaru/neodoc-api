@@ -180,7 +180,7 @@ Ext.define('NeoDoc.controller.Location', {
             "newlocationwindow button[action=locationcreate]": {
                 click: this.onCreateLocation
             },
-            "treepanel": {
+            "#locationTreePanel": {
                 select: this.onTreepanelSelect,
                 itemcontextmenu: this.onTreepanelItemContextMenu
             }
