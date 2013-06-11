@@ -217,7 +217,7 @@ Ext.define('NeoDoc.controller.Device', {
 
         var win=Ext.create('NeoDoc.view.network.selectIpWin');
 
-        var treegridstore = Ext.create('NeoDoc.store.NetworkIpTreeStore');
+        // var treegridstore = Ext.create('NeoDoc.store.NetworkIpTreeStore');
 
         var owner = button.ownerCt.ownerCt.ownerCt,
             ownerid = owner.id.split("-")[2],
@@ -225,25 +225,21 @@ Ext.define('NeoDoc.controller.Device', {
             grid = button.ownerCt.ownerCt,
             gridstore = grid.getStore(),
             treegrid = win.down('#networkIpTreeGrid'),
+            treegridstore = treegrid.getStore(),
             gridform = win.down('#networkIpTreeGridForm');
 
-
-        // treegrid.store = treegridstore;
-
-        treegrid.getView().store = treegridstore;
-
-
-        treegridstore.clearData();
 
         treegridstore.getProxy().extraParams.whattoget='getdevicenetworktree';
         treegridstore.getProxy().extraParams.deviceid=ownerid;
         treegridstore.getProxy().extraParams.locid=ownerlocationid;
 
-        treegridstore.load();
+        treegridstore.load({
+            callback : function(records, operation, success) {
+                console.log(records); 
+                win.show();
+            }
+        });
 
-
-
-        win.show();
 
 
 

@@ -37,6 +37,7 @@ Ext.define('NeoDoc.view.network.selectIpWin', {
                     id: 'networkIpTreeGrid',
                     width: 283,
                     title: 'Network Tree',
+                    store: 'NetworkIpTreeStore',
                     rootVisible: false,
                     viewConfig: {
 
@@ -45,13 +46,13 @@ Ext.define('NeoDoc.view.network.selectIpWin', {
                         {
                             xtype: 'treecolumn',
                             dataIndex: 'text',
-                            text: 'Nodes',
+                            text: 'Network',
                             flex: 1
                         },
                         {
                             xtype: 'gridcolumn',
-                            dataIndex: 'value',
-                            text: 'Value'
+                            dataIndex: 'vlanid',
+                            text: 'VLAN'
                         }
                     ]
                 }

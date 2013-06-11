@@ -19,23 +19,25 @@ module Api
 				else
 					a = Array.new
 					ipn.each {|p|
-						o = Hash.new
-						ipaddr = IPAddress(p.ipv4)
-						o["text"] = "#{ipaddr.address}"
-						o["ipv4"] = "#{ipaddr.address}"
-						o["netmask"]=p.netmask
-						o["ipv6"]=p.ipv6
-						o["id"]=p.neo_id
-						o["description"]=p.description
-						o["status"]=p.status
-						o["id"]=p.neo_id
-						o["parentID"]=node.neo_id
-						o["leaf"]=true
-						o["updated_at"]=p.updated_at
-						o["created_at"]=p.created_at
-						o["updated_by"]=p.updated_by
-						o["created_by"]=p.created_by
-						a<<o
+						if p.status == "Available"
+							o = Hash.new
+							ipaddr = IPAddress(p.ipv4)
+							o["text"] = "#{ipaddr.address}"
+							o["ipv4"] = "#{ipaddr.address}"
+							o["netmask"]=p.netmask
+							o["ipv6"]=p.ipv6
+							o["id"]=p.neo_id
+							o["description"]=p.description
+							o["status"]=p.status
+							o["id"]=p.neo_id
+							o["parentID"]=node.neo_id
+							o["leaf"]=true
+							o["updated_at"]=p.updated_at
+							o["created_at"]=p.created_at
+							o["updated_by"]=p.updated_by
+							o["created_by"]=p.created_by
+							a<<o
+						end
 					}
 					return a
 				end
@@ -52,6 +54,7 @@ module Api
 					    h["text"] = "#{node.network_name}"
 					    h["iconCls"]="network-icon"
 					    h["id"]=Integer("#{node.neo_id}")
+					    h["vlanid"] ="#{node.vlanid}"
 					 	h["parentID"]="NaN"
 					    h["cls"]="#{node.class}"
 					    h["leaf"]=is_leaf(node)

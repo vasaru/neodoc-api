@@ -36,6 +36,9 @@ Ext.define('NeoDoc.model.network.networktreemodel', {
         {
             name: 'parentName',
             type: 'string'
+        },
+        {
+            name: 'vlanid'
         }
     ]
 });
