@@ -200,6 +200,20 @@ module Api
 
 			end
 
+			def alttree(node)
+		    	node._rels.each do |n|
+			        Rails.logger.warn "Found node #{n.props.inspect}"
+			        if n[:rel_name]
+			        	Rails.logger.warn "Find outgoing rel with rel_name #{n[:rel_name]}"
+			         	rel = n[:rel_name]
+			          	node.outgoing(rel).depth(2).each do |out|
+			            Rails.logger.warn "Found node #{out.props.inspect}"
+		         	end
+		        end
+	      	end
+				
+			end
+
 			def index
 
 			    params.each do |key,value|
