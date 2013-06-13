@@ -89,21 +89,21 @@ class Network < Neo4j::Rails::Model
         temp.valid?
         temp.save
 
-        self.ipnumbers << temp
-        temp.network << self
+#        self.ipnumbers << temp
+        # temp.network << self
 
-        self.save
-        temp.save
+ #       self.save
+        # temp.save
 
         
         # STDERR.puts("added addr: #{temp.props.inspect}")
 
-        # Neo4j::Transaction.run {
-        #   temprel = Neo4j::Relationship.new(:ipnumbers,self,temp)
-        #   temprel[:rel_name]='Ipnumber'
-        #   temprel[:rel_dir]='out'
-        #   STDERR.puts("relationship added: #{self.props.inspect}")
-        # }
+        Neo4j::Transaction.run {
+          temprel = Neo4j::Relationship.new(:ipnumbers,self,temp)
+          temprel[:rel_name]='ipnumbers'
+          temprel[:rel_dir]='out'
+          STDERR.puts("relationship added: #{self.props.inspect}")
+        }
 
         # Neo4j::Transaction.run {
         #   temprel = Neo4j::Relationship.new(:network,temp,self)
@@ -123,8 +123,15 @@ class Network < Neo4j::Rails::Model
 
       temp = Neo4j::Node.load(pid)
       # self.locations << temp
-      temp.networks << self
-      temp.save
+      Neo4j::Transaction.run {
+        temprel = Neo4j::Relationship.new(:networks,temp,self)
+        temprel[:rel_name]='networks'
+        temprel[:rel_dir]='out'
+        STDERR.puts("relationship added: #{self.props.inspect}")
+      }
+
+#      temp.networks << self
+#      temp.save
       #self.save
 
 #      Neo4j::Transaction.run {

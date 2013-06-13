@@ -137,23 +137,40 @@ module Api
 				end
 			end
 
+			def get_iconcls(devicetype)
+				case devicetype
+				when "VM"
+					return "virtualmachine_detailed"
+					
+				end
+			end
+
 			def index
 				params.each do |key,value|
 					Rails.logger.warn "Param #{key}: #{value}"
 				end
 				a = Array.new
 				t = Hash.new
+
+				if params[:action] == "getdevicenetworktree"
+					# Build device network tree from #deviceID
+
+
+				end
+
 				if params[:node]
 					devh = Hash.new
 					node = Neo4j::Node.load(params[:node])
 					node.both().depth(:all).filter{|path| path.end_node.rel?(:outgoing, :device)}.each{|n| n.outgoing(:device).each{|dev|
 						createuser = Neo4j::Node.load(dev.created_by).username
 						updateuser = Neo4j::Node.load(dev.updated_by).username
+
 						h = Hash.new
 						h["name"]=dev.name
 						h["id"]=Integer(dev.neo_id)
 						h["cls"]="Device"
-						h["devicetype"]=dev.name
+						h["iconCls"]=get_iconcls(dev.devicetype)
+						h["devicetype"]=dev.devicetype
 						h["model"]="#{dev.model}"
 						h["serialnr"]=dev.serialnr
 						h["label"]=dev.label
@@ -277,6 +294,7 @@ module Api
 				
 			end
 
+
 			def show
 				respond_with Device.find(params[:id])
 			end
@@ -323,7 +341,16 @@ module Api
 
 				if @device.save
 					Rails.logger.warn "After device.save"
-					pid.device << @device
+			        Neo4j::Transaction.run {
+			          temprel = Neo4j::Relationship.new(:device,pid,@device)
+			          temprel[:rel_name]='device'
+			          temprel[:rel_dir]='out'
+			          STDERR.puts("relationship added: #{temprel.props.inspect}")
+			        }
+
+
+#					pid.device << @device
+
 					pid.status = params1["deviceType"]
 					pid.updated_by = resource.neo_id
 					pid.save
@@ -336,20 +363,64 @@ module Api
 						part2.save
 						part3 = Part.new(:name => "Cores",:type => "vCores", :amount => params2["cores"])
 						part3.save
-						@device.parts << part1 << part2 << part3
+				        Neo4j::Transaction.run {
+				          temprel = Neo4j::Relationship.new(:parts,@device,part1)
+				          temprel[:rel_name]='parts'
+				          temprel[:rel_dir]='out'
+				          STDERR.puts("relationship added: #{temprel.props.inspect}")
+				        }
+				        Neo4j::Transaction.run {
+				          temprel = Neo4j::Relationship.new(:parts,@device,part2)
+				          temprel[:rel_name]='parts'
+				          temprel[:rel_dir]='out'
+				          STDERR.puts("relationship added: #{temprel.props.inspect}")
+				        }
+				        Neo4j::Transaction.run {
+				          temprel = Neo4j::Relationship.new(:parts,@device,part3)
+				          temprel[:rel_name]='parts'
+				          temprel[:rel_dir]='out'
+				          STDERR.puts("relationship added: #{temprel.props.inspect}")
+				        }
+
+
+						# @device.parts << part1 << part2 << part3
 						i = 1
 						while !params2["hdd#{i}"].nil?
 							Rails.logger.warn "\tAdding hdd#{i}"
 							hdd = Part.new(:name => "Harddisk #{i}",:type => "HDD", :amount => params2["hdd#{i}"],:amountmetric => params2["hddmetric#{i}"])
 							hdd.save
-							@device.parts << hdd
+					        Neo4j::Transaction.run {
+					          temprel = Neo4j::Relationship.new(:parts,@device,hdd)
+					          temprel[:rel_name]='parts'
+					          temprel[:rel_dir]='out'
+					          STDERR.puts("relationship added: #{temprel.props.inspect}")
+					        }
+#							@device.parts << hdd
 							i=i+1;
 							
 						end
 					end
-					@device.operatingsystem << os
-					@device.osversion << osv
-					@device.ipnumber << pid
+#					@device.operatingsystem << os
+			        Neo4j::Transaction.run {
+			          temprel = Neo4j::Relationship.new(:operatingsystem,@device,os)
+			          temprel[:rel_name]='os'
+			          temprel[:rel_dir]='out'
+			          STDERR.puts("relationship added: #{temprel.props.inspect}")
+			        }
+#					@device.osversion << osv
+			        Neo4j::Transaction.run {
+			          temprel = Neo4j::Relationship.new(:osversion,@device,osv)
+			          temprel[:rel_name]='osversion'
+			          temprel[:rel_dir]='out'
+			          STDERR.puts("relationship added: #{temprel.props.inspect}")
+			        }
+#					@device.ipnumber << pid
+#			        Neo4j::Transaction.run {
+#			          temprel = Neo4j::Relationship.new(:operatingsystem,@device,ipnumber)
+#			          temprel[:rel_name]='os'
+#			          temprel[:rel_dir]='out'
+#			          STDERR.puts("relationship added: #{temprel.props.inspect}")
+#			        }
 					@device.save
 					Rails.logger.warn "Added device id #{@device.neo_id}"
 

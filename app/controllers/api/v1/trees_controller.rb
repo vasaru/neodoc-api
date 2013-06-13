@@ -201,18 +201,39 @@ module Api
 			end
 
 			def alttree(node)
-		    	node._rels.each do |n|
-			        Rails.logger.warn "Found node #{n.props.inspect}"
-			        if n[:rel_name]
-			        	Rails.logger.warn "Find outgoing rel with rel_name #{n[:rel_name]}"
-			         	rel = n[:rel_name]
-			          	node.outgoing(rel).depth(2).each do |out|
-			            Rails.logger.warn "Found node #{out.props.inspect}"
-		         	end
-		        end
+				a = Array.new
+				b = Array.new
+		    	node._rels.each{|r|
+		    		if r.rel_type.to_s != "_all" && r[:rel_dir] =="out"
+		    			Rails.logger.warn "Found rel_type #{r[:rel_name]} #{r[:rel_dir]}  #{r.rel_type} #{r.props.inspect}, #{r.end_node.to_json}"
+		    			
+		    			a << r.rel_type
+		    		end
+		    	}
+		    	a = a.uniq
+
+		        Rails.logger.warn "Found rels #{a.to_json}"
+
+		    	if a.size > 0 then
+			    	a.each{|r| 
+			    		node.outgoing(r).each{|n|
+							Rails.logger.warn "Found node #{n.neo_id}, #{n.to_json} "
+							Rails.logger.warn "Calling alttree again"
+#							return alttree(n)
+			    		}
+			    	}
+			    end
+		    	
+#			        if n[:rel_name]
+#			        	Rails.logger.warn "Find outgoing rel with rel_type #{n.rel_type}"
+#			         	rel = n.rel_type
+#		          	node.outgoing(rel).depth(1).each do |out|
+#			            Rails.logger.warn "Found node #{out.to_json}"
+#		         	end
+#		        end
 	      	end
 				
-			end
+
 
 			def index
 
@@ -231,7 +252,8 @@ module Api
 						start = Neo4j::Node.load(params[:node])
 						root=false
 					end
-					tree = generate_network_tree(root,start)
+					#tree = generate_network_tree(root,start)
+					tree=alttree(start)
 				else
 					case params[:node]
 					when 'NaN'
