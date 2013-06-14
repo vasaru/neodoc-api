@@ -217,7 +217,7 @@ Ext.define('NeoDoc.controller.Device', {
 
         var win=Ext.create('NeoDoc.view.network.selectIpWin');
 
-        // var treegridstore = Ext.create('NeoDoc.store.NetworkIpTreeStore');
+        var treegridstore = Ext.create('NeoDoc.store.NetworkIpTreeStore');
 
         var owner = button.ownerCt.ownerCt.ownerCt,
             ownerid = owner.id.split("-")[2],
@@ -225,13 +225,22 @@ Ext.define('NeoDoc.controller.Device', {
             grid = button.ownerCt.ownerCt,
             gridstore = grid.getStore(),
             treegrid = win.down('#networkIpTreeGrid'),
-            treegridstore = treegrid.getStore(),
             gridform = win.down('#networkIpTreeGridForm');
+
+
+        treegrid.getView().store = treegridstore;
+
+
+        treegridstore.getRootNode().setId(ownerlocationid);
 
 
         treegridstore.getProxy().extraParams.whattoget='getdevicenetworktree';
         treegridstore.getProxy().extraParams.deviceid=ownerid;
         treegridstore.getProxy().extraParams.locid=ownerlocationid;
+
+        treegrid.getView().getStore().load();
+
+
 
         treegridstore.load({
             callback : function(records, operation, success) {
@@ -264,16 +273,20 @@ Ext.define('NeoDoc.controller.Device', {
         console.log('in onNewdevicefoldertab');
         console.log(record);
 
-        var devstore = Ext.create('NeoDoc.store.DeviceFolderStore');
-        devstore.storeId = 'DeviceFolderStore-'+record.parentId;
-        devstore.defaultRootId = record.parentId;
-
-
         console.log('panelId=DevFolderTab-'+record.parentId);
 
         var tab = maintab.getChildByElement('DevFolderTab-'+record.parentId);
 
         if(!tab) {
+
+            maintab.setLoading(true);
+
+
+            var devstore = Ext.create('NeoDoc.store.DeviceFolderStore');
+            devstore.storeId = 'DeviceFolderStore-'+record.parentId;
+            devstore.defaultRootId = record.parentId;
+
+
             var devfoldertab = Ext.create('NeoDoc.view.network.MainTabPanel', {
                 title: 'Devices - '+record.parentName,
                 id: 'DevFolderTab-'+record.parentId,
@@ -331,7 +344,7 @@ Ext.define('NeoDoc.controller.Device', {
             maintab.add(devfoldertab);
 
             maintab.setActiveTab(devfoldertab);
-
+            maintab.setLoading(false);
         } else {
             maintab.setActiveTab(tab);
         }

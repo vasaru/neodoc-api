@@ -29,7 +29,7 @@ module Api
 			end
 
 			def get_network(ip)
-				net = ip.outgoing(:network).first
+				net = ip.incoming(:ipnumbers).first
 				if net.nil?
 					return nil	
 				else
@@ -52,31 +52,34 @@ module Api
 			end
 
 			def get_ipnumbers(dev)
-				ipn = dev.outgoing(:ipnumber).sort_by(&:neo_id)
+				ipn = dev.incoming(:device).sort_by(&:neo_id)
 				if ipn.nil?
 					return nil	
 				else
 					a = Array.new
 					ipn.each {|p|
-						o = Hash.new
-						ipaddr = IPAddress(p.ipv4)
-						o["ipv4"] = "#{ipaddr.address}"
-						o["netmask"]=p.netmask
-						o["ipv6"]=p.ipv6
-						o["id"]=p.neo_id
-						o["description"]=p.description
-						o["status"]=p.status
-						o["id"]=p.neo_id
-						o["updated_at"]=p.updated_at
-						o["created_at"]=p.created_at
-						o["updated_by"]=p.updated_by
-						o["created_by"]=p.created_by
-						o["network"]=get_network(p)
-						a<<o
+						Rails.logger.warn "#{p.class}"
+						if "#{p.class}" == "Ipnumber" then
+
+							o = Hash.new
+							ipaddr = IPAddress(p.ipv4)
+							o["ipv4"] = "#{ipaddr.address}"
+							o["netmask"]=p.netmask
+							o["ipv6"]=p.ipv6
+							o["id"]=p.neo_id
+							o["description"]=p.description
+							o["status"]=p.status
+							o["id"]=p.neo_id
+							o["updated_at"]=p.updated_at
+							o["created_at"]=p.created_at
+							o["updated_by"]=p.updated_by
+							o["created_by"]=p.created_by
+							o["network"]=get_network(p)
+							a<<o
+						end
 					}
 					return a
-				end
-				
+				end				
 			end
 
 			def get_ports(dev)

@@ -16,13 +16,16 @@ module Api
 				params.each do |key,value|
 					Rails.logger.warn "Param #{key}: #{value}"
 				end
+
 				if params[:action] == "index" && params[:whattoget]=="getiplist"
 					node = Neo4j::Node.load(params[:networkid])
 					iparr = Array.new
 					start = Integer("#{params[:start]}")
 					limit = Integer("#{params[:limit]}")
 					count = 0
-					node.outgoing(:ipnumbers).sort_by(&:neo_id).each do |ip| 
+					ips=node.outgoing(:ipnumbers)
+#					ips.sort_by! {|ip| ip.split('.').map{ |octet| octet.to_i} }
+					ips.each do |ip| 
 						createuser = Neo4j::Node.load(ip.created_by).email
 						updateuser = Neo4j::Node.load(ip.updated_by).email
 
@@ -65,7 +68,7 @@ module Api
 						c=Hash.new
 						c["success"] = true
 						c["totalCount"]=node.outgoing(:ipnumbers).count
-						c["ipnumbers"]=iparr
+						c["ipnumbers"]=iparr.sort_by! {|ip| ip["ipv4"].split('.').map{ |octet| octet.to_i} }
 #					    Rails.logger.warn(JSON.pretty_generate(c))
 						# Rails.logger.warn(JSON.pretty_generate(a))
 						render :json => c

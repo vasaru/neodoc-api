@@ -119,7 +119,7 @@ class Network < Neo4j::Rails::Model
 
   def add_location
     if !pid.nil?
-      STDERR.puts("Location_id: #{pid}, self=")
+      STDERR.puts("Location_id: #{pid}, self=#{self.neo_id}")
 
       temp = Neo4j::Node.load(pid)
       # self.locations << temp
@@ -127,7 +127,7 @@ class Network < Neo4j::Rails::Model
         temprel = Neo4j::Relationship.new(:networks,temp,self)
         temprel[:rel_name]='networks'
         temprel[:rel_dir]='out'
-        STDERR.puts("relationship added: #{self.props.inspect}")
+        STDERR.puts("networks relationship added between #{temp.neo_id} and #{self.neo_id}")
       }
 
 #      temp.networks << self
