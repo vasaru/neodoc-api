@@ -10,14 +10,96 @@ module Api
 					return nil
 				end
 			end
+
+			def get_ipnumbers(node)
+				ipn = node.outgoing(:ipnumbers).sort_by(&:neo_id)
+				if ipn.nil?
+					return nil	
+				else
+					a = Array.new
+					ipn.each {|p|
+						if p.status == "Available"
+							o = Hash.new
+							ipaddr = IPAddress(p.ipv4)
+							o["text"] = "#{ipaddr.address}"
+							o["ipv4"] = "#{ipaddr.address}"
+							o["netmask"]=p.netmask
+							o["ipv6"]=p.ipv6
+							o["id"]=p.neo_id
+							o["description"]=p.description
+							o["status"]=p.status
+							o["id"]=p.neo_id
+							o["parentID"]=node.neo_id
+							o["leaf"]=true
+							o["updated_at"]=p.updated_at
+							o["created_at"]=p.created_at
+							o["updated_by"]=p.updated_by
+							o["created_by"]=p.created_by
+							a<<o
+						end
+					}
+					a.sort_by! {|ip| ip["ipv4"].split('.').map{ |octet| octet.to_i} }
+					return a
+				end
+				
+			end
+
+			def generate_network_tree(root,start)
+				j=ActiveSupport::JSON
+				a = Array.new
+
+				if root
+					start.outgoing(:networks).depth(1).sort_by(&:neo_id).each do |node|
+						h = Hash.new
+					    h["text"] = "#{node.network_name}"
+					    h["iconCls"]="network-icon"
+					    h["id"]=Integer("#{node.neo_id}")
+					    h["vlanid"] ="#{node.vlanid}"
+					 	h["parentID"]="NaN"
+					    h["cls"]="#{node.class}"
+					    h["leaf"]=false
+					    a << h
+					end 
+					# a.sort!
+#					Rails.logger.warn(JSON.pretty_generate(a))
+					return a
+				else
+					Rails.logger.warn "Creating subtree #{start.neo_id}" 
+					iparr = get_ipnumbers(start)
+
+					return iparr
+				end
+			end
+
+
 			def index
 				a = Array.new
 
 				params.each do |key,value|
 					Rails.logger.warn "Param #{key}: #{value}"
 				end
+				if params[:node] == "NaN" && params[:whattoget].nil?
 
-				if params[:action] == "index" && params[:whattoget]=="getiplist"
+					render :json => []
+
+				elsif params[:whattoget] == "getdevicenetworktree"	
+					if params[:node] == "NaN"
+						start = Neo4j::Node.load(params[:locid])
+						root=true
+					else
+						start = Neo4j::Node.load(params[:node])
+						Rails.logger.warn "Getting location root tree #{start.to_json} #{start.class}"
+						if "#{start.class}" == "Location"
+							root = true
+						else
+							root=false
+						end
+					end
+					tree = generate_network_tree(root,start)
+					Rails.logger.warn "Returning tree"
+					Rails.logger.warn(JSON.pretty_generate(tree))
+					render :json => tree
+				elsif params[:action] == "index" && params[:whattoget]=="getiplist"
 					node = Neo4j::Node.load(params[:networkid])
 					iparr = Array.new
 					start = Integer("#{params[:start]}")

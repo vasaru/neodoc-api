@@ -217,41 +217,65 @@ Ext.define('NeoDoc.controller.Device', {
 
         var win=Ext.create('NeoDoc.view.network.selectIpWin');
 
-        var treegridstore = Ext.create('NeoDoc.store.NetworkIpTreeStore');
+        //var treegridstore = Ext.create('NeoDoc.store.NetworkIpTreeStore');
 
         var owner = button.ownerCt.ownerCt.ownerCt,
             ownerid = owner.id.split("-")[2],
             ownerlocationid = owner.ownerCt.ownerCt.id.split("-")[1],
             grid = button.ownerCt.ownerCt,
             gridstore = grid.getStore(),
+
             treegrid = win.down('#networkIpTreeGrid'),
+            treegridstore = treegrid.getStore(),
             gridform = win.down('#networkIpTreeGridForm');
 
 
-        treegrid.getView().store = treegridstore;
-
-
-        treegridstore.getRootNode().setId(ownerlocationid);
-
+        //    treegrid.getView().store = treegridstore;
 
         treegridstore.getProxy().extraParams.whattoget='getdevicenetworktree';
         treegridstore.getProxy().extraParams.deviceid=ownerid;
         treegridstore.getProxy().extraParams.locid=ownerlocationid;
 
-        treegrid.getView().getStore().load();
+        treegridstore.load();
+
+
+        // Create new store
+        /*
+        var newRootNode =
+        {
+        id: ownerlocationid,
+        expanded: true,
+        leaf:false,
+        text: "Root",
+        children: treegridstore.data
+        };
+
+
+        */
+        // Use root of new store
+        //  treegrid.setRootNode(newRootNode);
+
+        //	treegridstore.getRootNode().setId(ownerlocationid);
 
 
 
+        win.show();
+
+        console.log('Window opened');
+        //	treegridstore.load();
+
+
+        /*
         treegridstore.load({
-            callback : function(records, operation, success) {
-                console.log(records); 
-                win.show();
-            }
+        callback : function(records, operation, success) {
+        console.log(records); 
+        win.show();
+        }
         });
 
 
 
-
+        */
     },
 
     onNewdevicetab: function(record) {
@@ -281,10 +305,12 @@ Ext.define('NeoDoc.controller.Device', {
 
             maintab.setLoading(true);
 
-
             var devstore = Ext.create('NeoDoc.store.DeviceFolderStore');
-            devstore.storeId = 'DeviceFolderStore-'+record.parentId;
-            devstore.defaultRootId = record.parentId;
+
+            devstore.storeId= 'DeviceFolderStore-'+record.parentId;
+            devstore.defaultRootId= record.parentId;
+
+            devstore.removeAll();
 
 
             var devfoldertab = Ext.create('NeoDoc.view.network.MainTabPanel', {
@@ -328,6 +354,7 @@ Ext.define('NeoDoc.controller.Device', {
                 ]
             });
 
+            devfoldergrid.getView().id = 'DevFolderTab-GridView'+record.parentId;
 
 
             devstore.getProxy().extraParams.whattoget='getlocationdevices';

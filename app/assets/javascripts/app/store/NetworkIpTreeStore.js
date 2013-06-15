@@ -30,7 +30,7 @@ Ext.define('NeoDoc.store.NetworkIpTreeStore', {
             defaultRootId: 'src',
             proxy: {
                 type: 'ajax',
-                url: '/api/trees',
+                url: '/api/networks',
                 headers: {
                     Accept: 'application/vnd.neodocapi.v1'
                 },
