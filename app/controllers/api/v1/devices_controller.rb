@@ -148,6 +148,12 @@ module Api
 				end
 			end
 
+			def get_locationid(dev)
+				locid = Array.new		
+				dev.both().depth(:all).each{|n| if "#{n.class}" == "Location" then puts locid << n.neo_id end }
+				return locid.first
+			end
+
 			def getsubitems(node,targetclass)
 				a = Array.new
 				b = Array.new
@@ -185,6 +191,7 @@ module Api
 			    		}
 			    	}
 			    end
+
 			    return b
 	      	end
 
@@ -229,6 +236,7 @@ module Api
 						h["ports"]=get_ports(dev)
 						h["company"]=get_company(dev)
 						h["operatingsystem"]=get_os(dev)
+						h["locationid"]=get_locationid(dev)
 						h["osversion"]=get_osversion(dev)
 						h["leaf"]=true
 						if devh[dev.devicetype] then
@@ -255,31 +263,39 @@ module Api
 					start = Integer("#{params[:start]}")
 					limit = Integer("#{params[:limit]}")
 					count = 0
-					getsubitems(node,["device"]).each{|dev|
-						createuser = Neo4j::Node.load(dev.created_by).email
-						updateuser = Neo4j::Node.load(dev.updated_by).email
-						h = Hash.new
-						h["name"]=dev.name
-						h["id"]=Integer(dev.neo_id)
-						h["cls"]="Device"
-						h["devicetype"]=dev.devicetype
-						h["model"]="#{dev.model}"
-						h["serialnr"]=dev.serialnr
-						h["label"]=dev.label
-						h["version"]=dev.version
-						h["description"]=dev.description
-						h["updated_at"] ="#{dev.updated_at}"
-						h["updated_by"] ="#{updateuser}"
-						h["created_at"] ="#{dev.created_at}"
-						h["created_by"] ="#{createuser}"
-						h["parts"]=get_parts(dev)
-						h["ipnumbers"]=get_ipnumbers(dev)
-						h["ports"]=get_ports(dev)
-						h["company"]=get_company(dev)
-						h["operatingsystem"]=get_os(dev)
-						h["osversion"]=get_osversion(dev)
-						a << h
+				    devs = getsubitems(node,["device"])
+#			        Rails.logger.warn "#{devs.each{|d| puts d["device"]["neo_id"]}}"			    				
+#				    devs.uniq!{|d| d["device"].neo_id}
 
+					ids = Array.new
+					devs.each{|dev|
+						if !ids.include?(Integer(dev.neo_id))
+							createuser = Neo4j::Node.load(dev.created_by).email
+							updateuser = Neo4j::Node.load(dev.updated_by).email
+							h = Hash.new
+							h["name"]=dev.name
+							h["id"]=Integer(dev.neo_id)
+							h["cls"]="Device"
+							h["devicetype"]=dev.devicetype
+							h["model"]="#{dev.model}"
+							h["serialnr"]=dev.serialnr
+							h["label"]=dev.label
+							h["version"]=dev.version
+							h["description"]=dev.description
+							h["updated_at"] ="#{dev.updated_at}"
+							h["updated_by"] ="#{updateuser}"
+							h["created_at"] ="#{dev.created_at}"
+							h["created_by"] ="#{createuser}"
+							h["parts"]=get_parts(dev)
+							h["ipnumbers"]=get_ipnumbers(dev)
+							h["ports"]=get_ports(dev)
+							h["company"]=get_company(dev)
+							h["operatingsystem"]=get_os(dev)
+							h["osversion"]=get_osversion(dev)
+							h["locationid"]=get_locationid(dev)
+							a << h
+							ids << Integer(dev.neo_id)
+						end
 					}
 					puts JSON.pretty_generate(a)
 					render :json => a
@@ -331,6 +347,7 @@ module Api
 					h["company"]=get_company(dev)
 					h["operatingsystem"]=get_os(dev)
 					h["osversion"]=get_osversion(dev)
+					h["locationid"]=get_locationid(dev)					
 					puts JSON.pretty_generate(a)
 					render :json => h
 				end

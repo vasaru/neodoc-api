@@ -71,6 +71,11 @@ module Api
 				end
 			end
 
+			def get_locationid(dev)
+				locid = Array.new		
+				dev.both().depth(:all).each{|n| if "#{n.class}" == "Location" then puts locid << n.neo_id end }
+				return locid.first
+			end
 
 			def index
 				a = Array.new
@@ -84,7 +89,12 @@ module Api
 
 				elsif params[:whattoget] == "getdevicenetworktree"	
 					if params[:node] == "NaN"
-						start = Neo4j::Node.load(params[:locid])
+						dev=Neo4j::Node.load(params[:deviceid])
+						Rails.logger.warn "Getting network root tree for #{dev.to_json}"
+						startid = get_locationid(dev)
+						Rails.logger.warn "Getting networks for location #{startid}"
+
+						start = Neo4j::Node.load(startid)
 						root=true
 					else
 						start = Neo4j::Node.load(params[:node])

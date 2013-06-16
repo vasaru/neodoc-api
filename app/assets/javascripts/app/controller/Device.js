@@ -69,7 +69,7 @@ Ext.define('NeoDoc.controller.Device', {
         }
     },
 
-    onGridpanelItemDblClick: function(dataview, record, item, index, e, eOpts) {
+    onDeviceShowFromFolder: function(dataview, record, item, index, e, eOpts) {
         console.log("Double click");
         console.log(record);
 
@@ -83,123 +83,126 @@ Ext.define('NeoDoc.controller.Device', {
 
             maintab.setLoading(true);
 
+            var generaltab = this.createDeviceDisplayTab(record.data,false);
+
+            /*
             var generaltab = Ext.create('Ext.panel.Panel', {
-                title: 'Device - '+record.data.name,
-                id: 'DeviceTab-GeneralPanel-'+record.data.id,
-                itemId: 'DeviceTab-GeneralPanel-'+record.data.id,
-                cls: 'Device',
-                layout: {
-                    type: 'accordion'
-                }
+            title: 'Device - '+record.data.name,
+            id: 'DeviceTab-GeneralPanel-'+record.data.id,
+            itemId: 'DeviceTab-GeneralPanel-'+record.data.id,
+            cls: 'Device',
+            layout: {
+            type: 'accordion'
+            }
             });
 
 
 
             var generalinfo = Ext.create('NeoDoc.view.device.GeneralPanel', {
-                title: 'General Info',
-                id: 'DeviceTab-GeneralInfoPanel-'+record.data.id,
-                itemId: 'DeviceTab-GeneralInfoPanel-'+record.data.id,
-                cls: 'Device',
-                resizeable: true
+            title: 'General Info',
+            id: 'DeviceTab-GeneralInfoPanel-'+record.data.id,
+            itemId: 'DeviceTab-GeneralInfoPanel-'+record.data.id,
+            cls: 'Device',
+            resizeable: true
             });
 
             generaltab.add(generalinfo);
 
             if(record.data.ipnumbers) {
-                var netstore = Ext.create('NeoDoc.store.DeviceNetworkInfoStore');
-                netstore.storeId = 'DeviceNetworkInfoStore-'+record.data.id;
+            var netstore = Ext.create('NeoDoc.store.DeviceNetworkInfoStore');
+            netstore.storeId = 'DeviceNetworkInfoStore-'+record.data.id;
 
 
-                var ippanel = Ext.create('NeoDoc.view.device.IpNumberPanel', {
-                    title: 'IpNumbers',
-                    id: 'DeviceTab-Ipnumber-'+record.data.id,
-                    itemId: 'DeviceTab-Ipnumber-'+record.data.id,
-                    cls: 'Device',
-                    closable: false,
-                    layout: {
-                        type: 'border'
-                    }
-                });
+            var ippanel = Ext.create('NeoDoc.view.device.IpNumberPanel', {
+            title: 'IpNumbers',
+            id: 'DeviceTab-Ipnumber-'+record.data.id,
+            itemId: 'DeviceTab-Ipnumber-'+record.data.id,
+            cls: 'Device',
+            closable: false,
+            layout: {
+            type: 'border'
+            }
+            });
 
 
-                var ipgrid = Ext.create('NeoDoc.view.device.IpNumberGrid', {
-                    title: 'IpNumberGrid',
-                    region: 'center',
-                    flex: 1,
-                    id: 'DeviceTab-IpnumberGrid-'+record.data.id,
-                    cls: 'Device',
-                    store: netstore,
-                    closable: false,
-                    dockedItems: [
-                    {
-                        xtype: 'pagingtoolbar',
-                        itemId: 'IpNumberGridToolbar',
-                        dock: 'bottom',
-                        displayInfo: true,
-                        store: netstore,
-                        items: [
-                        {
-                            xtype: 'button',
-                            itemId: 'adddeviceipaddressbtn',
-                            iconCls: 'network-icon',
-                            text: 'Add IP Address',
-                            action: 'deviceaddipaddress'
-                        }
-                        ]
-                    }
-                    ]
-                });        
+            var ipgrid = Ext.create('NeoDoc.view.device.IpNumberGrid', {
+            title: 'IpNumberGrid',
+            region: 'center',
+            flex: 1,
+            id: 'DeviceTab-IpnumberGrid-'+record.data.id,
+            cls: 'Device',
+            store: netstore,
+            closable: false,
+            dockedItems: [
+            {
+            xtype: 'pagingtoolbar',
+            itemId: 'IpNumberGridToolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            store: netstore,
+            items: [
+            {
+            xtype: 'button',
+            itemId: 'adddeviceipaddressbtn',
+            iconCls: 'network-icon',
+            text: 'Add IP Address',
+            action: 'deviceaddipaddress'
+            }
+            ]
+            }
+            ]
+            });        
 
-                var netinfopanel = Ext.create('NeoDoc.view.device.NetworkInfoPanel', {
-                    title: 'Network Info',
-                    region: 'south',
-                    flex: 2,
-                    id: 'DeviceTab-Info-'+record.data.id,
-                    itemId: 'DeviceTab-Info-'+record.data.id,
-                    cls: 'Device',
-                    closable: false
-                });
+            var netinfopanel = Ext.create('NeoDoc.view.device.NetworkInfoPanel', {
+            title: 'Network Info',
+            region: 'south',
+            flex: 2,
+            id: 'DeviceTab-Info-'+record.data.id,
+            itemId: 'DeviceTab-Info-'+record.data.id,
+            cls: 'Device',
+            closable: false
+            });
 
-                ippanel.add(ipgrid);
-                ippanel.add(netinfopanel);
-
-
-                netstore.getProxy().extraParams.whattoget='getdevicenetwork';
-                netstore.getProxy().extraParams.deviceid=record.data.id;
-
-                netstore.load({
-                    callback : function(records, operation, success) {
-                        console.log(records); 
-                        netinfopanel.data = record.data.ipnumbers[0].network;
-                        netinfopanel.update(record.data.ipnumbers[0].network);
-                    }
-                });
+            ippanel.add(ipgrid);
+            ippanel.add(netinfopanel);
 
 
-                generaltab.add(ippanel);
+            netstore.getProxy().extraParams.whattoget='getdevicenetwork';
+            netstore.getProxy().extraParams.deviceid=record.data.id;
+
+            netstore.load({
+            callback : function(records, operation, success) {
+            console.log(records); 
+            netinfopanel.data = record.data.ipnumbers[0].network;
+            netinfopanel.update(record.data.ipnumbers[0].network);
+            }
+            });
+
+
+            generaltab.add(ippanel);
 
             }    
 
 
 
             generaltab.add(Ext.create('Ext.panel.Panel', {
-                title: 'Comments',
-                id: 'DeviceTab-GeneralTestPanel-'+record.data.id,
-                itemId: 'DeviceTab-GeneralTestPanel-'+record.data.id,
-                cls: 'Device'
+            title: 'Comments',
+            id: 'DeviceTab-GeneralTestPanel-'+record.data.id,
+            itemId: 'DeviceTab-GeneralTestPanel-'+record.data.id,
+            cls: 'Device'
 
             }));
 
             generaltab.add(Ext.create('Ext.panel.Panel', {
-                title: 'Related documents',
-                id: 'DeviceTab-GeneralDocumentPanel-'+record.data.id,
-                itemId: 'DeviceTab-GeneralDocumentPanel-'+record.data.id,
-                cls: 'Device'
+            title: 'Related documents',
+            id: 'DeviceTab-GeneralDocumentPanel-'+record.data.id,
+            itemId: 'DeviceTab-GeneralDocumentPanel-'+record.data.id,
+            cls: 'Device'
 
             }));
 
             generalinfo.data = record.data;
-            generalinfo.update(record.data);
+            generalinfo.update(record.data); */
 
             activetab.add(generaltab);
 
@@ -222,7 +225,7 @@ Ext.define('NeoDoc.controller.Device', {
 
         var owner = button.ownerCt.ownerCt.ownerCt,
             ownerid = owner.id.split("-")[2],
-            ownerlocationid = owner.ownerCt.ownerCt.id.split("-")[1],
+            //    ownerlocationid = owner.ownerCt.ownerCt.id.split("-")[1],
             grid = button.ownerCt.ownerCt,
             gridstore = grid.getStore(),
 
@@ -235,7 +238,7 @@ Ext.define('NeoDoc.controller.Device', {
 
         treegridstore.getProxy().extraParams.whattoget='getdevicenetworktree';
         treegridstore.getProxy().extraParams.deviceid=ownerid;
-        treegridstore.getProxy().extraParams.locid=ownerlocationid;
+        // treegridstore.getProxy().extraParams.locid=ownerlocationid;
 
         treegridstore.load();
 
@@ -325,6 +328,35 @@ Ext.define('NeoDoc.controller.Device', {
             maintab = me.getMainTabPanel();
 
 
+        var data,
+            generalTab;
+
+
+        Ext.Ajax.request({
+            url: '/api/devices',
+            params: {
+                action: "index",
+                whattoget: "getdevice",
+                deviceid: record.id
+            },
+            headers: {'Accept':'application/vnd.neodocapi.v1' },
+            method: 'GET',
+            success: function(result, action) {
+                console.log(Ext.decode(result.responseText));
+                data = Ext.decode(result.responseText);
+                generalTab = me.createDeviceDisplayTab(data,true);
+                maintab.add(generalTab);
+
+            },
+            failure: function(result, action) {
+                Ext.Msg.alert('Failed to get device!\n\n'+result);
+                win.setLoading(false);
+            }
+        });
+
+
+
+
 
 
     },
@@ -367,7 +399,7 @@ Ext.define('NeoDoc.controller.Device', {
                     ptype: 'rowexpander',
                     rowBodyTpl : new Ext.XTemplate(
                     '<span><p><b>OS:</b><tpl for="operatingsystem">{name}</tpl> <tpl for="osversion">{name}</tpl></p></span>',
-                    '<span><b>IP Address:</b> <tpl for="ipnumbers">{ipv4}</tpl></span>'
+                    '<span><b>IP Address:</b> <tpl for="ipnumbers">{ipv4} </tpl></span>'
 
                     )
 
@@ -426,13 +458,140 @@ Ext.define('NeoDoc.controller.Device', {
 
     },
 
+    createDeviceDisplayTab: function(record, closeabletab) {
+        console.log(record);
+
+
+        var generaltab = Ext.create('Ext.panel.Panel', {
+            title: 'Device - '+record.name,
+            id: 'DeviceTab-GeneralPanel-'+record.id,
+            itemId: 'DeviceTab-GeneralPanel-'+record.id,
+            cls: 'Device',
+            closeable: closeabletab, 
+            layout: {
+                type: 'accordion'
+            }
+        });
+
+
+
+        var generalinfo = Ext.create('NeoDoc.view.device.GeneralPanel', {
+            title: 'General Info',
+            id: 'DeviceTab-GeneralInfoPanel-'+record.id,
+            itemId: 'DeviceTab-GeneralInfoPanel-'+record.id,
+            cls: 'Device',
+            resizeable: true
+        });
+
+        generaltab.add(generalinfo);
+
+        if(record.ipnumbers) {
+            var netstore = Ext.create('NeoDoc.store.DeviceNetworkInfoStore');
+            netstore.storeId = 'DeviceNetworkInfoStore-'+record.id;
+
+
+            var ippanel = Ext.create('NeoDoc.view.device.IpNumberPanel', {
+                title: 'IpNumbers',
+                id: 'DeviceTab-Ipnumber-'+record.id,
+                itemId: 'DeviceTab-Ipnumber-'+record.id,
+                cls: 'Device',
+                closable: false,
+                layout: {
+                    type: 'border'
+                }
+            });
+
+
+            var ipgrid = Ext.create('NeoDoc.view.device.IpNumberGrid', {
+                title: 'IpNumberGrid',
+                region: 'center',
+                flex: 1,
+                id: 'DeviceTab-IpnumberGrid-'+record.id,
+                cls: 'Device',
+                store: netstore,
+                closable: false,
+                dockedItems: [
+                {
+                    xtype: 'pagingtoolbar',
+                    itemId: 'IpNumberGridToolbar',
+                    dock: 'bottom',
+                    displayInfo: true,
+                    store: netstore,
+                    items: [
+                    {
+                        xtype: 'button',
+                        itemId: 'adddeviceipaddressbtn',
+                        iconCls: 'network-icon',
+                        text: 'Add IP Address',
+                        action: 'deviceaddipaddress'
+                    }
+                    ]
+                }
+                ]
+            });        
+
+            var netinfopanel = Ext.create('NeoDoc.view.device.NetworkInfoPanel', {
+                title: 'Network Info',
+                region: 'south',
+                flex: 2,
+                id: 'DeviceTab-Info-'+record.id,
+                itemId: 'DeviceTab-Info-'+record.id,
+                cls: 'Device',
+                closable: false
+            });
+
+            ippanel.add(ipgrid);
+            ippanel.add(netinfopanel);
+
+
+            netstore.getProxy().extraParams.whattoget='getdevicenetwork';
+            netstore.getProxy().extraParams.deviceid=record.id;
+
+            netstore.load({
+                callback : function(records, operation, success) {
+                    console.log(records); 
+                    netinfopanel.data = record.ipnumbers[0].network;
+                    netinfopanel.update(record.ipnumbers[0].network);
+                }
+            });
+
+
+            generaltab.add(ippanel);
+
+        }    
+
+
+
+        generaltab.add(Ext.create('Ext.panel.Panel', {
+            title: 'Comments',
+            id: 'DeviceTab-GeneralTestPanel-'+record.id,
+            itemId: 'DeviceTab-GeneralTestPanel-'+record.id,
+            cls: 'Device'
+
+        }));
+
+        generaltab.add(Ext.create('Ext.panel.Panel', {
+            title: 'Related documents',
+            id: 'DeviceTab-GeneralDocumentPanel-'+record.id,
+            itemId: 'DeviceTab-GeneralDocumentPanel-'+record.id,
+            cls: 'Device'
+
+        }));
+
+        generalinfo.data = record;
+        generalinfo.update(record);
+
+        return generaltab;
+
+    },
+
     init: function(application) {
         this.control({
             "devicecreatewindow button[action=newdevice]": {
                 click: this.onCreateDevice
             },
             "#devfoldertabgrid": {
-                itemdblclick: this.onGridpanelItemDblClick
+                itemdblclick: this.onDeviceShowFromFolder
             },
             "#IpNumberGridToolbar button[action=deviceaddipaddress]": {
                 click: this.onAddDeviceIpAddress

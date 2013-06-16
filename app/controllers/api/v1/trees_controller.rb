@@ -132,20 +132,24 @@ module Api
 						end
 					end
 					devs = alttree(start,["device"])
+					ids = Array.new
 					devs.each{|node|
-						h = Hash.new
-					    h["text"] = "#{node.name} (#{node.devicetype})"
-					    if node.devicetype == "VM"
-					    	h["iconCls"]="vm-icon"
-					    else
-					    	h["iconCls"]="device-icon"
-					    end
-					    h["id"]=Integer("#{node.neo_id}")
-					    h["parentID"]=Integer("#{start.neo_id}")
-					    h["parentName"]="#{start.name}"
-					    h["cls"]="#{node.class}"
-					    h["leaf"]=true
-					    devarr << h
+						if !ids.include?(Integer(node.neo_id))
+							h = Hash.new
+						    h["text"] = "#{node.name} (#{node.devicetype})"
+						    if node.devicetype == "VM"
+						    	h["iconCls"]="vm-icon"
+						    else
+						    	h["iconCls"]="device-icon"
+						    end
+						    h["id"]=Integer("#{node.neo_id}")
+						    h["parentID"]=Integer("#{start.neo_id}")
+						    h["parentName"]="#{start.name}"
+						    h["cls"]="#{node.class}"
+						    h["leaf"]=true
+						    devarr << h
+						    ids << Integer(node.neo_id)
+						end
 					}
 					
 					if (netarr.count>0)
@@ -201,13 +205,10 @@ module Api
 			def alttree(node,targetclass)
 				a = Array.new
 				b = Array.new
-#				Rails.logger.warn "alttre called with #{node.neo_id}, #{node.class} "
 
 		    	node._rels.each{|r|
 		    		if r.rel_type.to_s != "_all" && r[:rel_dir] =="out"
-#		    			Rails.logger.warn "       rel_type: #{r.rel_type}, rel_name: #{r[:rel_name]}, #{r[:rel_dir]} End node #{r.end_node.neo_id}" #{r.end_node.to_json}"
 		    			if node.neo_id == r.end_node.neo_id
-#							Rails.logger.warn "Found self relationship"
 						else
 		    				a << r.rel_type
 		    			end
@@ -219,24 +220,19 @@ module Api
 		    	end
 
 		    	a = a.uniq
-#		        Rails.logger.warn "Found rels #{a.to_json} #{targetclass}"
 
 		    	if a.size > 0 then
 			    	a.each{|r| 
 			    		node.outgoing(r).each{|n|
-#	        				Rails.logger.warn "Checking #{r} against #{targetclass}"			    				
 
 			    			if(targetclass.include?("#{r}"))
 		        				Rails.logger.warn "Found matching node #{n.to_json}"			    				
 			    				b << n
 			    			end
 			    			if n._rels.count > 1
-#								Rails.logger.warn "Found node #{n.neo_id}, #{n.class} "
-#								Rails.logger.warn "Calling alttree again"
 								c = alttree(n,targetclass)
 								if c!=nil
 									b=b+c
-									# a = a.uniq
 								end
 							end
 
@@ -244,18 +240,13 @@ module Api
 			    	}
 			    end
 			    return b
-
-		    	
-#			        if n[:rel_name]
-#			        	Rails.logger.warn "Find outgoing rel with rel_type #{n.rel_type}"
-#			         	rel = n.rel_type
-#		          	node.outgoing(rel).depth(1).each do |out|
-#			            Rails.logger.warn "Found node #{out.to_json}"
-#		         	end
-#		        end
 	      	end
 				
-
+			def get_locationid(dev)
+				locid = Array.new		
+				dev.both().depth(:all).each{|n| if "#{n.class}" == "Location" then puts locid << n.neo_id end }
+				return locid.first
+			end
 
 			def index
 
@@ -268,7 +259,10 @@ module Api
 					
 				if params[:whattoget] == "getdevicenetworktree"	
 					if params[:node] == "NaN"
-						start = Neo4j::Node.load(params[:locid])
+						startid = get_locationid(Neo4j::Node.load(params[:device]))
+						Rails.logger.warn "Getting network root tree #{startid}"
+
+						start = Neo4j::Node.load(startid)
 						root=true
 					else
 						start = Neo4j::Node.load(params[:node])
