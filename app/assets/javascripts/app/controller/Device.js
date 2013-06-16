@@ -47,7 +47,8 @@ Ext.define('NeoDoc.controller.Device', {
                 url: '/api/devices',
                 params: Ext.encode({
                     formData1: form1.getValues(),
-                    formData2: form2.getValues()
+                    formData2: form2.getValues(),
+                    whattoadd: 'addnewdevice'
                 }),
                 headers: {'Accept':'application/vnd.neodocapi.v1' },
                 method: 'POST',
@@ -215,7 +216,7 @@ Ext.define('NeoDoc.controller.Device', {
     onAddDeviceIpAddress: function(button, e, eOpts) {
         console.log('In onAddDeviceIpAddress');
 
-        var win=Ext.create('NeoDoc.view.network.selectIpWin');
+        var win=Ext.create('NeoDoc.view.device.selectIpWin');
 
         //var treegridstore = Ext.create('NeoDoc.store.NetworkIpTreeStore');
 
@@ -225,9 +226,9 @@ Ext.define('NeoDoc.controller.Device', {
             grid = button.ownerCt.ownerCt,
             gridstore = grid.getStore(),
 
-            treegrid = win.down('#networkIpTreeGrid'),
+            treegrid = win.down('#deviceIpTreeGrid'),
             treegridstore = treegrid.getStore(),
-            gridform = win.down('#networkIpTreeGridForm');
+            gridform = win.down('#deviceIpTreeGridForm').getForm();
 
 
         //    treegrid.getView().store = treegridstore;
@@ -237,6 +238,8 @@ Ext.define('NeoDoc.controller.Device', {
         treegridstore.getProxy().extraParams.locid=ownerlocationid;
 
         treegridstore.load();
+
+        gridform.findField('pidId').setValue(ownerid);
 
 
         // Create new store
@@ -276,6 +279,42 @@ Ext.define('NeoDoc.controller.Device', {
 
 
         */
+    },
+
+    onDeviceIpTreeSubmitFn: function(button, e, eOpts) {
+        console.log("on Device Submit");
+
+
+
+        var me = this,
+            win = Ext.getCmp('deviceselctipwin'),
+            form = win.down('#deviceIpTreeGridForm').getForm();
+
+        if (form.isValid()) {    
+            win.setLoading('Submitting...');
+            Ext.Ajax.request({
+                url: '/api/devices',
+                params: Ext.encode({
+                    formData: form.getValues(),
+                    whattoadd: 'addipaddress'
+                }),
+                headers: {'Accept':'application/vnd.neodocapi.v1' },
+                method: 'POST',
+                success: function(result, action) {
+                    Ext.Msg.alert('Added IP to Device successfully!');
+                    win.setLoading(false);
+                    win.destroy();
+                    /*            var grid = Ext.getCmp(JSON.parse(action.params).formData1.callerid);
+                    grid.setLoading(true);
+                    grid.getStore().reload();
+                    grid.setLoading(false); */
+                },
+                failure: function(result, action) {
+                    Ext.Msg.alert('Failed to add IP device!\n\n'+result);
+                    win.setLoading(false);
+                }
+            });
+        }
     },
 
     onNewdevicetab: function(record) {
@@ -397,6 +436,9 @@ Ext.define('NeoDoc.controller.Device', {
             },
             "#IpNumberGridToolbar button[action=deviceaddipaddress]": {
                 click: this.onAddDeviceIpAddress
+            },
+            "#deviceIpTreeGridFormToolBar button[action=addipaddressbtn]": {
+                click: this.onDeviceIpTreeSubmitFn
             }
         });
 

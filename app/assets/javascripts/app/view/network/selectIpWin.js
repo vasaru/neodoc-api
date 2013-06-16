@@ -34,7 +34,7 @@ Ext.define('NeoDoc.view.network.selectIpWin', {
                     xtype: 'treepanel',
                     dock: 'left',
                     height: 250,
-                    id: 'networkIpTreeGrid',
+                    itemId: 'networkIpTreeGrid',
                     width: 283,
                     title: 'Network Tree',
                     store: 'NetworkIpTreeStore',
@@ -54,7 +54,13 @@ Ext.define('NeoDoc.view.network.selectIpWin', {
                             dataIndex: 'vlanid',
                             text: 'VLAN'
                         }
-                    ]
+                    ],
+                    listeners: {
+                        selectionchange: {
+                            fn: me.onNetworkIpTreeGridSelectionChange,
+                            scope: me
+                        }
+                    }
                 }
             ],
             items: [
@@ -67,28 +73,32 @@ Ext.define('NeoDoc.view.network.selectIpWin', {
                     title: 'Add IP',
                     items: [
                         {
-                            xtype: 'textfield',
-                            anchor: '100%',
-                            fieldLabel: 'IP',
-                            name: 'newip'
-                        },
-                        {
-                            xtype: 'combobox',
-                            anchor: '100%',
-                            fieldLabel: 'NIC',
-                            name: 'nic'
-                        },
-                        {
-                            xtype: 'combobox',
-                            anchor: '100%',
-                            fieldLabel: 'Type',
-                            name: 'type'
-                        },
-                        {
-                            xtype: 'hiddenfield',
-                            anchor: '100%',
-                            fieldLabel: 'Label',
-                            name: 'ipid'
+                            xtype: 'fieldset',
+                            height: 120,
+                            margin: '0 0 0 10',
+                            title: 'IP Details',
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    fieldLabel: 'IP',
+                                    name: 'text'
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'NIC',
+                                    name: 'nic'
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Type',
+                                    name: 'type'
+                                },
+                                {
+                                    xtype: 'hiddenfield',
+                                    fieldLabel: 'Label',
+                                    name: 'ipid'
+                                }
+                            ]
                         }
                     ],
                     dockedItems: [
@@ -125,6 +135,24 @@ Ext.define('NeoDoc.view.network.selectIpWin', {
         });
 
         me.callParent(arguments);
+    },
+
+    onNetworkIpTreeGridSelectionChange: function(model, selected, eOpts) {
+        console.log("in Selection changed");
+
+        var rec = selected[0];
+
+        console.log(rec);
+        console.log(this);
+
+        var form = this.down('#networkIpTreeGridForm');
+
+        console.log(form);
+
+        if (rec) {
+            form.loadRecord(rec);
+        }
+
     }
 
 });
