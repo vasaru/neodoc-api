@@ -43,12 +43,19 @@ Ext.define('NeoDoc.controller.Authentication', {
             Ext.Ajax.request({
                 url: '/api/users/verify',
                 headers: {'Accept':'application/vnd.neodocapi.v1'},
-                method: 'POST',
+                method: 'GET',
                 params: {
+                    auth_token: Ext.decode(currentUserBase).auth_token
                 },
                 jsonData: {},
                 success: function(result, request ) {
                     console.log('Current User is properly logged in');
+                    me.currentUser = Ext.decode( currentUserBase ) ;
+                    //Verify session
+                    console.log("Fireing loggedin event");        
+                    // show the protected content
+                    me.application.fireEvent('loggedin', me.currentUser);
+
                 },
                 failure: function(result, request ) {
                     console.log('Current User is not properly logged in');
@@ -56,9 +63,10 @@ Ext.define('NeoDoc.controller.Authentication', {
                     localStorage.removeItem('neodocUser');
                     //fieldset.setLoading( false ) ;
                     currentUserBase=null;
+                    //           	Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close the window?', showResult);
                     window.location.reload();
-                    //					var win = Ext.create('Neodoc.view.LoginWindow', {});
-                    //		        	win.show();
+                    var win = Ext.create('Neodoc.view.LoginWindow', {});
+                    win.show();
                 }
 
             });
@@ -68,37 +76,40 @@ Ext.define('NeoDoc.controller.Authentication', {
         if( currentUserBase === null){
             var win = Ext.create('NeoDoc.view.LoginWindow', {});
             win.show();
-        }else{
-            // decode the currentUserBase
-            me.currentUser = Ext.decode( currentUserBase ) ;
-            //Verify session
-
-            // show the protected content
-            me.application.fireEvent('loggedin', me.currentUser);
         }
+        /*
+        else{
+        console.log("Decoding userbase");
+        // decode the currentUserBase
+        me.currentUser = Ext.decode( currentUserBase ) ;
+        //Verify session
 
-        // TODO: Comment this out when enabling loggin
+        // show the protected content
+        me.application.fireEvent('loggedin', me.currentUser);
+    }
 
-        //me.application.fireEvent('loggedin', null);
+    // TODO: Comment this out when enabling loggin
 
-        this.control({
-            "loginwindow button[action=login]": {
-                click: this.onLoginClick
-            },
-            "tool[action=logout]": {
-                click: this.onLogoutClick
-            }
-        });
+    //me.application.fireEvent('loggedin', null);
+    */
+    this.control({
+        "loginwindow button[action=login]": {
+            click: this.onLoginClick
+        },
+        "tool[action=logout]": {
+            click: this.onLogoutClick
+        }
+    });
 
 
 
 
-        application.on({
-            loggedin: {
-                fn: this.onLoggedin,
-                scope: this
-            }
-        });
+    application.on({
+        loggedin: {
+            fn: this.onLoggedin,
+            scope: this
+        }
+    });
     },
 
     authenticateUser: function(data, fieldset) {

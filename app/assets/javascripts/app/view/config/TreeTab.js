@@ -35,6 +35,7 @@ Ext.define('NeoDoc.view.config.TreeTab', {
                     width: 150,
                     collapsed: false,
                     header: false,
+                    store: 'configStore',
                     viewConfig: {
 
                     }

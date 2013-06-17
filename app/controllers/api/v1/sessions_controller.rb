@@ -1,7 +1,7 @@
 module Api
   module V1
     class SessionsController < BaseApiController
-      before_filter :authenticate_user!, :except => [:create, :destroy ]
+      before_filter :authenticate_user!, :except => [:create, :destroy, :verify ]
       before_filter :ensure_params_exist, :except => [:say_hi, :destroy, :verify]
       respond_to :json
      

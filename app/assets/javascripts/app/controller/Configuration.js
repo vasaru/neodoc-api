@@ -32,6 +32,10 @@ Ext.define('NeoDoc.controller.Configuration', {
         var tab = treepanel.add(conftreetab);
 
 
+        //conftreetab.getStore().load();
+
+        //store.load();
+        //this.getStore('navTreeStore').load();
     },
 
     init: function(application) {
