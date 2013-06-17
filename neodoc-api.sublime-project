@@ -5,10 +5,6 @@
 		{
 			"follow_symlinks": true,
 			"path": "/home/henrik/Source/neodoc-api"
-		},
-		{
-			"follow_symlinks": true,
-			"path": "/home/henrik/Source/sencha/neodoc2/NeoDoc2"
 		}
 		
 	]

@@ -12,6 +12,7 @@ NeodocApi::Application.routes.draw do
         resources :operatingsystems
         resources :osvers
         resources :devices
+        resources :configurations
 
         devise_for :users
         match 'users/verify' => 'sessions#verify' , :as => :verify
