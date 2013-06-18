@@ -14,10 +14,10 @@ module Api
           resource.ensure_authentication_token!
           render :json=> {:success=>true, 
                           :auth_token=>resource.authentication_token, 
-                          :email=>resource.email
-#                          :sign_in_count=>resource.sign_in_count,
-#                          :current_sign_in_ip=>resource.current_sign_in_ip,
-#                          :username=>resource.username
+                          :email=>resource.email,
+                          :sign_in_count=>resource.sign_in_count,
+                          :current_sign_in_ip=>resource.current_sign_in_ip,
+                          :username=>resource.username
 
 #                          :role => resource.role.to_json
                   }

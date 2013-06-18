@@ -157,7 +157,7 @@ Ext.define('NeoDoc.controller.Location', {
     onLoggedin: function(userrecord) {
         console.log("In location onLoggedin");
 
-        Ext.create( "NeoDoc.view.MyViewport");
+        // Ext.create( "NeoDoc.view.MyViewport");
 
         var treepanel = this.getTreeTabPanel(),
             loctreetab = Ext.create('NeoDoc.view.location.Treetab', {});

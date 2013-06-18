@@ -21,6 +21,7 @@ Ext.define('NeoDoc.view.MyViewport', {
         'NeoDoc.view.MainTabPanel'
     ],
 
+    id: 'mainviewport',
     layout: {
         type: 'border'
     },
@@ -33,7 +34,12 @@ Ext.define('NeoDoc.view.MyViewport', {
                 {
                     xtype: 'panel',
                     region: 'north',
-                    height: 36,
+                    height: 50,
+                    bodyPadding: 20,
+                    bodyStyle: {
+                        'background-image': 'url(images/background2.png) !important'
+                    },
+                    header: false,
                     title: 'NeoDoc',
                     tools: [
                         {
@@ -53,10 +59,34 @@ Ext.define('NeoDoc.view.MyViewport', {
                 {
                     xtype: 'toolbar',
                     region: 'south',
-                    height: 37
+                    height: 37,
+                    items: [
+                        {
+                            xtype: 'tbfill'
+                        },
+                        {
+                            xtype: 'tbtext',
+                            itemId: 'loggedintext',
+                            tpl: [
+                                '<span class="loggedinuser">Logged in as {username} role </span>'
+                            ],
+                            text: 'My Text'
+                        },
+                        {
+                            xtype: 'tbspacer',
+                            width: 50
+                        },
+                        {
+                            xtype: 'button',
+                            action: 'logout',
+                            iconCls: 'logout_user',
+                            text: 'Logout'
+                        }
+                    ]
                 },
                 {
                     xtype: 'treetabpanel',
+                    collapsible: true,
                     region: 'west'
                 },
                 {

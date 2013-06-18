@@ -64,7 +64,7 @@ Ext.define('NeoDoc.controller.Authentication', {
                     //fieldset.setLoading( false ) ;
                     currentUserBase=null;
                     //           	Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close the window?', showResult);
-                    window.location.reload();
+                    // window.location.reload();
                     var win = Ext.create('Neodoc.view.LoginWindow', {});
                     win.show();
                 }
@@ -96,7 +96,7 @@ Ext.define('NeoDoc.controller.Authentication', {
         "loginwindow button[action=login]": {
             click: this.onLoginClick
         },
-        "tool[action=logout]": {
+        "button[action=logout]": {
             click: this.onLogoutClick
         }
     });
@@ -140,9 +140,12 @@ Ext.define('NeoDoc.controller.Authentication', {
                 var responseText=  result.responseText; 
                 var data = Ext.decode(responseText ); 
                 var currentUserObject = {
-                    'auth_token' : data['auth_token'] ,
-                    'email'				: data['email'],
-                    'role'				: Ext.decode( data['role'] ) 
+                    'auth_token' : data.auth_token,
+                    'email'				: data.email,
+                    'role'				: Ext.decode( data.role ),
+                    'username'			: data.username,
+                    'sign_in_count'		: data.sign_in_count,
+                    'current_sign_in_ip': data.current_sign_in_ip
                 };
 
                 localStorage.setItem('neodocUser', Ext.encode( currentUserObject ));
@@ -224,6 +227,21 @@ Ext.define('NeoDoc.controller.Authentication', {
     onLoggedin: function(userrecord) {
         console.log("in authentication loggedin");
 
+        Ext.create( "NeoDoc.view.MyViewport");
+
+
+        var txt = Ext.getCmp('mainviewport').down('#loggedintext');
+
+        txt.data = userrecord;
+
+        var user = userrecord.username;
+
+        console.log(txt);
+
+        txt.show();
+
+
+        txt.setText("Logged in as "+user+" role ");
 
     },
 

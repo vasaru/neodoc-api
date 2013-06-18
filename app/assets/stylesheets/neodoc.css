@@ -38,4 +38,8 @@
 	background-image: url(/images/icons/vmware/virtualmachine_detailed.png) !important;
 }
 
+.logout_user {
+ background-image: url(/images/icons/vmware/person.png) !important; 
+}
+
 
