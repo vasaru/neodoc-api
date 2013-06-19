@@ -31,7 +31,8 @@ module Api
         if resource
           render :json=> {:success=>true}
         else
-          render :json=> {:success=>false}
+           # render :json=> {:success=>false}
+          render :json=> {:success=>false, :message=>"Error with your login or password"}, :status=>401
         end
       end
 

@@ -54,6 +54,7 @@ Ext.define('NeoDoc.view.location.Treetab', {
                             action: 'newlocation',
                             id: 'newLocationBtn',
                             itemId: 'newLocationBtn',
+                            iconCls: 'location-icon',
                             text: 'New Location'
                         }
                     ]

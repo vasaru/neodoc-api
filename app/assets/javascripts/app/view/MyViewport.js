@@ -40,21 +40,7 @@ Ext.define('NeoDoc.view.MyViewport', {
                         'background-image': 'url(images/background2.png) !important'
                     },
                     header: false,
-                    title: 'NeoDoc',
-                    tools: [
-                        {
-                            xtype: 'tool',
-                            action: 'logout',
-                            tooltip: 'Logout',
-                            type: 'close'
-                        },
-                        {
-                            xtype: 'tool',
-                            action: 'refreshTree',
-                            tooltip: 'Reload tree',
-                            type: 'refresh'
-                        }
-                    ]
+                    title: 'NeoDoc'
                 },
                 {
                     xtype: 'toolbar',
@@ -65,16 +51,19 @@ Ext.define('NeoDoc.view.MyViewport', {
                             xtype: 'tbfill'
                         },
                         {
+                            xtype: 'tbseparator'
+                        },
+                        {
                             xtype: 'tbtext',
                             itemId: 'loggedintext',
-                            tpl: [
-                                '<span class="loggedinuser">Logged in as {username} role </span>'
-                            ],
                             text: 'My Text'
                         },
                         {
                             xtype: 'tbspacer',
                             width: 50
+                        },
+                        {
+                            xtype: 'tbseparator'
                         },
                         {
                             xtype: 'button',
@@ -86,11 +75,11 @@ Ext.define('NeoDoc.view.MyViewport', {
                 },
                 {
                     xtype: 'treetabpanel',
-                    collapsible: true,
                     region: 'west'
                 },
                 {
                     xtype: 'maintabpanel',
+                    hidden: false,
                     region: 'center'
                 }
             ]

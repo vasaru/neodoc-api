@@ -20,6 +20,7 @@ Ext.define('NeoDoc.view.TreeTabPanel', {
     id: 'treeTabPanel',
     itemId: 'treeTabPanel',
     width: 218,
+    collapsible: true,
     header: false,
     tabPosition: 'left',
 

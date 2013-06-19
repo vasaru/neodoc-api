@@ -14,6 +14,6 @@
  */
 
 Ext.define('NeoDoc.view.Viewport', {
-    extend: 'NeoDoc.view.MyViewport',
+    extend: 'NeoDoc.view.MyViewport1',
     renderTo: Ext.getBody()
 });

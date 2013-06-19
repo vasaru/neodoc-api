@@ -2,6 +2,8 @@ module Api
 	module V1
 		class NetworksController < ApplicationController
 
+		require 'ipaddr'
+
 			respond_to	:json
 			def get_device(node)
 				if node.outgoing(:device).count > 0 
@@ -115,9 +117,9 @@ module Api
 					start = Integer("#{params[:start]}")
 					limit = Integer("#{params[:limit]}")
 					count = 0
-					ips=node.outgoing(:ipnumbers)
 #					ips.sort_by! {|ip| ip.split('.').map{ |octet| octet.to_i} }
-					ips.each do |ip| 
+					
+					node.outgoing(:ipnumbers).sort_by(&:neo_id).each do |ip| 
 						createuser = Neo4j::Node.load(ip.created_by).email
 						updateuser = Neo4j::Node.load(ip.updated_by).email
 
@@ -160,7 +162,10 @@ module Api
 						c=Hash.new
 						c["success"] = true
 						c["totalCount"]=node.outgoing(:ipnumbers).count
-						c["ipnumbers"]=iparr.sort_by! {|ip| ip["ipv4"].split('.').map{ |octet| octet.to_i} }
+						# a.sort_by {|x| x.split(/\./).map { |ip| IPAddr.new ip }.sort_by { |ip| ip.hton }
+						c["ipnumbers"]=iparr.sort { |a,b| IPAddr.new( a["ipv4"] ) <=> IPAddr.new( b["ipv4"] ) } 
+						# c["ipnumbers"]=iparr.sort_by {|x| x["ipv4"].split(/\./).map{ |ip| IPAddr.new ip }.sort_by { |ip| ip.hton }}
+						# c["ipnumbers"]=iparr.sort_by! {|ip| ip["ipv4"].split('.').map{ |octet| octet.to_i} }
 #					    Rails.logger.warn(JSON.pretty_generate(c))
 						# Rails.logger.warn(JSON.pretty_generate(a))
 						render :json => c

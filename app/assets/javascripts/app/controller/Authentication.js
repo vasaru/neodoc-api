@@ -31,6 +31,39 @@ Ext.define('NeoDoc.controller.Authentication', {
         }
     ],
 
+    onLoginClick: function(button, e, eOpts) {
+        var me = this,
+            win = this.getLoginWindow(), 
+            form = win.items.items[0].getForm();
+
+        console.log('In onLoginClick');
+
+        var emailField = form.findField('email');
+        var passwordField = form.findField('password');
+        console.log('email:',emailField);				
+        me.authenticateUser({
+            user_login : {
+                email : emailField.getValue(),
+                password : passwordField.getValue()
+            }
+        }, null); 
+
+    },
+
+    onLogoutClick: function(button, e, eOpts) {
+        var me = this;		
+        me.getViewport().setLoading('Logging out...');		
+        me.destroyAuthentication();
+        // this could go to the localStorage. much more awesome 
+        // me.showLoginForm();
+        // window.location.reload(); 
+
+        // mask for user
+
+
+        // logout
+    },
+
     init: function(application) {
         var me = this;
 
@@ -61,12 +94,8 @@ Ext.define('NeoDoc.controller.Authentication', {
                     console.log('Current User is not properly logged in');
                     console.log(result);
                     localStorage.removeItem('neodocUser');
-                    //fieldset.setLoading( false ) ;
                     currentUserBase=null;
-                    //           	Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close the window?', showResult);
-                    // window.location.reload();
-                    var win = Ext.create('Neodoc.view.LoginWindow', {});
-                    win.show();
+                    window.location.reload();
                 }
 
             });
@@ -77,39 +106,25 @@ Ext.define('NeoDoc.controller.Authentication', {
             var win = Ext.create('NeoDoc.view.LoginWindow', {});
             win.show();
         }
-        /*
-        else{
-        console.log("Decoding userbase");
-        // decode the currentUserBase
-        me.currentUser = Ext.decode( currentUserBase ) ;
-        //Verify session
-
-        // show the protected content
-        me.application.fireEvent('loggedin', me.currentUser);
-    }
-
-    // TODO: Comment this out when enabling loggin
-
-    //me.application.fireEvent('loggedin', null);
-    */
-    this.control({
-        "loginwindow button[action=login]": {
-            click: this.onLoginClick
-        },
-        "button[action=logout]": {
-            click: this.onLogoutClick
-        }
-    });
 
 
 
 
-    application.on({
-        loggedin: {
-            fn: this.onLoggedin,
-            scope: this
-        }
-    });
+        this.control({
+            "loginwindow button[action=login]": {
+                click: this.onLoginClick
+            },
+            "button[action=logout]": {
+                click: this.onLogoutClick
+            }
+        });
+
+        application.on({
+            loggedin: {
+                fn: this.onLoggedin,
+                scope: this
+            }
+        });
     },
 
     authenticateUser: function(data, fieldset) {
@@ -164,41 +179,6 @@ Ext.define('NeoDoc.controller.Authentication', {
 
     },
 
-    onLoginClick: function(button, e, eOpts) {
-        var me = this,
-            win = this.getLoginWindow(), 
-            form = win.items.items[0].getForm();
-
-        console.log('In onLoginClick');
-
-        var emailField = form.findField('email');
-        var passwordField = form.findField('password');
-        console.log('email:',emailField);				
-        me.authenticateUser({
-            user_login : {
-                email : emailField.getValue(),
-                password : passwordField.getValue()
-            }
-        }, null); 
-
-    },
-
-    onLogoutClick: function(tool, e, eOpts) {
-        var me = this;		
-        me.getViewport().setLoading('Logging out...');		
-        me.destroyAuthentication();
-        // this could go to the localStorage. much more awesome 
-        // me.showLoginForm();
-        // window.location.reload(); 
-
-        // mask for user
-
-
-        // logout
-
-
-    },
-
     destroyAuthentication: function() {
         var me = this; 
         me.getViewport().setLoading( 'Logging out..' ) ;
@@ -227,7 +207,7 @@ Ext.define('NeoDoc.controller.Authentication', {
     onLoggedin: function(userrecord) {
         console.log("in authentication loggedin");
 
-        Ext.create( "NeoDoc.view.MyViewport");
+        Ext.create( "NeoDoc.view.MyViewport1");
 
 
         var txt = Ext.getCmp('mainviewport').down('#loggedintext');
@@ -242,7 +222,38 @@ Ext.define('NeoDoc.controller.Authentication', {
 
 
         txt.setText("Logged in as "+user+" role ");
+        var task = {
+            run: function(){
+                console.log('Running verifyUser task');
+                var currentUserBase = localStorage.getItem('neodocUser');
+                if (localStorage.getItem('neodocUser')) {
+                    Ext.Ajax.request({
+                        url: '/api/users/verify',
+                        headers: {'Accept':'application/vnd.neodocapi.v1'},
+                        method: 'GET',
+                        params: {
+                            auth_token: Ext.decode(currentUserBase).auth_token
+                        },
+                        jsonData: {},
+                        success: function(result, request ) {
+                            return true;
+                        },
+                        failure: function(result, request ) {
+                            console.log('Current User is not properly logged in');
+                            console.log(result);
+                            localStorage.removeItem('neodocUser');
+                            currentUserBase=null;
+                            window.location.reload();
+                        }
+                    });
+                }
+            },
+            interval: 60000 //60 second
+        }
 
+        console.log('Setting up task');
+        var runner = new Ext.util.TaskRunner();
+        runner.start(task); 
     },
 
     onRefreshClick: function(tool, e, eOpts) {

@@ -16,6 +16,10 @@
 Ext.define('NeoDoc.controller.Configuration', {
     extend: 'Ext.app.Controller',
 
+    stores: [
+        'configStore'
+    ],
+
     refs: [
         {
             ref: 'treeTabPanel',
@@ -31,6 +35,7 @@ Ext.define('NeoDoc.controller.Configuration', {
 
         var tab = treepanel.add(conftreetab);
 
+        conftreetab.down('#configTreePanel').getStore().load();
 
         //conftreetab.getStore().load();
 

@@ -30,7 +30,7 @@ Ext.define('NeoDoc.store.configStore', {
             defaultRootId: 'src',
             proxy: {
                 type: 'ajax',
-                url: '/api/configurations',
+                url: '/api/settings',
                 headers: {
                     Accept: 'application/vnd.neodocapi.v1'
                 },

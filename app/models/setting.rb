@@ -1,4 +1,4 @@
-class Configuration < Neo4j::Rails::Model
+class Setting < Neo4j::Rails::Model
   property :name, :type => String
   property :description, :type => String
   property :category, :type => String
