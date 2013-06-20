@@ -30,13 +30,15 @@ Ext.define('NeoDoc.controller.Configuration', {
     onLoggedin: function() {
 
         console.log("In configuration onLoggedin");
+
+        /*
         var treepanel = this.getTreeTabPanel(),
-            conftreetab = Ext.create('NeoDoc.view.config.TreeTab', {});
+        conftreetab = Ext.create('NeoDoc.view.config.TreeTab', {});
 
         var tab = treepanel.add(conftreetab);
 
         conftreetab.down('#configTreePanel').getStore().load();
-
+        */
         //conftreetab.getStore().load();
 
         //store.load();

@@ -73,7 +73,7 @@ Ext.define('NeoDoc.controller.Device', {
         console.log("Double click");
         console.log(record);
 
-        var maintab = this.getMainTabPanel(),
+        var maintab = Ext.getCmp('mainviewport').down('#locationtabpanel'),
             activetab = maintab.activeTab;
 
 
@@ -325,7 +325,7 @@ Ext.define('NeoDoc.controller.Device', {
         console.log(record);
 
         var me = this,
-            maintab = me.getMainTabPanel();
+            maintab = Ext.getCmp('mainviewport').down('#locationtabpanel');
 
 
         var data,
@@ -363,7 +363,7 @@ Ext.define('NeoDoc.controller.Device', {
 
     onNewdevicefoldertab: function(record) {
         var me = this,
-            maintab = me.getMainTabPanel();
+            maintab = Ext.getCmp('mainviewport').down('#locationtabpanel');
 
         console.log('in onNewdevicefoldertab');
         console.log(record);

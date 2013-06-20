@@ -207,7 +207,7 @@ Ext.define('NeoDoc.controller.Authentication', {
     onLoggedin: function(userrecord) {
         console.log("in authentication loggedin");
 
-        Ext.create( "NeoDoc.view.MyViewport1");
+        Ext.create( "NeoDoc.view.NeoViewPort");
 
 
         var txt = Ext.getCmp('mainviewport').down('#loggedintext');

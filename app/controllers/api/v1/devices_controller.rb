@@ -150,8 +150,13 @@ module Api
 
 			def get_locationid(dev)
 				locid = Array.new		
-				dev.both().depth(:all).each{|n| if "#{n.class}" == "Location" then puts locid << n.neo_id end }
-				return locid.first
+				dev.both().depth(:all).each{|n| 
+					if "#{n.class}" == "Location"
+						Rails.logger.warn "Returning #{n.neo_id}"
+						return n.neo_id 
+					end 
+				}
+				return nil
 			end
 
 			def getsubitems(node,targetclass)
@@ -266,9 +271,11 @@ module Api
 				    devs = getsubitems(node,["device"])
 #			        Rails.logger.warn "#{devs.each{|d| puts d["device"]["neo_id"]}}"			    				
 #				    devs.uniq!{|d| d["device"].neo_id}
-
+					Rails.logger.warn "Found #{devs.count} matches"
+					
 					ids = Array.new
 					devs.each{|dev|
+						Rails.logger.warn dev.to_json
 						if !ids.include?(Integer(dev.neo_id))
 							createuser = Neo4j::Node.load(dev.created_by).email
 							updateuser = Neo4j::Node.load(dev.updated_by).email

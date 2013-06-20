@@ -64,10 +64,10 @@ Ext.define('NeoDoc.controller.Network', {
 
     onNewnetworktab: function(record) {
         var me = this,
-            maintab = me.getMainTabPanel(),
+            maintab = Ext.getCmp('mainviewport').down('#locationtabpanel');
 
-            // store = me.getStore('IpnumberStore');
-            ipstore = Ext.create('NeoDoc.store.IpnumberStore');
+        // store = me.getStore('IpnumberStore');
+        ipstore = Ext.create('NeoDoc.store.IpnumberStore');
         ipstore.storeid = 'Network-IpStore-'+record.id;
 
         netstore = Ext.create('NeoDoc.store.NetworkInfoStore');

@@ -157,18 +157,30 @@ Ext.define('NeoDoc.controller.Location', {
     onLoggedin: function(userrecord) {
         console.log("In location onLoggedin");
 
-        // Ext.create( "NeoDoc.view.MyViewport");
+        var treepanel = Ext.create('NeoDoc.view.location.Treetab', {}),
+            loctreetab = Ext.create('NeoDoc.view.MainTabPanel', {});
 
-        var treepanel = this.getTreeTabPanel(),
-            loctreetab = Ext.create('NeoDoc.view.location.Treetab', {});
+        var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
 
-        var tab = treepanel.add(loctreetab);
-        treepanel.setActiveTab(tab);
+        console.log(cont);
+
+        cont.add({
+            xtype: 'locationtreetab',
+            region: 'west',
+            width: 167,
+            layout: {
+                type: 'fit'
+            }
+        });
+
+        cont.add({
+            xtype: 'maintabpanel',
+            itemid: 'locationtabpanel',
+            id: 'locationtabpanel',
+            region: 'center'
+        });
 
 
-        //loctreetab.store=store;
-        //store.load();
-        //this.getStore('navTreeStore').load();
 
     },
 

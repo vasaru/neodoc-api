@@ -75,8 +75,13 @@ module Api
 
 			def get_locationid(dev)
 				locid = Array.new		
-				dev.both().depth(:all).each{|n| if "#{n.class}" == "Location" then puts locid << n.neo_id end }
-				return locid.first
+				dev.both().depth(:all).each{|n| 
+					if "#{n.class}" == "Location"
+						Rails.logger.warn "Returning #{n.neo_id}"
+						return n.neo_id 
+					end 
+				}
+				return nil
 			end
 
 			def index
