@@ -18,6 +18,8 @@ Ext.define('NeoDoc.view.location.TreePanel', {
     alias: 'widget.locationtreepanel',
 
     height: 250,
+    id: 'locationtreepanel',
+    itemId: 'locationtreepanel',
     width: 400,
     title: 'Location',
 

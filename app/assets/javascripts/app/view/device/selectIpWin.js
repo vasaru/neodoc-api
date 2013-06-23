@@ -139,8 +139,8 @@ Ext.define('NeoDoc.view.device.selectIpWin', {
                                 },
                                 {
                                     xtype: 'button',
-                                    formBind: true,
                                     action: 'addipaddressbtn',
+                                    formBind: true,
                                     iconCls: 'submit-btn',
                                     text: 'Submit'
                                 }

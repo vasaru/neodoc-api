@@ -60,6 +60,8 @@ Ext.define('NeoDoc.view.NeoViewPort', {
                 {
                     xtype: 'panel',
                     region: 'west',
+                    id: 'mainNavigation',
+                    itemId: 'mainNavigation',
                     padding: '',
                     width: 185,
                     bodyPadding: 10,
@@ -79,6 +81,8 @@ Ext.define('NeoDoc.view.NeoViewPort', {
                         {
                             xtype: 'menu',
                             floating: false,
+                            id: 'mainMenu',
+                            itemId: 'mainMenu',
                             minWidth: 160,
                             width: 160,
                             collapsible: false,
@@ -86,10 +90,14 @@ Ext.define('NeoDoc.view.NeoViewPort', {
                             items: [
                                 {
                                     xtype: 'menuitem',
+                                    itemId: 'MainMenuLocationBtn',
+                                    iconCls: 'location-icon',
                                     text: 'Locations'
                                 },
                                 {
                                     xtype: 'menuitem',
+                                    itemId: 'MainMenuSettingsBtn',
+                                    iconCls: 'gear-icon',
                                     text: 'Settings'
                                 },
                                 {

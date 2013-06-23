@@ -23,6 +23,7 @@ Ext.define('NeoDoc.view.location.mainpanel', {
     ],
 
     height: 706,
+    itemId: 'locationmainpanel',
     width: 808,
     layout: {
         type: 'border'
@@ -37,11 +38,11 @@ Ext.define('NeoDoc.view.location.mainpanel', {
             items: [
                 {
                     xtype: 'locationtreepanel',
-                    region: 'west',
                     width: 196,
                     layout: {
                         type: 'fit'
-                    }
+                    },
+                    region: 'west'
                 },
                 {
                     xtype: 'maintabpanel',

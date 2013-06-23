@@ -154,34 +154,79 @@ Ext.define('NeoDoc.controller.Location', {
 
     },
 
+    onMainMenuLocation: function(item, e, eOpts) {
+        console.log('In onMainMenuLocation');
+
+
+        var view = Ext.getCmp('mainWorkContainer').down('#locationtabpanel');
+
+        if (view == null) {
+
+
+
+            var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
+
+            console.log(cont);
+
+            cont.add({
+                xtype: 'locationtreetab',
+                region: 'west',
+                id: 'locationtreetab',
+                width: 167,
+                layout: {
+                    type: 'fit'
+                }
+            });
+
+            cont.add({
+                xtype: 'maintabpanel',
+                itemid: 'locationtabpanel',
+                id: 'locationtabpanel',
+                region: 'center'
+            });
+
+
+        } else {
+
+            var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
+
+            console.log(cont);
+
+            cont.removeAll();
+
+        }
+
+
+    },
+
     onLoggedin: function(userrecord) {
         console.log("In location onLoggedin");
 
         var treepanel = Ext.create('NeoDoc.view.location.Treetab', {}),
             loctreetab = Ext.create('NeoDoc.view.MainTabPanel', {});
-
+        /*
         var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
 
         console.log(cont);
 
         cont.add({
-            xtype: 'locationtreetab',
-            region: 'west',
-            width: 167,
-            layout: {
-                type: 'fit'
-            }
+        xtype: 'locationtreetab',
+        region: 'west',
+        width: 167,
+        layout: {
+        type: 'fit'
+        }
         });
 
         cont.add({
-            xtype: 'maintabpanel',
-            itemid: 'locationtabpanel',
-            id: 'locationtabpanel',
-            region: 'center'
+        xtype: 'maintabpanel',
+        itemid: 'locationtabpanel',
+        id: 'locationtabpanel',
+        region: 'center'
         });
 
 
-
+        */
     },
 
     init: function(application) {
@@ -195,6 +240,9 @@ Ext.define('NeoDoc.controller.Location', {
             "#locationTreePanel": {
                 select: this.onTreepanelSelect,
                 itemcontextmenu: this.onTreepanelItemContextMenu
+            },
+            "#mainMenu": {
+                click: this.onMainMenuLocation
             }
         });
 
