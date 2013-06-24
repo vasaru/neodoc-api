@@ -78,12 +78,28 @@ Ext.define('NeoDoc.controller.Device', {
 
 
         var tab = activetab.getChildByElement('DeviceTab-GeneralPanel-'+record.data.id);
+        var generaltab;
 
         if(!tab) {
 
             maintab.setLoading(true);
+            if (Ext.getCmp('DeviceTab-GeneralPanel-'+record.id) === null) {
+                generaltab = this.createDeviceDisplayTab(record.data,false);
+                activetab.add(generaltab);
 
-            var generaltab = this.createDeviceDisplayTab(record.data,false);
+
+                activetab.setActiveTab(generaltab);
+                maintab.setLoading(false);
+
+                console.log('Displayed tab');
+
+            } else{ 
+                generaltab = Ext.getCmp('DeviceTab-GeneralPanel-'+record.id);
+                activetab.setActiveTab(generaltab);
+                maintab.setLoading(false);
+
+                console.log('Displayed tab');
+            }
 
             /*
             var generaltab = Ext.create('Ext.panel.Panel', {
@@ -204,13 +220,6 @@ Ext.define('NeoDoc.controller.Device', {
             generalinfo.data = record.data;
             generalinfo.update(record.data); */
 
-            activetab.add(generaltab);
-
-
-            activetab.setActiveTab(generaltab);
-            maintab.setLoading(false);
-
-            console.log('Displayed tab');
         } else {
             maintab.setActiveTab(tab);
         }
@@ -344,8 +353,12 @@ Ext.define('NeoDoc.controller.Device', {
             success: function(result, action) {
                 console.log(Ext.decode(result.responseText));
                 data = Ext.decode(result.responseText);
-                generalTab = me.createDeviceDisplayTab(data,true);
-                maintab.add(generalTab);
+                if(maintab.down('DeviceTab-GeneralPanel-'+record.id)==null) { 
+                    generalTab = me.createDeviceDisplayTab(data,true);
+                    maintab.add(generalTab);
+                } else {
+                    maintab.activeTab(maintab.down('DeviceTab-GeneralPanel-'+record.id));
+                }
 
             },
             failure: function(result, action) {
@@ -460,6 +473,8 @@ Ext.define('NeoDoc.controller.Device', {
 
     createDeviceDisplayTab: function(record, closeabletab) {
         console.log(record);
+
+
 
 
         var generaltab = Ext.create('Ext.panel.Panel', {
@@ -582,6 +597,8 @@ Ext.define('NeoDoc.controller.Device', {
         generalinfo.update(record);
 
         return generaltab;
+
+
 
     },
 
