@@ -17,6 +17,8 @@ Ext.define('NeoDoc.view.MainTabPanel', {
     extend: 'Ext.tab.Panel',
     alias: 'widget.maintabpanel',
 
+    resizable: true,
+    resizeHandles: 'w',
     headerPosition: 'right',
 
     initComponent: function() {

@@ -157,75 +157,85 @@ Ext.define('NeoDoc.controller.Location', {
     onMainMenuLocation: function(item, e, eOpts) {
         console.log('In onMainMenuLocation');
 
+        var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
 
-        var view = Ext.getCmp('mainWorkContainer').down('#locationtabpanel');
+        console.log(cont);
 
-        if (view == null) {
-
-
-
-            var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
-
-            console.log(cont);
-
-            cont.add({
-                xtype: 'locationtreetab',
-                region: 'west',
-                id: 'locationtreetab',
-                width: 167,
-                layout: {
-                    type: 'fit'
-                }
-            });
-
-            cont.add({
-                xtype: 'maintabpanel',
-                itemid: 'locationtabpanel',
-                id: 'locationtabpanel',
-                region: 'center'
-            });
-
-
-        } else {
-
-            var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
-
-            console.log(cont);
-
+        if ( cont.items.length > 0 ) {
             cont.removeAll();
-
         }
 
+
+        if(e.itemId == 'MainMenuLocationBtn') {
+
+            if (Ext.getCmp('mainWorkContainer').down('#locationtabpanel') === null) {
+
+                var treepanel = Ext.create('NeoDoc.view.location.Treetab', {}),
+                    loctreetab = Ext.create('NeoDoc.view.MainTabPanel', {}); 
+
+                    cont.add({
+                        xtype: 'locationtreetab',
+                        region: 'west',
+                        id: 'locationtreetab',
+                        width: 167,
+                        layout: {
+                            type: 'fit'
+                        }
+                    });
+
+                cont.add({
+                    xtype: 'maintabpanel',
+                    itemid: 'locationtabpanel',
+                    id: 'locationtabpanel',
+                    region: 'center'
+                });
+            }
+
+        } else if (e.itemId == 'MainMenuSettingsBtn') {
+
+            var configtreetab = Ext.create('NeoDoc.view.config.TreeTab', {});
+
+            if (Ext.getCmp('mainWorkContainer').down('#configtreetab') === null) {
+
+                var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
+
+                cont.add({
+                    xtype: 'configtreetab',
+                    region: 'west',
+                    id: 'configtreetab',
+                    itemid: 'configtreetab',
+                    width: 167,
+                    layout: {
+                        type: 'fit'
+                    }
+                });
+
+            }
+
+
+            /*
+            var treepanel = this.getTreeTabPanel(),
+            conftreetab = Ext.create('NeoDoc.view.config.TreeTab', {});
+
+            var tab = treepanel.add(conftreetab);
+
+            conftreetab.down('#configTreePanel').getStore().load();
+            */
+            //conftreetab.getStore().load();
+
+            //store.load();
+            //this.getStore('navTreeStore').load();
+
+        }
 
     },
 
     onLoggedin: function(userrecord) {
         console.log("In location onLoggedin");
 
-        var treepanel = Ext.create('NeoDoc.view.location.Treetab', {}),
-            loctreetab = Ext.create('NeoDoc.view.MainTabPanel', {});
         /*
-        var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
-
-        console.log(cont);
-
-        cont.add({
-        xtype: 'locationtreetab',
-        region: 'west',
-        width: 167,
-        layout: {
-        type: 'fit'
-        }
-        });
-
-        cont.add({
-        xtype: 'maintabpanel',
-        itemid: 'locationtabpanel',
-        id: 'locationtabpanel',
-        region: 'center'
-        });
-
-
+        var treepanel = Ext.create('NeoDoc.view.location.Treetab', {}),
+        loctreetab = Ext.create('NeoDoc.view.MainTabPanel', {});
         */
     },
 

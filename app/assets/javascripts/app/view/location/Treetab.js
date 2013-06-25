@@ -18,11 +18,14 @@ Ext.define('NeoDoc.view.location.Treetab', {
     alias: 'widget.locationtreetab',
 
     width: 114,
+    resizable: true,
+    resizeHandles: 'e',
     layout: {
         type: 'fit'
     },
-    header: false,
-    title: 'Location',
+    collapseDirection: 'left',
+    collapsible: true,
+    title: 'Locations',
 
     initComponent: function() {
         var me = this;
