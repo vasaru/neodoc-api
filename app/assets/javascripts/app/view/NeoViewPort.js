@@ -96,14 +96,15 @@ Ext.define('NeoDoc.view.NeoViewPort', {
                                 },
                                 {
                                     xtype: 'menuitem',
-                                    itemId: 'MainMenuSettingsBtn',
-                                    iconCls: 'gear-icon',
-                                    text: 'Settings'
+                                    itemId: 'MainMenuCustomerBtn',
+                                    iconCls: 'customers-icon',
+                                    text: 'Customers'
                                 },
                                 {
                                     xtype: 'menuitem',
-                                    disabled: true,
-                                    text: 'Menu Item'
+                                    itemId: 'MainMenuSettingsBtn',
+                                    iconCls: 'gear-icon',
+                                    text: 'Settings'
                                 }
                             ]
                         }
