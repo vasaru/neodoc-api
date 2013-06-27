@@ -19,6 +19,7 @@ Ext.define('NeoDoc.view.device.GeneralPanel', {
     height: 199,
     width: 629,
     resizable: true,
+    bodyPadding: 10,
 
     initComponent: function() {
         var me = this;
