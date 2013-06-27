@@ -191,6 +191,28 @@ Ext.define('NeoDoc.controller.Location', {
                 });
             }
 
+        } else if (e.itemId == 'MainMenuCustomerBtn') {
+
+            var customertreetab = Ext.create('NeoDoc.view.customer.TreeTab', {});
+
+            if (Ext.getCmp('mainWorkContainer').down('#customertreetab') === null) {
+
+                var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
+
+                cont.add({
+                    xtype: 'customertreetab',
+                    region: 'west',
+                    id: 'customertreetab',
+                    itemid: 'customertreetab',
+                    width: 167,
+                    layout: {
+                        type: 'fit'
+                    }
+                });
+
+            }
+
+
         } else if (e.itemId == 'MainMenuSettingsBtn') {
 
             var configtreetab = Ext.create('NeoDoc.view.config.TreeTab', {});
