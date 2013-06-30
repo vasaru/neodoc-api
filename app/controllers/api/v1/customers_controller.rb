@@ -11,7 +11,7 @@ module Api
 					start.each do |node|
 						h = Hash.new
 					    h["text"] = "#{node.name}"
-					    h["iconCls"]="location-icon"
+					    h["iconCls"]="customers-icon"
 					    h["id"]=Integer("#{node.neo_id}")
 					    h["category"]="#{node.category}"
 					    h["cls"]="#{node.class}"
@@ -28,8 +28,8 @@ module Api
 			def index
 				case params[:node]
 					when 'NaN'
-						Rails.logger.warn "Getting location root tree"
-							start = Setting.all
+						Rails.logger.warn "Getting customer root tree"
+							start = Customer.all
 							root=true
 				else
 					Rails.logger.warn "Getting subtree for node tree #{params[:node]}"
@@ -50,7 +50,32 @@ module Api
 			end
 
 			def create
-				
+				Rails.logger.warn "In Create customer"
+				# Customer.all.each{|c| c.destroy() }
+				resource = User.find_by_authentication_token( params[:auth_token])
+				@customer = Customer.new(
+					"name"=>params[:name],
+					"nickname"=>params[:nickname],
+					"address"=>params[:address],
+					"city"=>params[:city],
+					"zip"=>params[:zip],
+					"country"=>params[:country],
+					"workphone1"=>params[:workphone1],
+					"workphone2"=>params[:workphone2],
+					"mobilephone1"=>params[:mobilephone1],
+					"mobilephone2"=>params[:mobilephone2],
+					"url"=>params[:url],
+					"email"=>params[:email],
+					"facebook"=>params[:facebook],
+					"organizationnumber"=>params[:orgnumber],
+					"description"=>params[:description],
+					"updated_by"=>resource.neo_id,
+					"created_by"=>resource.neo_id)
+				if @customer.save
+					render :json => {:success => true, :customer => [@customer] }
+				else
+					render :json => {:success => false, :message => [@customer.errors], :status=>:unprocessable_entity}
+				end
 			end
 
 			def destroy

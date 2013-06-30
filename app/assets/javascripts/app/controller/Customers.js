@@ -14,5 +14,64 @@
  */
 
 Ext.define('NeoDoc.controller.Customers', {
-    extend: 'Ext.app.Controller'
+    extend: 'Ext.app.Controller',
+
+    refs: [
+        {
+            ref: 'newCustomerWindow',
+            selector: 'newcustomerwindow'
+        }
+    ],
+
+    onNewCustomerBtn: function(button, e, eOpts) {
+        console.log('In new CustomerBtn');
+        var win = Ext.create('NeoDoc.view.customer.CreateWindow', {});
+        win.show();
+
+
+
+    },
+
+    onCreateCustomer: function(button, e, eOpts) {
+        console.log('In onCreateCustomer');
+        var me = this,
+            win = this.getNewCustomerWindow(), 
+            form = win.items.items[0].getForm();
+
+        var nameField = form.findField('name');
+        console.log('name:',nameField);
+        if (form.isValid()) {    
+            win.setLoading('Submitting...');
+            form.submit({
+                url: '/api/customers',
+                headers: {'Accept':'application/vnd.neodocapi.v1' },
+                method: 'POST',
+                success: function(result, action) {
+                    Ext.Msg.alert('Created customer successfully!');
+                    var store = Ext.StoreMgr.get('customer.TreeStore');
+                    store.load();
+                    win.setLoading(false);
+                    win.destroy();
+                    // TODO: Reload tree store
+                },
+                failure: function(result, action) {
+                    Ext.Msg.alert('Failed to create customer!\n\n'+result);
+                    win.setLoading(false);
+                }
+            });
+        }
+
+    },
+
+    init: function(application) {
+        this.control({
+            "customertreetab button[action=newcustomer]": {
+                click: this.onNewCustomerBtn
+            },
+            "newcustomerwindow button[action=customercreate]": {
+                click: this.onCreateCustomer
+            }
+        });
+    }
+
 });

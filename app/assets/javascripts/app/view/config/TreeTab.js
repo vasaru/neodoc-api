@@ -17,7 +17,9 @@ Ext.define('NeoDoc.view.config.TreeTab', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.configtreetab',
 
-    width: 150,
+    width: 167,
+    resizable: true,
+    resizeHandles: 'e',
     layout: {
         type: 'fit'
     },

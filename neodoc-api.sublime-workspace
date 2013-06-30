@@ -92,6 +92,22 @@
 			}
 		},
 		{
+			"file": "app/controllers/api/v1/contacts_controller.rb",
+			"settings":
+			{
+				"buffer_size": 1182,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/models/customer.rb",
+			"settings":
+			{
+				"buffer_size": 990,
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "app/controllers/api/v1/trees_controller.rb",
 			"settings":
 			{
@@ -136,15 +152,15 @@
 			"file": "config/routes.rb",
 			"settings":
 			{
-				"buffer_size": 2520,
+				"buffer_size": 2577,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "app/assets/stylesheets/neodoc.css",
+			"file": "app/assets/javascripts/app.js.erb",
 			"settings":
 			{
-				"buffer_size": 1191,
+				"buffer_size": 2371,
 				"line_ending": "Unix"
 			}
 		},
@@ -154,14 +170,6 @@
 			{
 				"buffer_size": 525,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/models/config.rb",
-			"settings":
-			{
-				"buffer_size": 224,
-				"line_ending": "Unix"
 			}
 		},
 		{
@@ -193,7 +201,7 @@
 			"file": "/home/henrik/Source/sencha/neodoc2/NeoDoc2/app.js",
 			"settings":
 			{
-				"buffer_size": 1742,
+				"buffer_size": 2132,
 				"line_ending": "Windows"
 			}
 		},
@@ -210,14 +218,6 @@
 			"settings":
 			{
 				"buffer_size": 1629,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/assets/javascripts/app.js.erb",
-			"settings":
-			{
-				"buffer_size": 2320,
 				"line_ending": "Unix"
 			}
 		}
@@ -302,6 +302,7 @@
 	"file_history":
 	[
 		"/home/henrik/Source/neodoc-api/app/assets/stylesheets/neodoc.css",
+		"/home/henrik/Source/neodoc-api/app/models/config.rb",
 		"/home/henrik/Source/neodoc-api/public/extjs/examples/neptune-components/app.css",
 		"/home/henrik/Source/neodoc-api/app/controllers/api/v1/sessions_controller.rb",
 		"/home/henrik/Source/neodoc-api/config/initializers/configurations.rb",
@@ -433,7 +434,7 @@
 	"groups":
 	[
 		{
-			"selected": 8,
+			"selected": 9,
 			"sheets":
 			[
 				{
@@ -487,13 +488,68 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 901.0,
+						"translation.y": 136.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
+					"file": "app/controllers/api/v1/contacts_controller.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1182,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								345,
+								345
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/models/customer.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 990,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								985,
+								985
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": "app/controllers/api/v1/trees_controller.rb",
 					"semi_transient": false,
 					"settings":
@@ -521,7 +577,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 5,
 					"file": "app/controllers/api/v1/operatingsystems_controller.rb",
 					"semi_transient": false,
 					"settings":
@@ -549,7 +605,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 6,
 					"file": "app/controllers/api/v1/osvers_controller.rb",
 					"semi_transient": false,
 					"settings":
@@ -577,7 +633,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 7,
 					"file": "lib/tasks/seed.rake",
 					"semi_transient": false,
 					"settings":
@@ -605,7 +661,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 8,
 					"file": "app/views/layouts/application.html.erb",
 					"semi_transient": false,
 					"settings":
@@ -632,20 +688,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 9,
 					"file": "config/routes.rb",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2520,
+						"buffer_size": 2577,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								467,
-								467
+								524,
+								524
 							]
 						],
 						"settings":
@@ -661,30 +717,31 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "app/assets/stylesheets/neodoc.css",
+					"buffer": 10,
+					"file": "app/assets/javascripts/app.js.erb",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1191,
+						"buffer_size": 2371,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1189,
-								1189
+								1301,
+								1301
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"tab_size": 2,
+							"history_list_is_closing": true,
+							"syntax": "Packages/Rails/JavaScript (Rails).tmLanguage",
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 256.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -692,11 +749,11 @@
 			]
 		},
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
-					"buffer": 9,
+					"buffer": 11,
 					"file": "app/models/osver.rb",
 					"semi_transient": false,
 					"settings":
@@ -717,35 +774,6 @@
 							"syntax": "Packages/Ruby/Ruby.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "app/models/config.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 224,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								13,
-								13
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -782,7 +810,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 12,
 					"semi_transient": false,
 					"settings":
 					{
@@ -811,7 +839,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 13,
 					"file": "app/models/ipnumber.rb",
 					"semi_transient": false,
 					"settings":
@@ -840,7 +868,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 14,
 					"file": "app/models/device.rb",
 					"semi_transient": false,
 					"settings":
@@ -869,12 +897,12 @@
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 15,
 					"file": "/home/henrik/Source/sencha/neodoc2/NeoDoc2/app.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1742,
+						"buffer_size": 2132,
 						"regions":
 						{
 						},
@@ -898,7 +926,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 16,
 					"file": "app/models/network.rb",
 					"semi_transient": false,
 					"settings":
@@ -927,7 +955,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 17,
 					"file": "public/extjs/examples/app/feed-viewer/app/view/article/Preview.js",
 					"semi_transient": false,
 					"settings":
@@ -956,7 +984,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 4,
 					"file": "app/controllers/api/v1/trees_controller.rb",
 					"semi_transient": false,
 					"settings":
@@ -984,20 +1012,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 10,
 					"file": "app/assets/javascripts/app.js.erb",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2320,
+						"buffer_size": 2371,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1390,
-								1390
+								1420,
+								1420
 							]
 						],
 						"settings":
@@ -1070,16 +1098,20 @@
 		"selected_items":
 		[
 			[
-				"neod",
-				"app/assets/stylesheets/neodoc.css"
+				"route",
+				"config/routes.rb"
 			],
 			[
 				"app",
 				"app/assets/javascripts/app.js.erb"
 			],
 			[
-				"route",
-				"config/routes.rb"
+				"app.",
+				"app/assets/javascripts/app.js.erb"
+			],
+			[
+				"neod",
+				"app/assets/stylesheets/neodoc.css"
 			],
 			[
 				"app.html",
@@ -1115,10 +1147,6 @@
 			],
 			[
 				"ap",
-				"neodoc-api/app/assets/javascripts/app.js.erb"
-			],
-			[
-				"app.",
 				"neodoc-api/app/assets/javascripts/app.js.erb"
 			],
 			[

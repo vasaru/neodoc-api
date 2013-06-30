@@ -17,8 +17,8 @@ Ext.define('NeoDoc.view.location.CreateWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.newlocationwindow',
 
-    height: 461,
-    width: 666,
+    height: 561,
+    width: 710,
     layout: {
         type: 'fit'
     },
@@ -32,26 +32,17 @@ Ext.define('NeoDoc.view.location.CreateWindow', {
             items: [
                 {
                     xtype: 'form',
-                    layout: {
-                        align: 'stretch',
-                        type: 'hbox'
-                    },
                     bodyPadding: 10,
                     header: false,
-                    dockedItems: [
+                    title: 'My Form',
+                    items: [
                         {
-                            xtype: 'container',
-                            flex: 1,
-                            dock: 'top',
-                            height: 121,
-                            padding: 10,
-                            layout: {
-                                type: 'anchor'
-                            },
+                            xtype: 'fieldset',
+                            title: 'Basics',
                             items: [
                                 {
                                     xtype: 'textfield',
-                                    anchor: '100%',
+                                    width: 646,
                                     fieldLabel: 'Name',
                                     name: 'name',
                                     tabIndex: 1,
@@ -60,15 +51,97 @@ Ext.define('NeoDoc.view.location.CreateWindow', {
                                 },
                                 {
                                     xtype: 'textareafield',
-                                    anchor: '100%',
+                                    width: 648,
                                     fieldLabel: 'Address',
                                     name: 'address'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    width: 646,
+                                    fieldLabel: 'City',
+                                    name: 'city',
+                                    tabIndex: 1
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    width: 646,
+                                    fieldLabel: 'Zip',
+                                    name: 'zip',
+                                    tabIndex: 1
+                                },
+                                {
+                                    xtype: 'combobox',
+                                    width: 311,
+                                    fieldLabel: 'Country',
+                                    name: 'country',
+                                    displayField: 'name',
+                                    queryMode: 'local',
+                                    store: 'countryStore'
                                 }
                             ]
                         },
                         {
+                            xtype: 'fieldset',
+                            height: 112,
+                            layout: {
+                                columns: 2,
+                                type: 'table'
+                            },
+                            title: 'Location',
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    width: 290,
+                                    fieldLabel: 'Longitude',
+                                    name: 'longitude'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    padding: '0 0 0 10',
+                                    width: 290,
+                                    fieldLabel: 'Latitude',
+                                    name: 'latitude'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    width: 290,
+                                    fieldLabel: 'Url',
+                                    name: 'url',
+                                    inputType: 'url'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    margin: '0 0 0 10',
+                                    width: 291,
+                                    fieldLabel: 'E-mail',
+                                    name: 'email',
+                                    inputType: 'url'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    width: 291,
+                                    fieldLabel: 'Facebook:',
+                                    name: 'facebook',
+                                    inputType: 'url'
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'fieldset',
+                            title: 'Description',
+                            items: [
+                                {
+                                    xtype: 'htmleditor',
+                                    height: 123,
+                                    width: 639,
+                                    name: 'description'
+                                }
+                            ]
+                        }
+                    ],
+                    dockedItems: [
+                        {
                             xtype: 'toolbar',
-                            flex: 1,
                             dock: 'bottom',
                             formBind: true,
                             items: [
@@ -87,64 +160,8 @@ Ext.define('NeoDoc.view.location.CreateWindow', {
                                 {
                                     xtype: 'button',
                                     action: 'locationcreate',
+                                    formBind: true,
                                     text: 'Create'
-                                }
-                            ]
-                        }
-                    ],
-                    items: [
-                        {
-                            xtype: 'container',
-                            padding: 10,
-                            width: 297,
-                            layout: {
-                                type: 'anchor'
-                            },
-                            items: [
-                                {
-                                    xtype: 'combobox',
-                                    anchor: '100%',
-                                    fieldLabel: 'Country',
-                                    name: 'country',
-                                    displayField: 'name',
-                                    queryMode: 'local',
-                                    store: 'countryStore'
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    anchor: '100%',
-                                    fieldLabel: 'Longitude',
-                                    name: 'longitude'
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    anchor: '100%',
-                                    fieldLabel: 'Latitude',
-                                    name: 'latitude'
-                                },
-                                {
-                                    xtype: 'textfield',
-                                    anchor: '100%',
-                                    fieldLabel: 'Url',
-                                    name: 'url',
-                                    inputType: 'url'
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'container',
-                            flex: 1,
-                            layout: {
-                                type: 'anchor'
-                            },
-                            items: [
-                                {
-                                    xtype: 'textareafield',
-                                    height: 216,
-                                    padding: 10,
-                                    width: 327,
-                                    fieldLabel: 'Description',
-                                    name: 'description'
                                 }
                             ]
                         }

@@ -27,6 +27,12 @@ Ext.define('NeoDoc.controller.Configuration', {
         }
     ],
 
+    onConfigTreeSelect: function(dataview, record, item, index, e, eOpts) {
+        console.log("Setting clicked "+record.data.value);
+
+        var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
+    },
+
     onLoggedin: function() {
 
         console.log("In configuration onLoggedin");
@@ -46,6 +52,12 @@ Ext.define('NeoDoc.controller.Configuration', {
     },
 
     init: function(application) {
+        this.control({
+            "#configTreePanel": {
+                itemclick: this.onConfigTreeSelect
+            }
+        });
+
         application.on({
             loggedin: {
                 fn: this.onLoggedin,
