@@ -1,0 +1,28 @@
+/**
+ * Base {@link Ext.data.Store} from which all other application stores will extend
+ */
+Ext.define('NeoDoc.store.Base', {
+    extend: 'Ext.data.Store',
+    requires: [
+        'NeoDoc.proxy.Rest'
+    ],
+    /**
+     * @cfg {String} restPath End point for store requests
+     */
+    restPath: null,
+    constructor: function( cfg ){
+        var me = this;
+        cfg = cfg || {};
+        me.callParent([Ext.apply({
+            storeId: 'Base',
+            remoteSort: true,
+            remoteFilter: true,
+            remoteGroup: true,
+            proxy: {
+                type: 'baserest',
+                headers: {'Accept':'application/vnd.neodocapi.v1' },
+                url: me.restPath
+            }
+        }, cfg)]);
+    }
+})
