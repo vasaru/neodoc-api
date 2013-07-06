@@ -5,6 +5,10 @@ class Operatingsystem < Neo4j::Rails::Model
   property :url, :type => String
   property :productinformation, :type => String
   property :status, :type => String
+  property :updated_at, :type => DateTime
+  property :created_at, :type => DateTime
+  property :updated_by, :type => String
+  property :created_by, :type => String
 
   index :name
 

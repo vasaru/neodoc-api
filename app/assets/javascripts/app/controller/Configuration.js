@@ -31,6 +31,25 @@ Ext.define('NeoDoc.controller.Configuration', {
         console.log("Setting clicked "+record.data.value);
 
         var cont = Ext.getCmp('mainviewport').down('#mainWorkContainer');
+
+        if(record.data.value == "manageoperatingsystems") {
+            /* 	if(cont.query().length > 0) 
+            cont.removeAll();
+            */  
+            var configmanageospanel = Ext.create('NeoDoc.view.config.ManageOsPanel', {});
+            //    cont.add(panel);
+
+            cont.add({
+                xtype: 'configmanageospanel',
+                region: 'center',
+                itemid: 'configmanageospanel',
+                id: 'configmanageospanel'
+
+            });
+
+
+
+        }
     },
 
     onLoggedin: function() {

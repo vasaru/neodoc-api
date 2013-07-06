@@ -32,7 +32,9 @@ Ext.define('NeoDoc.view.config.ManageOsPanel', {
                 {
                     xtype: 'gridpanel',
                     region: 'north',
-                    height: 150,
+                    height: 200,
+                    itemId: 'osgridpanel',
+                    emptyText: 'Please add a new OS',
                     store: 'config.OperatingSystemStore',
                     columns: [
                         {
@@ -64,21 +66,19 @@ Ext.define('NeoDoc.view.config.ManageOsPanel', {
                             items: [
                                 {
                                     xtype: 'button',
-                                    icon: 'view-icon',
-                                    text: 'View OS'
-                                },
-                                {
-                                    xtype: 'button',
+                                    action: 'addnewoperatingsystem',
                                     iconCls: 'add-icon',
                                     text: 'Add new OS'
                                 },
                                 {
                                     xtype: 'button',
-                                    iconCls: 'edit-icon',
+                                    action: 'editoperatingsystem',
+                                    iconCls: 'gear-icon',
                                     text: 'Edit OS'
                                 },
                                 {
                                     xtype: 'button',
+                                    action: 'deleteoperatingsystem',
                                     iconCls: 'delete-icon',
                                     text: 'Delete OS'
                                 }

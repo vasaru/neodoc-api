@@ -20,8 +20,8 @@ module Api
 						h["id"]=Integer(v.neo_id)
 						h["cls"]="Osver"
 #						h["isourl"]=v.isourl
-#						h["major"]=v.major
-#						h["minor"]=v.minor
+						h["major"]=v.major
+						h["minor"]=v.minor
 #						h["build"]=v.build
 #						h["patch"]=v.patch															
 #						h["update"]=v.update															

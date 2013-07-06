@@ -211,6 +211,7 @@ module Api
 
 			  def create
 				Rails.logger.warn "In Create network"
+
 				resource = User.find_by_authentication_token( params[:auth_token])
 				@network = Network.new("network_name"=>params[:network_name],"network"=>params[:network],"createip"=>params[:createip],"pid"=>params[:pid],"vlanid"=>params[:vlanid],"netmask"=>params[:netmask],"gateway"=>params[:gateway],"description"=>params[:description],"updated_by"=>resource.neo_id,"created_by"=>resource.neo_id)
 				if @network.save

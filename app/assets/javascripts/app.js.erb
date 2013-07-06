@@ -42,8 +42,12 @@ Ext.application({
         'VersionStore',
         'configStore',
         'customer.TreeStore',
+        'config.OperatingSystemStore',
         'DeviceNetworkInfoStore'
 //        'navTreeStore'
+    ],
+    requires: [
+        'Ext.util.History'
     ],
     views: [
         'LoginWindow',
@@ -53,6 +57,7 @@ Ext.application({
     ],
     autoCreateViewport: false,
     controllers: [
+ //       'App',
         'Authentication',
         'Location',
         'Network',
@@ -64,7 +69,22 @@ Ext.application({
     appFolder: '/assets/app',
     namespaces: [
         'neodoc'
-    ]
+    ],
+    launch: function( args ) {
+        // "this" = Ext.app.Application
+        var me = this;
+        // init Ext.util.History on app launch; if there is a hash in the url,
+        // our controller will load the appropriate content
+        Ext.util.History.init(function(){
+            var hash = document.location.hash;
+            me.getAppController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
+        })
+        // add change handler for Ext.util.History; when a change in the token
+        // occurs, this will fire our controller's event to load the appropriate content
+        Ext.util.History.on( 'change', function( token ){
+            me.getAppController().fireEvent( 'tokenchange', token );
+        });
+    }
 });
 
 
