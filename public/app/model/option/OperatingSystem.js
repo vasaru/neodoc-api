@@ -3,11 +3,11 @@
  */
 Ext.define('NeoDoc.model.option.OperatingSystem', {
    extend: 'NeoDoc.model.option.Base',
-   idProperty: 'id',
+   idProperty: 'osid',
    fields: [
        // id field
        {
-           name: 'id',
+           name: 'osid',
            type: 'int',
            useNull : true
        },

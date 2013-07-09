@@ -1,4 +1,5 @@
 class Operatingsystem < Neo4j::Rails::Model
+  property :osid, :type => Fixnum
   property :name, :type => String
   property :description, :type => String
   property :license, :type => String

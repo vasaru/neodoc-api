@@ -20,15 +20,15 @@ Ext.define('NeoDoc.view.option.List', {
     			text: 'Last Updated',
     			dataIndex: 'updated_at',
                 xtype: 'datecolumn',
-                dateFormat: 'Y-m-d',
+//                dateFormat: 'Y-m-d',
                 flex: 0.5
     		},
     		{
     			text: 'Last Updated by',
     			dataIndex: 'updated_by',
                 flex: 0.5
-    		},
-            {
+    		}
+/*            {
                 xtype: 'booleancolumn',
                 text: 'Active',
                 dataIndex: 'status',
@@ -36,7 +36,7 @@ Ext.define('NeoDoc.view.option.List', {
                 falseText: 'No',
                 flext: 0.5
             }
-        ];
+*/        ];
 
         if( !Ext.isEmpty( me.extraColumns ) ) {
             console.log("Columns:" + columns);

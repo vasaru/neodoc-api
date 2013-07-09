@@ -13,7 +13,7 @@ Ext.define('NeoDoc.model.Base', {
         {
             name: 'created_at',
             type: 'date',
-            dateFormat: 'Y-m-d'
+//            dateFormat: 'Y-m-d'
         },
         {
             name: 'created_by',

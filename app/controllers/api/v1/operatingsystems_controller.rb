@@ -60,7 +60,7 @@ module Api
 				params.each do |key,value|
 					Rails.logger.warn "Param #{key}: #{value}"
 				end
-				node = Neo4j::Node.load(params[:id])
+				node = Neo4j::Node.load(params[:osid])
 				respond_with node.destroy()
 			end
 		end

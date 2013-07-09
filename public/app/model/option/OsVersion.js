@@ -12,9 +12,13 @@ Ext.define('NeoDoc.model.option.OsVersion', {
            useNull : true
        },
        {
-           name: 'osid',
-           type: 'int',
-           useNull : true
+           name: 'osname',
+           type: 'auto'
+       },
+       {
+           name: '_osname',
+           type: 'string',
+           persist: false
        },
        {
             name: 'name',

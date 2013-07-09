@@ -107,6 +107,7 @@ Ext.define('NeoDoc.controller.App', {
                             text: 'Operating System',
                             dataIndex: 'osname',
                             renderer: function( value, metaData, record, rowIndex, colIndex, store, view ) {
+                                console.log(record);
                                 return record.get( '_osname' )
                             },
 		    	    flex: 1.5,
